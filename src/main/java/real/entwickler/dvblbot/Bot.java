@@ -19,6 +19,7 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.Compression;
 import real.entwickler.dvblbot.listener.GuildMemberJoinListener;
 import real.entwickler.dvblbot.listener.GuildMemberLeaveListener;
+import real.entwickler.dvblbot.listener.GuildMessageReactionAddListener;
 import real.entwickler.dvblbot.manager.MessageManager;
 import real.entwickler.dvblbot.utils.Property;
 
@@ -58,6 +59,7 @@ public class Bot {
         this.messageManager = new MessageManager();
         this.jda.addEventListener(new GuildMemberJoinListener());
         this.jda.addEventListener(new GuildMemberLeaveListener());
+        this.jda.addEventListener(new GuildMessageReactionAddListener());
     }
 
     public Guild getDVBL () {

@@ -11,31 +11,31 @@
 package real.entwickler.dvblbot;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.Compression;
 import real.entwickler.dvblbot.enums.EChannel;
 import real.entwickler.dvblbot.listener.GuildMemberJoinListener;
 import real.entwickler.dvblbot.listener.GuildMemberLeaveListener;
 import real.entwickler.dvblbot.listener.GuildMessageReactionAddListener;
+import real.entwickler.dvblbot.listener.GuildMessageReceivedListener;
 import real.entwickler.dvblbot.manager.CommandManager;
 import real.entwickler.dvblbot.manager.MessageManager;
 import real.entwickler.dvblbot.music.PlayerManager;
+import real.entwickler.dvblbot.music.commands.LeaveCommand;
+import real.entwickler.dvblbot.music.commands.PlayCommand;
+import real.entwickler.dvblbot.music.commands.StopCommand;
 import real.entwickler.dvblbot.utils.Property;
 
 import javax.security.auth.login.LoginException;
-import java.sql.Time;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class Bot {
@@ -43,12 +43,9 @@ public class Bot {
     private static Bot instance;
     private Property property;
     private MessageManager messageManager;
-    public AudioPlayerManager audioPlayerManager;
+    private AudioPlayerManager audioPlayerManager;
+    private PlayerManager playerManager;
     private JDA jda;
-    public PlayerManager playerManager;
-
-    public CommandManager getCommandManager() { return commandManager; }
-
     private CommandManager commandManager;
 
     public static void main(String[] args) {
@@ -73,18 +70,43 @@ public class Bot {
             e.printStackTrace();
         }
         this.messageManager = new MessageManager();
+        this.commandManager = new CommandManager();
+        this.audioPlayerManager = new DefaultAudioPlayerManager();
+        AudioSourceManagers.registerRemoteSources(audioPlayerManager);
+        audioPlayerManager.getConfiguration().setFilterHotSwapEnabled(true);
+        this.playerManager = new PlayerManager();
         this.jda.addEventListener(new GuildMemberJoinListener());
         this.jda.addEventListener(new GuildMemberLeaveListener());
         this.jda.addEventListener(new GuildMessageReactionAddListener());
+        this.jda.addEventListener(new GuildMessageReceivedListener());
 
         messageManager.printReadyMessage(EChannel.CHANGES.getChannelID());
+
+        commandManager.registerCommand(new PlayCommand("play", "play <Songlink>", "Plays a given song from youtube or spotify"));
+        commandManager.registerCommand(new PlayCommand("p", "play <Songlink>", "Plays a given song from youtube or spotify"));
+        commandManager.registerCommand(new StopCommand("stop", "stop Song", "stops a playing song", ""));
+        //commandManager.registerCommand(new HelpCommand("help", "help bot", "gives you help", "First-Officer"));
+        //commandManager.registerCommand(new CopilotCommand("copilot", "CoPilot song", "plays the copilot song", "First-Officer"));
+        commandManager.registerCommand(new LeaveCommand("leave", "bot leave", "make bot leave vc"));
 
         if (new Scanner(System.in).nextLine().equalsIgnoreCase("s")) {
             messageManager.printStopMessage(EChannel.CHANGES.getChannelID());
         }
     }
 
-    public Guild getDVBL () {
+    public CommandManager getCommandManager() {
+        return commandManager;
+    }
+
+    public AudioPlayerManager getAudioPlayerManager() {
+        return audioPlayerManager;
+    }
+
+    public PlayerManager getPlayerManager() {
+        return playerManager;
+    }
+
+    public Guild getDVBL() {
         return jda.getGuilds().get(0);
     }
 

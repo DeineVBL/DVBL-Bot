@@ -1,14 +1,11 @@
 package real.entwickler.dvblbot.music.commands;
 
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import com.sun.imageio.plugins.common.BogusColorSpace;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.managers.AudioManager;
@@ -26,12 +23,6 @@ public class PlayCommand extends ICommand {
 
     }
 
-    public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        TextChannel txtChannel = event.getChannel();
-        User user = event.getAuthor();
-        Message message = event.getMessage();
-    }
-
     @Override
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
         if (args.length >= 2) {
@@ -39,9 +30,8 @@ public class PlayCommand extends ICommand {
             if ((gvs = commandSender.getVoiceState()) != null) {
                 VoiceChannel vc;
                 if ((vc = gvs.getChannel()) != null) {
-                    MusicController controller = Bot.getInstance().playerManager.getController(vc.getGuild().getIdLong());
-                    AudioPlayer player = controller.getPlayer();
-                    AudioPlayerManager apm = Bot.getInstance().audioPlayerManager;
+                    MusicController controller = Bot.getInstance().getPlayerManager().getController(vc.getGuild().getIdLong());
+                    AudioPlayerManager apm = Bot.getInstance().getAudioPlayerManager();
                     AudioManager manager = vc.getGuild().getAudioManager();
                     manager.openAudioConnection(vc);
 
@@ -49,16 +39,22 @@ public class PlayCommand extends ICommand {
                         String url = args[1];
 
                         if (!url.startsWith("http")) {
+                            System.out.println("https://www.youtube.com/watch?v=yJGbRc587XU&t=199s");
                             url = "ytsearch: " + url;
                         }
                         apm.loadItem(url, new AudioLoadResult(controller, url) {
                             @Override
                             public void trackLoaded(AudioTrack track) {
                                 super.trackLoaded(track);
+                                System.out.println("1a");
                                 String trackTitle = track.getInfo().title;
+                                System.out.println("3");
                                 String embedTitle = "Link";
+                                System.out.println("7");
                                 EmbedBuilder messageEmbed = new EmbedMessage("Now playing [" + embedTitle + "]", "Co-Pilot - " + commandSender.getEffectiveName(), trackTitle, null, null).raw(track);
+                                System.out.println("4");
                                 textChannel.sendMessage(messageEmbed.build()).queue(message1 -> message1.addReaction("U+1F3B6").queue());
+                                System.out.println("2");
                             }
 
                             @Override

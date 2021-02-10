@@ -77,22 +77,69 @@ public class MessageManager {
     }
 
     public void printErrorVoiceChannel (Member commandSender, TextChannel textChannel) {
-
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setAuthor("CoPilot - " + commandSender.getEffectiveName());
+        builder.setThumbnail("https://raw.githubusercontent.com/swausb/CoPilot/master/images/CoPilot.jpg");
+        builder.setColor(Color.red);
+        builder.setTitle("Fehler [ERROR 003]");
+        builder.setDescription("Huch, du bist wohl in keinem Voicechannel!");
+        builder.setFooter("CoPilot-Bot - Copyright © swausb");
+        textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("❌").queue());
     }
 
     public void printBotErrorVoiceChannel (Member commandSender, TextChannel textChannel) {
-
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setAuthor("Copilot - " +  commandSender.getEffectiveName());
+        builder.setTitle("Fehler [Error 005]");
+        builder.setColor(Color.red);
+        builder.setThumbnail("https://raw.githubusercontent.com/swausb/CoPilot/master/images/CoPilot.jpg");
+        builder.setDescription("Der Bot ist aktuell in keinem Voicechannel!");
+        builder.setFooter("CoPilot-Bot - Copyright © swausb");
+        textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("❌").queue());
     }
 
     public void printErrorStopCommand (Member commandSender, TextChannel textChannel) {
-
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setAuthor("CoPilot - " + commandSender.getEffectiveName());
+        builder.setThumbnail("https://raw.githubusercontent.com/swausb/CoPilot/master/images/CoPilot.jpg");
+        builder.setColor(Color.red);
+        builder.setTitle("Fehler [ERROR 004]");
+        builder.setDescription("Aktuell spielt kein Song!");
+        builder.setFooter("CoPilot-Bot - Copyright © swausb");
+        textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("❌").queue());
     }
 
     public void printErrorPlayCommand (Member commandSender, TextChannel textChannel) {
-
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setAuthor("CoPilot - " + commandSender.getEffectiveName());
+        builder.setThumbnail("https://raw.githubusercontent.com/swausb/CoPilot/master/images/CoPilot.jpg");
+        builder.setColor(Color.red);
+        builder.setTitle("Fehler [ERROR 002]");
+        builder.setDescription("Bitte benutze .play (Songlink) wenn du Musik abspielen möchtest!");
+        builder.setFooter("CoPilot-Bot - Copyright © swausb");
+        textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("❌").queue());
     }
 
     public void printCommandNotFoundMessage ( Member commandSender, TextChannel textChannel) {
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setAuthor("CoPilot");
+        builder.setThumbnail("https://raw.githubusercontent.com/swausb/CoPilot/master/images/CoPilot.jpg");
+        builder.setColor(Color.red);
+        builder.setTitle("Fehler [ERROR 001]");
+        builder.setDescription("Dieser Command wurde nicht gefunden!");
+        builder.setFooter("CoPilot-Bot - Copyright © swausb");
+        textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("❌").queue());
+    }
 
+    public void printCoPilotSong (Member commandSender, TextChannel textChannel) {
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setAuthor("Copilot - " +  commandSender.getEffectiveName());
+        builder.setTitle("CoPilot Song");
+        builder.setColor(Color.red);
+        builder.setThumbnail("https://raw.githubusercontent.com/swausb/CoPilot/master/images/CoPilot.jpg");
+        builder.setDescription("Viel Spaß mit dem besten Song aller Zeiten! <3");
+        builder.setFooter("CoPilot-Bot - Copyright © swausb");
+        textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F60D").queue());
+        textChannel.addReactionById(textChannel.getLatestMessageId(), "U+1F3B6");
     }
 }

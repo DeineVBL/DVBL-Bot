@@ -1,26 +1,29 @@
-/*
- * Copyright notice
- * Copyright (c) Nils Körting-Eberhardt 2021
- * Created: 10.02.2021 @ 11:39:38
- *
- * All contents of this source code are protected by copyright. The copyright is owned by Nils Körting-Eberhardt, unless explicitly stated otherwise. All rights reserved.
- *
- * LeaveCommand.java is part of the DVBL-Bot which is licensed under the Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) license.
- */
-
 package real.entwickler.dvblbot.music.commands;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.managers.AudioManager;
 import real.entwickler.dvblbot.Bot;
+import real.entwickler.dvblbot.music.AudioLoadResult;
 import real.entwickler.dvblbot.music.MusicController;
 import real.entwickler.dvblbot.utils.ICommand;
 
-public class LeaveCommand extends ICommand {
-    public LeaveCommand(String name, String usage, String description, String... roles) {
+
+public class CopilotCommand extends ICommand {
+
+    public CopilotCommand(String name, String usage, String description, String... roles) {
         super(name, usage, description, roles);
+
+    }
+
+    public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
+        TextChannel txtChannel = event.getChannel();
+        User user = event.getAuthor();
+        Message message = event.getMessage();
     }
 
     @Override
@@ -30,18 +33,13 @@ public class LeaveCommand extends ICommand {
             if ((gvs = commandSender.getVoiceState()) != null) {
                 VoiceChannel vc;
                 if ((vc = gvs.getChannel()) != null) {
-
                     MusicController controller = Bot.getInstance().getPlayerManager().getController(vc.getGuild().getIdLong());
                     AudioPlayer player = controller.getPlayer();
                     AudioPlayerManager apm = Bot.getInstance().getAudioPlayerManager();
                     AudioManager manager = vc.getGuild().getAudioManager();
-
-                    if(controller.getGuild().getAudioManager().isConnected()) {
-                        manager.closeAudioConnection();
-                        message.addReaction("U+1F44B").queue();
-                    } else {
-                        Bot.getInstance().getMessageManager().printBotErrorVoiceChannel(commandSender, textChannel);
-                    }
+                    manager.openAudioConnection(vc);
+                    Bot.getInstance().getMessageManager().printCoPilotSong(commandSender, textChannel);
+                    apm.loadItem("https://www.youtube.com/watch?v=gr9J3BLxgeo", new AudioLoadResult(controller, "https://www.youtube.com/watch?v=gr9J3BLxgeo"));
                 } else {
                     Bot.getInstance().getMessageManager().printErrorVoiceChannel(commandSender, textChannel);
                 }
@@ -53,4 +51,3 @@ public class LeaveCommand extends ICommand {
         }
     }
 }
-

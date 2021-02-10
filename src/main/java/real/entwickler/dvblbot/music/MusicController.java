@@ -21,7 +21,7 @@ public class MusicController {
 
     public MusicController(Guild guild) {
         this.guild = guild;
-        this.player = Bot.getInstance().audioPlayerManager.createPlayer();
+        this.player = Bot.getInstance().getAudioPlayerManager().createPlayer();
 
         this.guild.getAudioManager().setSendingHandler(new AudioPlayerSendHandler(player));
         this.player.setVolume(15);

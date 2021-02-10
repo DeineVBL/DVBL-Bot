@@ -38,7 +38,7 @@ public class StopCommand extends ICommand {
             VoiceChannel vc;
             // Prüfen, ob der Bot im Channel ist
             if ((vc = gvs.getChannel()) != null) {
-                MusicController controller = Bot.getInstance().playerManager.getController(vc.getGuild().getIdLong());
+                MusicController controller = Bot.getInstance().getPlayerManager().getController(vc.getGuild().getIdLong());
                 // Prüfen, ob der Bot aktuell Musik spielt
                 if (controller.getPlayer().getPlayingTrack() != null) {
                     AudioManager manager = vc.getGuild().getAudioManager();

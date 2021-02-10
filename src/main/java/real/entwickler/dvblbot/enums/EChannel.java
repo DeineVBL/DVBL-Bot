@@ -16,7 +16,9 @@ import real.entwickler.dvblbot.Bot;
 public enum EChannel {
 
     RULES ("431944967846494209"),
-    WELCOME ("697752947198656542");
+    WELCOME ("697752947198656542"),
+    ROLES ("697818121511239680"),
+    CHANGES ("692754006891692113");
 
     String channelID;
 

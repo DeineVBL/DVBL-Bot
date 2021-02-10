@@ -10,21 +10,32 @@
 
 package real.entwickler.dvblbot;
 
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.Compression;
+import real.entwickler.dvblbot.enums.EChannel;
 import real.entwickler.dvblbot.listener.GuildMemberJoinListener;
 import real.entwickler.dvblbot.listener.GuildMemberLeaveListener;
 import real.entwickler.dvblbot.listener.GuildMessageReactionAddListener;
+import real.entwickler.dvblbot.manager.CommandManager;
 import real.entwickler.dvblbot.manager.MessageManager;
+import real.entwickler.dvblbot.music.PlayerManager;
 import real.entwickler.dvblbot.utils.Property;
 
 import javax.security.auth.login.LoginException;
+import java.sql.Time;
 import java.util.Arrays;
+import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class Bot {
@@ -32,7 +43,13 @@ public class Bot {
     private static Bot instance;
     private Property property;
     private MessageManager messageManager;
+    public AudioPlayerManager audioPlayerManager;
     private JDA jda;
+    public PlayerManager playerManager;
+
+    public CommandManager getCommandManager() { return commandManager; }
+
+    private CommandManager commandManager;
 
     public static void main(String[] args) {
         new Bot(args);
@@ -55,11 +72,16 @@ public class Bot {
         } catch (InterruptedException | LoginException e) {
             e.printStackTrace();
         }
-
         this.messageManager = new MessageManager();
         this.jda.addEventListener(new GuildMemberJoinListener());
         this.jda.addEventListener(new GuildMemberLeaveListener());
         this.jda.addEventListener(new GuildMessageReactionAddListener());
+
+        messageManager.printReadyMessage(EChannel.CHANGES.getChannelID());
+
+        if (new Scanner(System.in).nextLine().equalsIgnoreCase("s")) {
+            messageManager.printStopMessage(EChannel.CHANGES.getChannelID());
+        }
     }
 
     public Guild getDVBL () {

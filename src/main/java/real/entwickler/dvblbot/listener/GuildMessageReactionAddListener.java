@@ -15,6 +15,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
+import real.entwickler.dvblbot.enums.EChannel;
 
 public class GuildMessageReactionAddListener extends ListenerAdapter {
 
@@ -23,6 +24,8 @@ public class GuildMessageReactionAddListener extends ListenerAdapter {
         TextChannel textChannel = event.getChannel();
         Member member = event.getMember();
 
-        
+        if (EChannel.ROLES.getChannel().getIdLong() == textChannel.getIdLong()) {
+
+        }
     }
 }

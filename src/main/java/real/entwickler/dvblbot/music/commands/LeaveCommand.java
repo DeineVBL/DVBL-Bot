@@ -15,7 +15,6 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.managers.AudioManager;
 import real.entwickler.dvblbot.Bot;
-import real.entwickler.dvblbot.music.MusicController;
 import real.entwickler.dvblbot.utils.ICommand;
 
 public class LeaveCommand extends ICommand {
@@ -31,7 +30,7 @@ public class LeaveCommand extends ICommand {
                 VoiceChannel vc;
                 if ((vc = gvs.getChannel()) != null) {
 
-                    MusicController controller = Bot.getInstance().getPlayerManager().getController(vc.getGuild().getIdLong());
+                    /*MusicController controller = Bot.getInstance().getPlayerManager().getController(vc.getGuild().getIdLong());
                     AudioPlayer player = controller.getPlayer();
                     AudioPlayerManager apm = Bot.getInstance().getAudioPlayerManager();
                     AudioManager manager = vc.getGuild().getAudioManager();
@@ -42,6 +41,7 @@ public class LeaveCommand extends ICommand {
                     } else {
                         Bot.getInstance().getMessageManager().printBotErrorVoiceChannel(commandSender, textChannel);
                     }
+                    */
                 } else {
                     Bot.getInstance().getMessageManager().printErrorVoiceChannel(commandSender, textChannel);
                 }

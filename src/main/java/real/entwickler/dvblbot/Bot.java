@@ -27,10 +27,9 @@ import real.entwickler.dvblbot.listener.GuildMessageReactionAddListener;
 import real.entwickler.dvblbot.listener.GuildMessageReceivedListener;
 import real.entwickler.dvblbot.manager.CommandManager;
 import real.entwickler.dvblbot.manager.MessageManager;
-import real.entwickler.dvblbot.music.PlayerManager;
-import real.entwickler.dvblbot.music.commands.LeaveCommand;
-import real.entwickler.dvblbot.music.commands.PlayCommand;
-import real.entwickler.dvblbot.music.commands.StopCommand;
+import real.entwickler.dvblbot.music.MusicController;
+import real.entwickler.dvblbot.music.PlayCustomSong;
+import real.entwickler.dvblbot.music.commands.*;
 import real.entwickler.dvblbot.utils.Property;
 
 import javax.security.auth.login.LoginException;
@@ -43,8 +42,7 @@ public class Bot {
     private static Bot instance;
     private Property property;
     private MessageManager messageManager;
-    private AudioPlayerManager audioPlayerManager;
-    private PlayerManager playerManager;
+    private MusicController musicController;
     private JDA jda;
     private CommandManager commandManager;
 
@@ -71,10 +69,8 @@ public class Bot {
         }
         this.messageManager = new MessageManager();
         this.commandManager = new CommandManager();
-        this.audioPlayerManager = new DefaultAudioPlayerManager();
-        AudioSourceManagers.registerRemoteSources(audioPlayerManager);
-        audioPlayerManager.getConfiguration().setFilterHotSwapEnabled(true);
-        this.playerManager = new PlayerManager();
+        this.musicController = new MusicController();
+        MusicController.guild = getDVBL();
         this.jda.addEventListener(new GuildMemberJoinListener());
         this.jda.addEventListener(new GuildMemberLeaveListener());
         this.jda.addEventListener(new GuildMessageReactionAddListener());
@@ -85,11 +81,16 @@ public class Bot {
         commandManager.registerCommand(new PlayCommand("play", "play <Songlink>", "Plays a given song from youtube or spotify"));
         commandManager.registerCommand(new PlayCommand("p", "play <Songlink>", "Plays a given song from youtube or spotify"));
         commandManager.registerCommand(new StopCommand("stop", "stop Song", "stops a playing song", ""));
-        //commandManager.registerCommand(new HelpCommand("help", "help bot", "gives you help", "First-Officer"));
-        //commandManager.registerCommand(new CopilotCommand("copilot", "CoPilot song", "plays the copilot song", "First-Officer"));
+        commandManager.registerCommand(new QueueCommand("queue", "Shows you the queue", ""));
+        //commandManager.registerCommand(new HelpCommand("help", "help bot", "gives you help", ""));
+        commandManager.registerCommand(new CopilotCommand("copilot", "CoPilot song", "plays the copilot song"));
         commandManager.registerCommand(new LeaveCommand("leave", "bot leave", "make bot leave vc"));
+        commandManager.registerCommand(new PlayCustomSong("paulymarz", "plays great song", "plays the pauly marz"));
+        //commandManager.registerCommand(new Music("m", "play <Songlink>", "Plays a given song from youtube or spotify"));
 
-        if (new Scanner(System.in).nextLine().equalsIgnoreCase("s")) {
+        Scanner scanner = new Scanner(System.in);
+
+        if (new Scanner(System.in).nextLine().equalsIgnoreCase("stop")) {
             messageManager.printStopMessage(EChannel.CHANGES.getChannelID());
         }
     }
@@ -98,12 +99,8 @@ public class Bot {
         return commandManager;
     }
 
-    public AudioPlayerManager getAudioPlayerManager() {
-        return audioPlayerManager;
-    }
-
-    public PlayerManager getPlayerManager() {
-        return playerManager;
+    public MusicController getMusicController() {
+        return musicController;
     }
 
     public Guild getDVBL() {

@@ -10,6 +10,8 @@
 
 package real.entwickler.dvblbot.manager;
 
+import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.SelfUser;
@@ -24,9 +26,10 @@ import java.util.TimeZone;
 
 public class MessageManager {
 
+    EmbedBuilder builder = new EmbedBuilder();
+
     public void printJoinMessage (String channelID, Member member) {
         TextChannel textChannel = Bot.getInstance().getJda().getTextChannelById(channelID);
-        EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(Color.green);
         builder.setTitle(":soccer:  Es ist jemand neues auf DVBL!  :soccer:");
         builder.addField("User • 👤", "» " + member.getAsMention(), false);
@@ -40,7 +43,6 @@ public class MessageManager {
 
     public void printLeaveMessage (String channelID, User user) {
         TextChannel textChannel = Bot.getInstance().getJda().getTextChannelById(channelID);
-        EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(Color.red);
         builder.setTitle("Auf Wiedersehen!");
         builder.addField("User • 👤", "» " + user.getAsMention(), false);
@@ -52,7 +54,6 @@ public class MessageManager {
 
     public void printReadyMessage (String channelID) {
         TextChannel textChannel = Bot.getInstance().getJda().getTextChannelById(channelID);
-        EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(Color.green);
         builder.setDescription("Der Bot wurde gestartet!");
         SelfUser user = Bot.getInstance().getJda().getSelfUser();
@@ -65,7 +66,6 @@ public class MessageManager {
 
     public void printStopMessage (String channelID) {
         TextChannel textChannel = Bot.getInstance().getJda().getTextChannelById(channelID);
-        EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(Color.red);
         builder.setDescription("Der Bot wird gestoppt!");
         SelfUser user = Bot.getInstance().getJda().getSelfUser();
@@ -77,8 +77,7 @@ public class MessageManager {
     }
 
     public void printErrorVoiceChannel (Member commandSender, TextChannel textChannel) {
-        EmbedBuilder builder = new EmbedBuilder();
-        builder.setAuthor("CoPilot - " + commandSender.getEffectiveName());
+        builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         builder.setThumbnail("https://raw.githubusercontent.com/swausb/CoPilot/master/images/CoPilot.jpg");
         builder.setColor(Color.red);
         builder.setTitle("Fehler [ERROR 003]");
@@ -88,8 +87,7 @@ public class MessageManager {
     }
 
     public void printBotErrorVoiceChannel (Member commandSender, TextChannel textChannel) {
-        EmbedBuilder builder = new EmbedBuilder();
-        builder.setAuthor("Copilot - " +  commandSender.getEffectiveName());
+        builder.setAuthor("DVBL-Bot - " +  commandSender.getEffectiveName());
         builder.setTitle("Fehler [Error 005]");
         builder.setColor(Color.red);
         builder.setThumbnail("https://raw.githubusercontent.com/swausb/CoPilot/master/images/CoPilot.jpg");
@@ -99,8 +97,7 @@ public class MessageManager {
     }
 
     public void printErrorStopCommand (Member commandSender, TextChannel textChannel) {
-        EmbedBuilder builder = new EmbedBuilder();
-        builder.setAuthor("CoPilot - " + commandSender.getEffectiveName());
+        builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         builder.setThumbnail("https://raw.githubusercontent.com/swausb/CoPilot/master/images/CoPilot.jpg");
         builder.setColor(Color.red);
         builder.setTitle("Fehler [ERROR 004]");
@@ -110,8 +107,7 @@ public class MessageManager {
     }
 
     public void printErrorPlayCommand (Member commandSender, TextChannel textChannel) {
-        EmbedBuilder builder = new EmbedBuilder();
-        builder.setAuthor("CoPilot - " + commandSender.getEffectiveName());
+        builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         builder.setThumbnail("https://raw.githubusercontent.com/swausb/CoPilot/master/images/CoPilot.jpg");
         builder.setColor(Color.red);
         builder.setTitle("Fehler [ERROR 002]");
@@ -121,25 +117,32 @@ public class MessageManager {
     }
 
     public void printCommandNotFoundMessage ( Member commandSender, TextChannel textChannel) {
-        EmbedBuilder builder = new EmbedBuilder();
-        builder.setAuthor("CoPilot");
+        builder.setAuthor("DVBL-Bot - ");
         builder.setThumbnail("https://raw.githubusercontent.com/swausb/CoPilot/master/images/CoPilot.jpg");
         builder.setColor(Color.red);
         builder.setTitle("Fehler [ERROR 001]");
         builder.setDescription("Dieser Command wurde nicht gefunden!");
-        builder.setFooter("CoPilot-Bot - Copyright © swausb");
+        builder.setFooter("DVBL-Bot - Copyright © swausb 2021");
         textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("❌").queue());
     }
 
     public void printCoPilotSong (Member commandSender, TextChannel textChannel) {
-        EmbedBuilder builder = new EmbedBuilder();
-        builder.setAuthor("Copilot - " +  commandSender.getEffectiveName());
-        builder.setTitle("CoPilot Song");
+        builder.setAuthor("DVBL-Bot - " +  commandSender.getEffectiveName());
+        builder.setTitle("DVBL Song");
         builder.setColor(Color.red);
         builder.setThumbnail("https://raw.githubusercontent.com/swausb/CoPilot/master/images/CoPilot.jpg");
         builder.setDescription("Viel Spaß mit dem besten Song aller Zeiten! <3");
-        builder.setFooter("CoPilot-Bot - Copyright © swausb");
+        builder.setFooter("DVBL-Bot - Copyright © swausb 2021");
         textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F60D").queue());
-        textChannel.addReactionById(textChannel.getLatestMessageId(), "U+1F3B6");
+    }
+
+    public void printSongsAddedPlaylist (Member commandSender, TextChannel textChannel, AudioPlaylist playlist) {
+        builder.setAuthor("DVBL-Bot - " +  commandSender.getEffectiveName());
+        builder.setTitle("Playlist");
+        builder.setColor(Color.red);
+        builder.setThumbnail("https://raw.githubusercontent.com/swausb/CoPilot/master/images/CoPilot.jpg");
+        builder.setDescription(playlist.getTracks().size() + " Titel wurden zur Playlist hinzugefügt!");
+        builder.setFooter("DVBL-Bot - Copyright © swausb 2021");
+        textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F60D").queue());
     }
 }

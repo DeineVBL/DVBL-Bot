@@ -20,14 +20,15 @@ public class GuildMessageReceivedListener extends ListenerAdapter {
         /**
          * Überprüfen, ob die Nachricht mit einem Punkt beginnt ==> Command
          */
+        if (!txtChannel.getName().equalsIgnoreCase("casino")) {
 
-        if (message.getContentRaw().startsWith(".")) {
+            if (message.getContentRaw().startsWith(".")) {
 
-            //Bots sollen unsere Kommandos nicht ausführen! Böse! aus!!!
-            if (user.isBot())
-                return;
-            //Wir zerteilen die Nachricht in mehrere Stücke und teilen sie immer dann, wenn ein Leerzeichen kommt
-            String[] arguments = message.getContentDisplay().split(" ");
+                //Bots sollen unsere Kommandos nicht ausführen! Böse! aus!!!
+                if (user.isBot())
+                    return;
+                //Wir zerteilen die Nachricht in mehrere Stücke und teilen sie immer dann, wenn ein Leerzeichen kommt
+                String[] arguments = message.getContentDisplay().split(" ");
 
             /*
             1. Wir holen uns alle registrierten Kommandos aus unserem Command Manager
@@ -37,20 +38,21 @@ public class GuildMessageReceivedListener extends ListenerAdapter {
             4. Wenn der Filter auf keinen Kommand zutrifft, lassen wir uns null zurückgeben
 
              */
-            ICommand iCommand = Bot.getInstance().getCommandManager().getRegisteredCommands().stream().filter(filter -> filter.getName().equalsIgnoreCase(arguments[0].substring(1))).findFirst().orElse(null);
+                ICommand iCommand = Bot.getInstance().getCommandManager().getRegisteredCommands().stream().filter(filter -> filter.getName().equalsIgnoreCase(arguments[0].substring(1))).findFirst().orElse(null);
 
-            //Wir überprüfen, ob iCommand einen Wert hat oder nicht
-            if (iCommand != null) {
+                //Wir überprüfen, ob iCommand einen Wert hat oder nicht
+                if (iCommand != null) {
 
-                //Wir rufen die Methode onCommand von ICommand.java auf, die quasi dann ausgeführt wird, wenn ein User das Kommando im Textkanal eingegeben hat
+                    //Wir rufen die Methode onCommand von ICommand.java auf, die quasi dann ausgeführt wird, wenn ein User das Kommando im Textkanal eingegeben hat
 
-                if (iCommand.getRoles().length > 0) {
-                    iCommand.onCommand(event.getMember(), txtChannel, message, arguments);
+                    if (iCommand.getRoles().length > 0) {
+                        iCommand.onCommand(event.getMember(), txtChannel, message, arguments);
+                    } else {
+                        iCommand.onCommand(event.getMember(), txtChannel, message, arguments);
+                    }
                 } else {
-                    iCommand.onCommand(event.getMember(), txtChannel, message, arguments);
+                    Bot.getInstance().getMessageManager().printCommandNotFoundMessage(event.getMember(), txtChannel);
                 }
-            } else {
-                Bot.getInstance().getMessageManager().printCommandNotFoundMessage(event.getMember(), txtChannel);
             }
         }
     }

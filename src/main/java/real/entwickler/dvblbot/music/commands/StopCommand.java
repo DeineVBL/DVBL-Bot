@@ -33,28 +33,13 @@ public class StopCommand extends ICommand {
 
     @Override
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
-        GuildVoiceState gvs;
-        if ((gvs = commandSender.getVoiceState()) != null) {
-            VoiceChannel vc;
-            // Prüfen, ob der Bot im Channel ist
-            if ((vc = gvs.getChannel()) != null) {
-                MusicController controller = Bot.getInstance().getPlayerManager().getController(vc.getGuild().getIdLong());
-                // Prüfen, ob der Bot aktuell Musik spielt
-                if (controller.getPlayer().getPlayingTrack() != null) {
-                    AudioManager manager = vc.getGuild().getAudioManager();
-                    AudioPlayer player = controller.getPlayer();
+        MusicController musicController = Bot.getInstance().getMusicController();
+        Guild guild = message.getGuild();
+        if (Bot.getInstance().getMusicController().isIdle(guild)) return;
 
-                    player.stopTrack();
-                    message.addReaction("U+23F8").queue();
-                } else {
-                    Bot.getInstance().getMessageManager().printErrorStopCommand(commandSender, textChannel);
-                }
-            } else {
-                Bot.getInstance().getMessageManager().printErrorVoiceChannel(commandSender, textChannel);
-            }
-        } else {
-            Bot.getInstance().getMessageManager().printErrorVoiceChannel(commandSender, textChannel);
-        }
+        musicController.getManager(guild).purgeQueue();
+        musicController.skip(guild);
+        guild.getAudioManager().closeAudioConnection();
     }
 }
 

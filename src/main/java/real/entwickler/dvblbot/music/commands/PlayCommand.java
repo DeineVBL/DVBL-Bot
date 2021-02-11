@@ -12,20 +12,21 @@ import java.util.stream.Collectors;
 
 public class PlayCommand extends ICommand {
 
-    public PlayCommand(String name, String usage, String description, String... roles) {
-        super(name, usage, description, roles);
-
+    public PlayCommand(String name, String description, String... roles) {
+        super(name, description, roles);
     }
 
     @Override
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
         if (args.length >= 2) {
+            System.out.println("Lied lädt");
             String input = Arrays.stream(args).skip(1).map(s -> " " + s).collect(Collectors.joining()).substring(1);
 
             if (!(input.startsWith("http://") || input.startsWith("https://")))
                 input = "ytsearch: " + input;
 
             Bot.getInstance().getMusicController().loadTrack(input, commandSender, message);
+            System.out.println("Lied spielt");
         }
     }
 }

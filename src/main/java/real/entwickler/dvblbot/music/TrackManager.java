@@ -6,7 +6,9 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.VoiceChannel;
+import real.entwickler.dvblbot.Bot;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -38,12 +40,13 @@ public class TrackManager extends AudioEventAdapter {
      * @param track AudioTrack
      * @param author Member, der den Track eingereiht hat
      */
-    public void queue(AudioTrack track, Member author) {
+    public void queue(AudioTrack track, Member author, TextChannel textChannel) {
         AudioInfo info = new AudioInfo(track, author);
         queue.add(info);
-
+        System.out.println("Lied spielt jetzt");
         if (PLAYER.getPlayingTrack() == null) {
             PLAYER.playTrack(track);
+            Bot.getInstance().getMessageManager().printPlayingSongMessage(track, author, textChannel);
         }
     }
 

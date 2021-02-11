@@ -23,16 +23,20 @@ import java.util.List;
 
 public class QueueCommand extends ICommand {
 
-    public QueueCommand(String name, String usage, String description, String... roles) {
-        super(name, usage, description, roles);
+    public QueueCommand(String name, String description, String... roles) {
+        super(name, description, roles);
     }
 
     @Override
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
         Guild guild = message.getGuild();
         if (Bot.getInstance().getMusicController().isIdle(guild)) {
-            //TODO: Nachricht, dass der Bot keine Musik spielt oder in keinem Channel ist
+            Bot.getInstance().getMessageManager().printBotErrorVoiceChannel(commandSender, textChannel);
             return;
+        } else {
+            if (Bot.getInstance().getMusicController().isQueueFilled(guild)) {
+                Bot.getInstance().getMessageManager().printBotQueueEmpty(commandSender, textChannel);
+            }
         }
 
         int sideNumb = args.length > 1 ? Integer.parseInt(args[1]) : 1;

@@ -7,13 +7,11 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public abstract class ICommand {
 
     private final String name;
-    private final String usage;
     private final String description;
     private final String[] roles;
 
-    public ICommand(String name, String usage, String description, String... roles) {
+    public ICommand(String name, String description, String... roles) {
         this.name = name;
-        this.usage = usage;
         this.description = description;
         this.roles = roles;
     }
@@ -22,10 +20,6 @@ public abstract class ICommand {
 
     public String getName() {
         return name;
-    }
-
-    public String getUsage() {
-        return usage;
     }
 
     public String getDescription() {

@@ -12,13 +12,12 @@ package real.entwickler.dvblbot.manager;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.SelfUser;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
 import real.entwickler.dvblbot.Bot;
 import real.entwickler.dvblbot.enums.EChannel;
+import real.entwickler.dvblbot.utils.EmbedMessage;
 
 import java.awt.*;
 import java.time.LocalDateTime;
@@ -76,12 +75,27 @@ public class MessageManager {
         textChannel.sendMessage(builder.build()).queue(message -> message.addReaction("👎🏻").queue(void2 -> Bot.getInstance().getJda().shutdownNow()));
     }
 
+    public void printPlayingSongMessage (AudioTrack audioTrack, Member commandSender, TextChannel textChannel) {
+        Guild g = Bot.getInstance().getDVBL();
+        textChannel.sendMessage(new EmbedMessage("Test", "DVBL-Bot - " + commandSender.getEffectiveName(), audioTrack.getInfo().title, "", null).raw(audioTrack).build()).queue();
+    }
+
     public void printErrorVoiceChannel (Member commandSender, TextChannel textChannel) {
         builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         builder.setThumbnail("https://raw.githubusercontent.com/swausb/CoPilot/master/images/CoPilot.jpg");
         builder.setColor(Color.red);
         builder.setTitle("Fehler [ERROR 003]");
         builder.setDescription("Huch, du bist wohl in keinem Voicechannel!");
+        builder.setFooter("DVBL-Bot - Copyright © swausb");
+        textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("❌").queue());
+    }
+
+    public void printBotQueueEmpty (Member commandSender, TextChannel textChannel) {
+        builder.setAuthor("DVBL-Bot - " +  commandSender.getEffectiveName());
+        builder.setTitle("Fehler [Error 006]");
+        builder.setColor(Color.red);
+        builder.setThumbnail("https://raw.githubusercontent.com/swausb/CoPilot/master/images/CoPilot.jpg");
+        builder.setDescription("In der Queue sind keine Lieder vorhanden!");
         builder.setFooter("CoPilot-Bot - Copyright © swausb");
         textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("❌").queue());
     }

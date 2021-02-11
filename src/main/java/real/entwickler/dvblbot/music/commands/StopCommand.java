@@ -10,10 +10,8 @@
 
 package real.entwickler.dvblbot.music.commands;
 
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import net.dv8tion.jda.api.managers.AudioManager;
 import real.entwickler.dvblbot.Bot;
 import real.entwickler.dvblbot.music.MusicController;
 import real.entwickler.dvblbot.utils.ICommand;
@@ -21,7 +19,7 @@ import real.entwickler.dvblbot.utils.ICommand;
 public class StopCommand extends ICommand {
 
     public StopCommand(String name, String usage, String description, String... roles) {
-        super(name, usage, description, roles);
+        super(name, description, roles);
 
     }
 
@@ -38,8 +36,9 @@ public class StopCommand extends ICommand {
         if (Bot.getInstance().getMusicController().isIdle(guild)) return;
 
         musicController.getManager(guild).purgeQueue();
-        musicController.skip(guild);
-        guild.getAudioManager().closeAudioConnection();
+        musicController.getPlayer(guild).stopTrack();
+
+        message.addReaction("⏹").queue();
     }
 }
 

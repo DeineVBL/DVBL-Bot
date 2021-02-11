@@ -6,6 +6,10 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 
 import java.awt.*;
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.TimeZone;
 
 public class EmbedMessage {
 
@@ -24,8 +28,7 @@ public class EmbedMessage {
     }
 
     public EmbedBuilder raw(AudioTrack track) {
-        net.dv8tion.jda.api.EmbedBuilder builder = new EmbedBuilder().setAuthor(author).setDescription(description).setThumbnail(thumbmail).setTitle(title).setColor(Color.orange).setFooter("CoPilot-Bot - Copyright © swausb || realEntwickler");
-
+        EmbedBuilder builder = new EmbedBuilder().setAuthor(author).setDescription(description).setColor(Color.orange).setFooter("DVBL-Bot - Copyright © swausb || realEntwickler").setTimestamp(LocalDateTime.now().atZone(TimeZone.getTimeZone("Europe/Berlin").toZoneId()));
         String query = URI.create(track.getInfo().uri).getQuery();
         String[] split = query.split("&");
 
@@ -42,7 +45,8 @@ public class EmbedMessage {
     }
 
     public MessageEmbed build(){
-        EmbedBuilder builder = new EmbedBuilder().setAuthor(author).setDescription(description).setTitle(title).setThumbnail(thumbmail).setColor(Color.orange).setFooter("CoPilot-Bot - Copyright © swausb || realEntwickler");
+        EmbedBuilder builder = new EmbedBuilder().setAuthor(author).setDescription(description).setTitle(title).setThumbnail(thumbmail).setColor(Color.orange).setFooter("CoPilot-Bot - Copyright © swausb || realEntwickler")
+                .setTimestamp(LocalDate.now(ZoneId.of("Europe/Berlin")));
 
         if (fields != null && fields.length > 0) {
             for (MessageEmbed.Field field : fields) {

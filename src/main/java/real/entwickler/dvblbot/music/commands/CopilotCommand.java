@@ -17,8 +17,8 @@ import real.entwickler.dvblbot.utils.ICommand;
 
 public class CopilotCommand extends ICommand {
 
-    public CopilotCommand(String name, String usage, String description, String... roles) {
-        super(name, usage, description, roles);
+    public CopilotCommand(String name, String description, String... roles) {
+        super(name, description, roles);
 
     }
 

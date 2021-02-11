@@ -22,6 +22,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import real.entwickler.dvblbot.Bot;
 
 import java.util.AbstractMap;
 import java.util.HashMap;
@@ -91,7 +92,11 @@ public class MusicController {
      * @return Boolean
      */
     public boolean isIdle(Guild g) {
-        return !hasPlayer(g) || getPlayer(g).getPlayingTrack() == null;
+        return !hasPlayer(g);
+    }
+
+    public boolean isQueueFilled(Guild g) {
+        return getPlayer(g).getPlayingTrack() == null;
     }
 
     /**
@@ -140,16 +145,16 @@ public class MusicController {
 
             @Override
             public void trackLoaded(AudioTrack track) {
-                getManager(guild).queue(track, author);
+                getManager(guild).queue(track, author, msg.getTextChannel());
             }
 
             @Override
             public void playlistLoaded(AudioPlaylist playlist) {
                 if (identifier.startsWith("ytsearch:")) {
-                    getManager(guild).queue(playlist.getTracks().get(0), author);
+                    getManager(guild).queue(playlist.getTracks().get(0), author, msg.getTextChannel());
                 } else {
                     for (int i = 0; i < (Math.min(playlist.getTracks().size(), PLAYLIST_LIMIT)); i++) {
-                        getManager(guild).queue(playlist.getTracks().get(i), author);
+                        getManager(guild).queue(playlist.getTracks().get(i), author, msg.getTextChannel());
                     }
                 }
             }

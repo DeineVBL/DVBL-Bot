@@ -27,13 +27,17 @@ public class EmbedMessage {
         this.fields = fields;
     }
 
-    public EmbedBuilder raw(AudioTrack track) {
-        EmbedBuilder builder = new EmbedBuilder().setAuthor(author).setDescription(description).setColor(Color.orange).setFooter("DVBL-Bot - Copyright © swausb || realEntwickler").setTimestamp(LocalDateTime.now().atZone(TimeZone.getTimeZone("Europe/Berlin").toZoneId()));
+    public EmbedBuilder raw(boolean playTrackNow, AudioTrack track, Color color) {
+        EmbedBuilder builder = new EmbedBuilder().setAuthor(author).setDescription(description).setColor(color).setFooter("DVBL-Bot - Copyright © swausb || realEntwickler").setTimestamp(LocalDateTime.now().atZone(TimeZone.getTimeZone("Europe/Berlin").toZoneId()));
         String query = URI.create(track.getInfo().uri).getQuery();
         String[] split = query.split("&");
 
         builder.setThumbnail("https://img.youtube.com/vi/" + split[0].substring(2) + "/hqdefault.jpg");
-        builder.setTitle("Now playing:", track.getInfo().uri);
+        if (playTrackNow) {
+            builder.setTitle("Now playing: ", track.getInfo().uri);
+        } else {
+            builder.setTitle("Added to queue: ", track.getInfo().uri);
+        }
 
         if (fields != null && fields.length > 0) {
             for (MessageEmbed.Field field : fields) {

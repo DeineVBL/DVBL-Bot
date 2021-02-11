@@ -10,6 +10,7 @@
 
 package real.entwickler.dvblbot.music.commands;
 
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -28,7 +29,7 @@ public class QueueCommand extends ICommand {
     }
 
     @Override
-    public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
+    public void onCommand(Member commandSender, TextChannel textChannel, Message message,  String[] args) {
         Guild guild = message.getGuild();
         if (Bot.getInstance().getMusicController().isIdle(guild)) {
             Bot.getInstance().getMessageManager().printBotErrorVoiceChannel(commandSender, textChannel);
@@ -38,30 +39,8 @@ public class QueueCommand extends ICommand {
                 Bot.getInstance().getMessageManager().printBotQueueEmpty(commandSender, textChannel);
             }
         }
-
-        int sideNumb = args.length > 1 ? Integer.parseInt(args[1]) : 1;
-
-        List<String> tracks = new ArrayList<>();
-        List<String> trackSublist;
-
-        Bot.getInstance().getMusicController().getManager(guild).getQueue().forEach(audioInfo -> tracks.add(Bot.getInstance().getMusicController().buildQueueMessage(audioInfo)));
-
-        if (tracks.size() > 20)
-            trackSublist = tracks.subList((sideNumb - 1) * 20, (sideNumb - 1) * 20 + 20);
-        else
-            trackSublist = tracks;
-
-        String out = String.join("\n", trackSublist);
-        int sideNumbAll = tracks.size() >= 20 ? tracks.size() / 20 : 1;
-
-        textChannel.sendMessage(
-                new EmbedBuilder()
-                        .setDescription(
-                                "**CURRENT QUEUE:**\n" +
-                                        "*[" + Bot.getInstance().getMusicController().getManager(guild).getQueue().size() + " Tracks | Side " + sideNumb + " / " + sideNumbAll + "]*" +
-                                        out
-                        )
-                        .build()
-        ).queue();
+        System.out.println("0");
+        Bot.getInstance().getMessageManager().printCurrentQueue(commandSender, textChannel, args);
+        System.out.println(1);
     }
 }

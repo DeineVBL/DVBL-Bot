@@ -19,14 +19,12 @@ public class PlayCommand extends ICommand {
     @Override
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
         if (args.length >= 2) {
-            System.out.println("Lied lädt");
             String input = Arrays.stream(args).skip(1).map(s -> " " + s).collect(Collectors.joining()).substring(1);
 
             if (!(input.startsWith("http://") || input.startsWith("https://")))
                 input = "ytsearch: " + input;
 
             Bot.getInstance().getMusicController().loadTrack(input, commandSender, message);
-            System.out.println("Lied spielt");
         }
     }
 }

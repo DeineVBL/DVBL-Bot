@@ -43,6 +43,7 @@ public class ShuffleCommand extends ICommand {
 
         if (Bot.getInstance().getMusicController().isIdle(guild)) return;
         Bot.getInstance().getMusicController().getManager(guild).shuffleQueue();
+        message.addReaction("U+1F500").queue();
         }
     }
 

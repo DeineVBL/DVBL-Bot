@@ -82,7 +82,7 @@ public class Bot {
         commandManager.registerCommand(new PlayCommand("p", "Plays a given song from youtube or spotify", ""));
         commandManager.registerCommand(new StopCommand("stop", "stop Song", "stops a playing song", ""));
         commandManager.registerCommand(new QueueCommand("queue", "Shows you the queue", ""));
-        commandManager.registerCommand(new QueueCommand("q", "Shows you the queue", ""));
+        commandManager.registerCommand(new QueueCommand("q", "Shows you the queue",""));
         //commandManager.registerCommand(new HelpCommand("help", "help bot", "gives you help", ""));
         commandManager.registerCommand(new CopilotCommand("copilot", "plays the copilot song", ""));
         commandManager.registerCommand(new LeaveCommand("leave", "bot leave", ""));

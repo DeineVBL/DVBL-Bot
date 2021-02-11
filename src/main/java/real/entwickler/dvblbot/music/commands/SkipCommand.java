@@ -10,41 +10,53 @@
 
 package real.entwickler.dvblbot.music.commands;
 
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import real.entwickler.dvblbot.Bot;
+import real.entwickler.dvblbot.music.AudioInfo;
 import real.entwickler.dvblbot.utils.ICommand;
+
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 
 public class SkipCommand extends ICommand {
 
-        public SkipCommand(String name, String description, String... roles) {
-            super(name, description, roles);
+    public SkipCommand(String name, String description, String... roles) {
+        super(name, description, roles);
+    }
+
+    @Override
+    public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
+
+        Guild guild = message.getGuild();
+        if (Bot.getInstance().getMusicController().isIdle(guild)) {
+            Bot.getInstance().getMessageManager().printBotErrorVoiceChannel(commandSender, textChannel);
+            return;
+        } else {
+            if (Bot.getInstance().getMusicController().isQueueFilled(guild)) {
+
+            }
         }
 
-        private void skip(Guild g) {
-            Bot.getInstance().getMusicController().getPlayer(g).stopTrack();
-        }
-
-        @Override
-        public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
-
-            Guild guild = message.getGuild();
-            if (Bot.getInstance().getMusicController().isIdle(guild)) {
-                Bot.getInstance().getMessageManager().printBotErrorVoiceChannel(commandSender, textChannel);
-                return;
-            } else {
-                if (Bot.getInstance().getMusicController().isQueueFilled(guild)) {
-                    Bot.getInstance().getMessageManager().printBotQueueEmpty(commandSender, textChannel);
-                }
+        if (Bot.getInstance().getMusicController().isIdle(guild)) return;
+        if (args.length == 1) {
+            Bot.getInstance().getMusicController().getPlayer(guild).stopTrack();
+            message.addReaction("U+23E9").queue();
+        } else {
+            System.out.println(1);
+            for (int i = 0; i < Integer.parseInt(args[1]); i++) {
+                System.out.println(2);
+                Bot.getInstance().getMusicController().getPlayer(guild).stopTrack();
+                message.addReaction("U+23E9").queue();
             }
 
-          if (Bot.getInstance().getMusicController().isIdle(guild)) return;
-          for (int i = (args.length > 1 ? Integer.parseInt(args[1]) : 1); i == 1; i--) {
-              skip(guild);
-          }
         }
+        AudioTrack audioTrack = Bot.getInstance().getMusicController().getPlayer(guild).getPlayingTrack();
+        Bot.getInstance().getMessageManager().printPlayingSongMessage(audioTrack, commandSender, textChannel);
+    }
 }
 

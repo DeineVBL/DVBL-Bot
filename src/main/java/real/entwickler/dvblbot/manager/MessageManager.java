@@ -21,6 +21,8 @@ import real.entwickler.dvblbot.utils.EmbedMessage;
 
 import java.awt.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TimeZone;
 
 public class MessageManager {
@@ -77,7 +79,12 @@ public class MessageManager {
 
     public void printPlayingSongMessage (AudioTrack audioTrack, Member commandSender, TextChannel textChannel) {
         Guild g = Bot.getInstance().getDVBL();
-        textChannel.sendMessage(new EmbedMessage("Test", "DVBL-Bot - " + commandSender.getEffectiveName(), audioTrack.getInfo().title, "", null).raw(audioTrack).build()).queue();
+        textChannel.sendMessage(new EmbedMessage("Test", "DVBL-Bot - " + commandSender.getEffectiveName(), audioTrack.getInfo().title, "", null).raw(true, audioTrack, Color.green).build()).queue(exitMessage -> exitMessage.addReaction("U+1F3B5").queue());
+    }
+
+    public void printSongAddedQueueMessage (AudioTrack audioTrack, Member commandSender, TextChannel textChannel) {
+        Guild g = Bot.getInstance().getDVBL();
+        textChannel.sendMessage(new EmbedMessage("Test", "DVBL-Bot - " + commandSender.getEffectiveName(), audioTrack.getInfo().title, "", null).raw(false, audioTrack, Color.yellow).build()).queue(exitMessage -> exitMessage.addReaction("U+2705").queue());
     }
 
     public void printErrorVoiceChannel (Member commandSender, TextChannel textChannel) {
@@ -158,5 +165,31 @@ public class MessageManager {
         builder.setDescription(playlist.getTracks().size() + " Titel wurden zur Playlist hinzugefügt!");
         builder.setFooter("DVBL-Bot - Copyright © swausb 2021");
         textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F60D").queue());
+    }
+
+    public void printCurrentQueue (Member commandSender, TextChannel textChannel, String[] args) {
+        Guild guild = Bot.getInstance().getDVBL();
+        int sideNumb = args.length > 1 ? Integer.parseInt(args[1]) : 1;
+
+        java.util.List<String> tracks = new ArrayList<>();
+        List<String> trackSublist;
+
+        Bot.getInstance().getMusicController().getManager(guild).getQueue().forEach(audioInfo -> tracks.add(Bot.getInstance().getMusicController().buildQueueMessage(audioInfo)));
+
+        if (tracks.size() > 20)
+            trackSublist = tracks.subList((sideNumb - 1) * 20, (sideNumb - 1) * 20 + 20);
+        else
+            trackSublist = tracks;
+
+        String out = String.join("\n", trackSublist);
+        int sideNumbAll = tracks.size() >= 20 ? tracks.size() / 20 : 1;
+
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setColor(Color.RED);
+        embedBuilder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
+        embedBuilder.setTitle("Current Queue [Page " + sideNumb + " / " + sideNumbAll + "]");
+        embedBuilder.setDescription(out).build();
+        embedBuilder.setFooter("DVBL-Bot - Copyright © swausb || realEntwickler").setTimestamp(LocalDateTime.now().atZone(TimeZone.getTimeZone("Europe/Berlin").toZoneId()));
+        textChannel.sendMessage(embedBuilder.build()).queue();
     }
 }

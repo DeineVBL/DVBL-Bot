@@ -157,16 +157,6 @@ public class MessageManager {
         textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F60D").queue());
     }
 
-    public void printSongsAddedPlaylist (Member commandSender, TextChannel textChannel, AudioPlaylist playlist) {
-        builder.setAuthor("DVBL-Bot - " +  commandSender.getEffectiveName());
-        builder.setTitle("Playlist");
-        builder.setColor(Color.red);
-        builder.setThumbnail("https://raw.githubusercontent.com/swausb/CoPilot/master/images/CoPilot.jpg");
-        builder.setDescription(playlist.getTracks().size() + " Titel wurden zur Playlist hinzugefügt!");
-        builder.setFooter("DVBL-Bot - Copyright © swausb 2021");
-        textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F60D").queue());
-    }
-
     public void printCurrentQueue (Member commandSender, TextChannel textChannel, String[] args) {
         Guild guild = Bot.getInstance().getDVBL();
         int sideNumb = args.length > 1 ? Integer.parseInt(args[1]) : 1;
@@ -188,8 +178,20 @@ public class MessageManager {
         embedBuilder.setColor(Color.RED);
         embedBuilder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         embedBuilder.setTitle("Current Queue [Page " + sideNumb + " / " + sideNumbAll + "]");
-        embedBuilder.setDescription(out).build();
+        embedBuilder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
+        embedBuilder.setDescription("Total tracks: " + Bot.getInstance().getMusicController().getManager(guild).getQueue().size()).build();
+        embedBuilder.addField(out, "", true);
         embedBuilder.setFooter("DVBL-Bot - Copyright © swausb || realEntwickler").setTimestamp(LocalDateTime.now().atZone(TimeZone.getTimeZone("Europe/Berlin").toZoneId()));
         textChannel.sendMessage(embedBuilder.build()).queue();
+    }
+
+    public void printPlaylistAddedMessage (Member commandSender, TextChannel textChannel, AudioPlaylist playlist) {
+        builder.setAuthor("DVBL-Bot - " +  commandSender.getEffectiveName());
+        builder.setTitle("Playlist");
+        builder.setColor(Color.red);
+        builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
+        builder.setDescription(playlist.getTracks().size() + " Titel wurden zur Playlist hinzugefügt!");
+        builder.setFooter("DVBL-Bot - Copyright © swausb 2021");
+        textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F60D").queue());
     }
 }

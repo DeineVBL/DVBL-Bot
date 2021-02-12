@@ -2,12 +2,11 @@ package real.entwickler.dvblbot.music;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
+import com.sedmelluq.discord.lavaplayer.player.event.AudioEventListener;
+import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.*;
 import real.entwickler.dvblbot.Bot;
 
 import java.time.Duration;
@@ -43,16 +42,24 @@ public class TrackManager extends AudioEventAdapter {
      * @param track  AudioTrack
      * @param author Member, der den Track eingereiht hat
      */
-    public void queue(AudioTrack track, Member author, TextChannel textChannel) {
+    public void queue(AudioTrack track, AudioPlaylist playlist, Member author, TextChannel textChannel, Message message) {
+        String identifier = message.getContentRaw();
         AudioInfo info = new AudioInfo(track, author, textChannel);
         queue.add(info);
         if (PLAYER.getPlayingTrack() == null) {
-            PLAYER.playTrack(track);
-            Bot.getInstance().getMessageManager().printPlayingSongMessage(track, author, textChannel);
-        } else {
+            if(!identifier.contains("list")) {
+                PLAYER.playTrack(track);
+                Bot.getInstance().getMessageManager().printPlayingSongMessage(track, author, textChannel);
+            } else {
+                PLAYER.playTrack(track);
+                Bot.getInstance().getMessageManager().printPlaylistAddedMessage(author, textChannel, playlist);
+            }
+        } else if (!identifier.contains("list")) {
             Bot.getInstance().getMessageManager().printSongAddedQueueMessage(track, author, textChannel);
         }
     }
+
+
 
     /**
      * Returnt die momentane Queue als LinkedHashSet.
@@ -138,6 +145,7 @@ public class TrackManager extends AudioEventAdapter {
             player.playTrack(nextTrack.getTrack());
 
         }
+
     }
 
 }

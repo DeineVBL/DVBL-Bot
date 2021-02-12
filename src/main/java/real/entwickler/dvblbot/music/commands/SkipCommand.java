@@ -16,11 +16,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import real.entwickler.dvblbot.Bot;
-import real.entwickler.dvblbot.music.AudioInfo;
 import real.entwickler.dvblbot.utils.ICommand;
-
-import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 
 public class SkipCommand extends ICommand {
@@ -41,22 +37,23 @@ public class SkipCommand extends ICommand {
 
             }
         }
-
-        if (Bot.getInstance().getMusicController().isIdle(guild)) return;
-        if (args.length == 1) {
-            Bot.getInstance().getMusicController().getPlayer(guild).stopTrack();
-            message.addReaction("U+23E9").queue();
-        } else {
-            System.out.println(1);
-            for (int i = 0; i < Integer.parseInt(args[1]); i++) {
-                System.out.println(2);
+        if (Bot.getInstance().getMusicController().getManager(guild).getQueue().size() > 1) {
+            if (Bot.getInstance().getMusicController().isIdle(guild)) return;
+            if (args.length == 1) {
                 Bot.getInstance().getMusicController().getPlayer(guild).stopTrack();
                 message.addReaction("U+23E9").queue();
+            } else {
+                for (int i = 0; i < Integer.parseInt(args[1]); i++) {
+                    Bot.getInstance().getMusicController().getPlayer(guild).stopTrack();
+                    message.addReaction("U+23E9").queue();
+                }
+
             }
+            AudioTrack audioTrack = Bot.getInstance().getMusicController().getPlayer(guild).getPlayingTrack();
+            Bot.getInstance().getMessageManager().printPlayingSongMessage(audioTrack, commandSender, textChannel);
+        } else {
 
         }
-        AudioTrack audioTrack = Bot.getInstance().getMusicController().getPlayer(guild).getPlayingTrack();
-        Bot.getInstance().getMessageManager().printPlayingSongMessage(audioTrack, commandSender, textChannel);
     }
 }
 

@@ -31,7 +31,7 @@ public class CopilotCommand extends ICommand {
     @Override
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
         if (args.length == 1) {
-            Bot.getInstance().getMusicController().loadTrack("https://www.youtube.com/watch?v=gr9J3BLxgeo", commandSender, message);
+            Bot.getInstance().getMusicController().loadTrack("https://www.youtube.com/watch?v=gr9J3BLxgeo", commandSender, message, null);
             Bot.getInstance().getMessageManager().printCoPilotSong(commandSender, textChannel);
         }
     }

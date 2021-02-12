@@ -39,8 +39,6 @@ public class QueueCommand extends ICommand {
                 Bot.getInstance().getMessageManager().printBotQueueEmpty(commandSender, textChannel);
             }
         }
-        System.out.println("0");
         Bot.getInstance().getMessageManager().printCurrentQueue(commandSender, textChannel, args);
-        System.out.println(1);
     }
 }

@@ -30,7 +30,7 @@ import java.util.Map;
 
 public class MusicController {
 
-    private static final int PLAYLIST_LIMIT = 1000;
+    private static final int PLAYLIST_LIMIT = 5000;
     public static Guild guild;
     private static AudioPlayerManager MANAGER;
     private static Map<Guild, Map.Entry<AudioPlayer, TrackManager>> PLAYERS;
@@ -65,6 +65,8 @@ public class MusicController {
         guild.getAudioManager().setSendingHandler(new PlayerSendHandler(p));
 
         PLAYERS.put(g, new AbstractMap.SimpleEntry<>(p, m));
+
+        p.setVolume(15);
 
         return p;
     }
@@ -135,7 +137,7 @@ public class MusicController {
      * @param author     Member, der den Track / die Playlist eingereiht hat
      * @param msg        Message des Contents
      */
-    public void loadTrack(String identifier, Member author, Message msg) {
+    public void loadTrack(String identifier, Member author, Message msg, AudioPlaylist playlist) {
 
         Guild guild = author.getGuild();
         getPlayer(guild);
@@ -145,17 +147,18 @@ public class MusicController {
 
             @Override
             public void trackLoaded(AudioTrack track) {
-                getManager(guild).queue(track, author, msg.getTextChannel());
+                getManager(guild).queue(track, playlist, author, msg.getTextChannel(), msg);
             }
 
             @Override
             public void playlistLoaded(AudioPlaylist playlist) {
                 if (identifier.startsWith("ytsearch:")) {
-                    getManager(guild).queue(playlist.getTracks().get(0), author, msg.getTextChannel());
+                    getManager(guild).queue(playlist.getTracks().get(0), playlist, author, msg.getTextChannel(), msg);
                 } else {
                     for (int i = 0; i < (Math.min(playlist.getTracks().size(), PLAYLIST_LIMIT)); i++) {
-                        getManager(guild).queue(playlist.getTracks().get(i), author, msg.getTextChannel());
+                        getManager(guild).queue(playlist.getTracks().get(i), playlist, author, msg.getTextChannel(), msg);
                     }
+
                 }
             }
 

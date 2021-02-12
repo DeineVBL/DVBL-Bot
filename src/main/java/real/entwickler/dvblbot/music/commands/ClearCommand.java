@@ -18,8 +18,8 @@ import net.dv8tion.jda.api.managers.AudioManager;
 import real.entwickler.dvblbot.Bot;
 import real.entwickler.dvblbot.utils.ICommand;
 
-public class LeaveCommand extends ICommand {
-    public LeaveCommand(String name, String usage, String description, String... roles) {
+public class ClearCommand extends ICommand {
+    public ClearCommand(String name, String usage, String description, String... roles) {
         super(name, description, roles);
     }
 
@@ -37,8 +37,7 @@ public class LeaveCommand extends ICommand {
                     if(manager.isConnected()) {
                         Bot.getInstance().getMusicController().getManager(g).purgeQueue();
                         Bot.getInstance().getMusicController().getPlayer(g).stopTrack();
-                        manager.closeAudioConnection();
-                        message.addReaction("U+1F44B").queue();
+                        message.addReaction("U+2757").queue();
                     } else {
                         Bot.getInstance().getMessageManager().printBotErrorVoiceChannel(commandSender, textChannel);
                     }

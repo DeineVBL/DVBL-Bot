@@ -10,9 +10,6 @@
 
 package real.entwickler.dvblbot;
 
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
-import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
-import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -90,6 +87,9 @@ public class Bot {
         //commandManager.registerCommand(new Music("m", "play <Songlink>", "Plays a given song from youtube or spotify"));
         commandManager.registerCommand(new SkipCommand("skip", "skips a queued song", ""));
         commandManager.registerCommand(new ShuffleCommand("shuffle", "shuffles a queue", ""));
+        commandManager.registerCommand(new ResumeCommand("resume", "resumes a paused song", ""));
+        commandManager.registerCommand(new PauseCommand("pause", "pauses a playing song", ""));
+        commandManager.registerCommand(new ClearCommand("clear", "clears a queue", ""));
 
         Scanner scanner = new Scanner(System.in);
 

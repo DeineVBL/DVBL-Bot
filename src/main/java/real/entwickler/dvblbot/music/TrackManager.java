@@ -2,14 +2,12 @@ package real.entwickler.dvblbot.music;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
-import com.sedmelluq.discord.lavaplayer.player.event.AudioEventListener;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import net.dv8tion.jda.api.entities.*;
 import real.entwickler.dvblbot.Bot;
 
-import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -46,20 +44,38 @@ public class TrackManager extends AudioEventAdapter {
         String identifier = message.getContentRaw();
         AudioInfo info = new AudioInfo(track, author, textChannel);
         queue.add(info);
+
         if (PLAYER.getPlayingTrack() == null) {
-            if(!identifier.contains("list")) {
+            if (!identifier.contains("list")) {
                 PLAYER.playTrack(track);
                 Bot.getInstance().getMessageManager().printPlayingSongMessage(track, author, textChannel);
             } else {
-                PLAYER.playTrack(track);
+                if (!identifier.contains("list")) {
+                    PLAYER.playTrack(track);
+                    Bot.getInstance().getMessageManager().printPlaylistAddedMessage(author, textChannel, playlist);
+                }
+            }
+        } else {
+            if (!identifier.contains("list")) {
+                if (message.getContentRaw().equalsIgnoreCase(".house")) {
+                        return;
+                    }
+                else {
+                    if(message.getContentRaw().equalsIgnoreCase(".karneval")) {
+                        return;
+                    }
+                    else {
+                        if(message.getContentRaw().equalsIgnoreCase(".discord")) {
+                            return;
+                        }
+                    }
+                    Bot.getInstance().getMessageManager().printSongAddedQueueMessage(track, author, textChannel);
+                }
+            } else {
                 Bot.getInstance().getMessageManager().printPlaylistAddedMessage(author, textChannel, playlist);
             }
-        } else if (!identifier.contains("list")) {
-            Bot.getInstance().getMessageManager().printSongAddedQueueMessage(track, author, textChannel);
         }
     }
-
-
 
     /**
      * Returnt die momentane Queue als LinkedHashSet.

@@ -27,10 +27,11 @@ import real.entwickler.dvblbot.Bot;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class MusicController {
 
-    private static final int PLAYLIST_LIMIT = 5000;
+    private static final int PLAYLIST_LIMIT = 1000;
     public static Guild guild;
     private static AudioPlayerManager MANAGER;
     private static Map<Guild, Map.Entry<AudioPlayer, TrackManager>> PLAYERS;
@@ -160,6 +161,43 @@ public class MusicController {
                     }
 
                 }
+            }
+
+            @Override
+            public void noMatches() {
+
+            }
+
+            @Override
+            public void loadFailed(FriendlyException exception) {
+                exception.printStackTrace();
+            }
+        });
+    }
+
+    public void loadPlaylist(String identifier, Member author, Message msg, Consumer<AudioPlaylist> consumer) {
+
+        Guild guild = author.getGuild();
+        getPlayer(guild);
+
+        MANAGER.setFrameBufferDuration(5000);
+        MANAGER.loadItemOrdered(guild, identifier, new AudioLoadResultHandler() {
+
+            @Override
+            public void trackLoaded(AudioTrack audioTrack) {
+                return;
+            }
+
+            @Override
+            public void playlistLoaded(AudioPlaylist playlist) {
+                if (identifier.startsWith("ytsearch:")) {
+                    getManager(guild).queue(playlist.getTracks().get(0), playlist, author, msg.getTextChannel(), msg);
+                } else {
+                    for (int i = 0; i < (Math.min(playlist.getTracks().size(), PLAYLIST_LIMIT)); i++) {
+                        getManager(guild).queue(playlist.getTracks().get(i), playlist, author, msg.getTextChannel(), msg);
+                    }
+                }
+                consumer.accept(playlist);
             }
 
             @Override

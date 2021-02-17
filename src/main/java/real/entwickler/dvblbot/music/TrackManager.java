@@ -59,23 +59,14 @@ public class TrackManager extends AudioEventAdapter {
                 }
             }
         } else {
-            if (!identifier.contains("list")) {
-                if (message.getContentRaw().equalsIgnoreCase(".house")) {
-                        return;
-                    }
-                else {
-                    if(message.getContentRaw().equalsIgnoreCase(".karneval")) {
-                        return;
-                    }
-                    else {
-                        if(message.getContentRaw().equalsIgnoreCase(".discord")) {
-                            return;
-                        }
-                    }
+            if (identifier.contains("list")) {
+                Bot.getInstance().getMessageManager().printPlaylistAddedMessage(author, textChannel, playlist);
+            } else {
+                String contentRaw = message.getContentRaw();
+
+                if (!contentRaw.equalsIgnoreCase(".karneval") && !contentRaw.equalsIgnoreCase(".house") && !contentRaw.equalsIgnoreCase(".discord")) {
                     Bot.getInstance().getMessageManager().printSongAddedQueueMessage(track, author, textChannel);
                 }
-            } else {
-                Bot.getInstance().getMessageManager().printPlaylistAddedMessage(author, textChannel, playlist);
             }
         }
     }

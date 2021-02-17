@@ -179,7 +179,7 @@ public class MessageManager {
         embedBuilder.setTitle("Current Queue [Page " + sideNumb + " / " + sideNumbAll + "]");
         embedBuilder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
         embedBuilder.setDescription(out);
-        embedBuilder.setFooter("DVBL-Bot - Copyright © swausb || realEntwickler").setTimestamp(LocalDateTime.now().atZone(TimeZone.getTimeZone("Europe/Berlin").toZoneId()));
+        embedBuilder.setFooter("DVBL-Bot - Copyright © swausb || realEntwickler 2021 ").setTimestamp(LocalDateTime.now().atZone(TimeZone.getTimeZone("Europe/Berlin").toZoneId()));
         textChannel.sendMessage(embedBuilder.build()).queue();
     }
 

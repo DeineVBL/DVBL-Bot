@@ -1,9 +1,9 @@
 /*
  * Copyright notice
- * Copyright (c) Nils Körting-Eberhardt 2021
- * Created: 06.01.2021 @ 22:50:50
+ * Copyright (c) swausb || Nils Körting-Eberhardt 2021
+ * Created: 06.01.2021 @ 21:53:11
  *
- * All contents of this source code are protected by copyright. The copyright is owned by Nils Körting-Eberhardt, unless explicitly stated otherwise. All rights reserved.
+ * All contents of this source code are protected by copyright. The copyright is owned by swausb and Nils Körting-Eberhardt, unless explicitly stated otherwise. All rights reserved.
  *
  * GuildMessageReactionAddListener.java is part of the DVBL-Bot which is licensed under the Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) license.
  */

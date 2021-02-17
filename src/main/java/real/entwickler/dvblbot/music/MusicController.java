@@ -1,9 +1,9 @@
 /*
  * Copyright notice
- * Copyright (c) Nils Körting-Eberhardt 2021
- * Created: 11.02.2021 @ 14:46:22
+ * Copyright (c) swausb || Nils Körting-Eberhardt 2021
+ * Created: 06.01.2021 @ 21:53:11
  *
- * All contents of this source code are protected by copyright. The copyright is owned by Nils Körting-Eberhardt, unless explicitly stated otherwise. All rights reserved.
+ * All contents of this source code are protected by copyright. The copyright is owned by swausb and Nils Körting-Eberhardt, unless explicitly stated otherwise. All rights reserved.
  *
  * MusicController.java is part of the DVBL-Bot which is licensed under the Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) license.
  */
@@ -22,7 +22,6 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
-import real.entwickler.dvblbot.Bot;
 
 import java.util.AbstractMap;
 import java.util.HashMap;

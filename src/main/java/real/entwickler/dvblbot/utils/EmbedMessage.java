@@ -38,7 +38,7 @@ public class EmbedMessage {
     }
 
     public EmbedBuilder raw(boolean playTrackNow, AudioTrack track, Color color) {
-        EmbedBuilder builder = new EmbedBuilder().setAuthor(author).setDescription(description).setColor(color).setFooter("DVBL-Bot - Copyright © swausb || realEntwickler").setTimestamp(LocalDateTime.now().atZone(TimeZone.getTimeZone("Europe/Berlin").toZoneId()));
+        EmbedBuilder builder = new EmbedBuilder().setAuthor(author).setDescription(description).setColor(color).setFooter("DVBL-Bot - Copyright © swausb || realEntwickler 2021").setTimestamp(LocalDateTime.now().atZone(TimeZone.getTimeZone("Europe/Berlin").toZoneId()));
         String query = URI.create(track.getInfo().uri).getQuery();
         String[] split = query.split("&");
 

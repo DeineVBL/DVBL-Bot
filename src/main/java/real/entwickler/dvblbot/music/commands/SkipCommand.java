@@ -50,9 +50,6 @@ public class SkipCommand extends ICommand {
 
             }
             AudioTrack audioTrack = Bot.getInstance().getMusicController().getPlayer(guild).getPlayingTrack();
-            Bot.getInstance().getMessageManager().printPlayingSongMessage(audioTrack, commandSender, textChannel);
-        } else {
-
         }
     }
 }

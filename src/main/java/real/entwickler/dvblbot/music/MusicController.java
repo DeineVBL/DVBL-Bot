@@ -22,6 +22,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import real.entwickler.dvblbot.Bot;
 
 import java.util.AbstractMap;
 import java.util.HashMap;
@@ -158,7 +159,7 @@ public class MusicController {
                     for (int i = 0; i < (Math.min(playlist.getTracks().size(), PLAYLIST_LIMIT)); i++) {
                         getManager(guild).queue(playlist.getTracks().get(i), playlist, author, msg.getTextChannel(), msg);
                     }
-
+                    Bot.getInstance().getMessageManager().printPlaylistAddedMessage(author, msg.getTextChannel(), playlist);
                 }
             }
 

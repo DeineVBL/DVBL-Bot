@@ -28,7 +28,7 @@ public class MessageManager {
 
     EmbedBuilder builder = new EmbedBuilder();
 
-    public void printJoinMessage (String channelID, Member member) {
+    public void printJoinMessage(String channelID, Member member) {
         TextChannel textChannel = Bot.getInstance().getJda().getTextChannelById(channelID);
         builder.setColor(Color.green);
         builder.setTitle(":soccer:  Es ist jemand neues auf DVBL!  :soccer:");
@@ -41,7 +41,7 @@ public class MessageManager {
         textChannel.sendMessage(builder.build()).queue(message -> message.addReaction("👏🏻").queue());
     }
 
-    public void printLeaveMessage (String channelID, User user) {
+    public void printLeaveMessage(String channelID, User user) {
         TextChannel textChannel = Bot.getInstance().getJda().getTextChannelById(channelID);
         builder.setColor(Color.red);
         builder.setTitle("Auf Wiedersehen!");
@@ -52,7 +52,7 @@ public class MessageManager {
         textChannel.sendMessage(builder.build()).queue(message -> message.addReaction("👋").queue());
     }
 
-    public void printReadyMessage (String channelID) {
+    public void printReadyMessage(String channelID) {
         TextChannel textChannel = Bot.getInstance().getJda().getTextChannelById(channelID);
         builder.setColor(Color.green);
         builder.setDescription("Der Bot wurde gestartet!");
@@ -64,7 +64,7 @@ public class MessageManager {
         textChannel.sendMessage(builder.build()).queue(message -> message.addReaction("👍🏻").queue());
     }
 
-    public void printStopMessage (String channelID) {
+    public void printStopMessage(String channelID) {
         TextChannel textChannel = Bot.getInstance().getJda().getTextChannelById(channelID);
         builder.setColor(Color.red);
         builder.setDescription("Der Bot wird gestoppt!");
@@ -76,17 +76,17 @@ public class MessageManager {
         textChannel.sendMessage(builder.build()).queue(message -> message.addReaction("👎🏻").queue(void2 -> Bot.getInstance().getJda().shutdownNow()));
     }
 
-    public void printPlayingSongMessage (AudioTrack audioTrack, Member commandSender, TextChannel textChannel) {
+    public void printPlayingSongMessage(AudioTrack audioTrack, Member commandSender, TextChannel textChannel) {
         Guild g = Bot.getInstance().getDVBL();
-        textChannel.sendMessage(new EmbedMessage("Test", "DVBL-Bot - " + commandSender.getEffectiveName(), audioTrack.getInfo().title, "", null).raw(true, audioTrack, Color.green).build()).queue(exitMessage -> exitMessage.addReaction("U+1F3B5").queue());
+        textChannel.sendMessage(new EmbedMessage("Test", "DVBL-Bot - " + commandSender.getEffectiveName(), audioTrack.getInfo().title, "", null).raw(true, audioTrack, Color.green).build()).queue(exitMessage -> exitMessage.addReaction("U+1F3B6").queue());
     }
 
-    public void printSongAddedQueueMessage (AudioTrack audioTrack, Member commandSender, TextChannel textChannel) {
+    public void printSongAddedQueueMessage(AudioTrack audioTrack, Member commandSender, TextChannel textChannel) {
         Guild g = Bot.getInstance().getDVBL();
         textChannel.sendMessage(new EmbedMessage("Test", "DVBL-Bot - " + commandSender.getEffectiveName(), audioTrack.getInfo().title, "", null).raw(false, audioTrack, Color.yellow).build()).queue(exitMessage -> exitMessage.addReaction("U+2705").queue());
     }
 
-    public void printErrorVoiceChannel (Member commandSender, TextChannel textChannel) {
+    public void printErrorVoiceChannel(Member commandSender, TextChannel textChannel) {
         builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
         builder.setColor(Color.red);
@@ -96,8 +96,8 @@ public class MessageManager {
         textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("❌").queue());
     }
 
-    public void printBotQueueEmpty (Member commandSender, TextChannel textChannel) {
-        builder.setAuthor("DVBL-Bot - " +  commandSender.getEffectiveName());
+    public void printBotQueueEmpty(Member commandSender, TextChannel textChannel) {
+        builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         builder.setTitle("Fehler [Error 006]");
         builder.setColor(Color.red);
         builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
@@ -106,8 +106,8 @@ public class MessageManager {
         textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("❌").queue());
     }
 
-    public void printBotErrorVoiceChannel (Member commandSender, TextChannel textChannel) {
-        builder.setAuthor("DVBL-Bot - " +  commandSender.getEffectiveName());
+    public void printBotErrorVoiceChannel(Member commandSender, TextChannel textChannel) {
+        builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         builder.setTitle("Fehler [Error 005]");
         builder.setColor(Color.red);
         builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
@@ -116,7 +116,7 @@ public class MessageManager {
         textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("❌").queue());
     }
 
-    public void printErrorStopCommand (Member commandSender, TextChannel textChannel) {
+    public void printErrorStopCommand(Member commandSender, TextChannel textChannel) {
         builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
         builder.setColor(Color.red);
@@ -126,7 +126,7 @@ public class MessageManager {
         textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("❌").queue());
     }
 
-    public void printErrorPlayCommand (Member commandSender, TextChannel textChannel) {
+    public void printErrorPlayCommand(Member commandSender, TextChannel textChannel) {
         builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
         builder.setColor(Color.red);
@@ -136,7 +136,7 @@ public class MessageManager {
         textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("❌").queue());
     }
 
-    public void printCommandNotFoundMessage ( Member commandSender, TextChannel textChannel) {
+    public void printCommandNotFoundMessage(Member commandSender, TextChannel textChannel) {
         builder.setAuthor("DVBL-Bot - ");
         builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
         builder.setColor(Color.red);
@@ -146,8 +146,8 @@ public class MessageManager {
         textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("❌").queue());
     }
 
-    public void printCoPilotSong (Member commandSender, TextChannel textChannel) {
-        builder.setAuthor("DVBL-Bot - " +  commandSender.getEffectiveName());
+    public void printCoPilotSong(Member commandSender, TextChannel textChannel) {
+        builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         builder.setTitle("DVBL Song");
         builder.setColor(Color.red);
         builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
@@ -156,7 +156,7 @@ public class MessageManager {
         textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F60D").queue());
     }
 
-    public void printCurrentQueue (Member commandSender, TextChannel textChannel, String[] args) {
+    public void printCurrentQueue(Member commandSender, TextChannel textChannel, String[] args) {
         Guild guild = Bot.getInstance().getDVBL();
         int sideNumb = args.length > 1 ? Integer.parseInt(args[1]) : 1;
 
@@ -183,8 +183,8 @@ public class MessageManager {
         textChannel.sendMessage(embedBuilder.build()).queue();
     }
 
-    public void printPlaylistAddedMessage (Member commandSender, TextChannel textChannel, AudioPlaylist playlist) {
-        builder.setAuthor("DVBL-Bot - " +  commandSender.getEffectiveName());
+    public void printPlaylistAddedMessage(Member commandSender, TextChannel textChannel, AudioPlaylist playlist) {
+        builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         builder.setTitle("Playlist");
         builder.setColor(Color.red);
         builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");

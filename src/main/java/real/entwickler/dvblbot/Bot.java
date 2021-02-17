@@ -52,9 +52,6 @@ public class Bot {
         property = new Property();
         property.setDefaultProps();
 
-
-
-
         try {
             jda = JDABuilder.createDefault(property.get("cfg", "token"))
                     .setActivity(Activity.watching("DeineVBL auf Instagram"))
@@ -62,7 +59,6 @@ public class Bot {
                     .setStatus(OnlineStatus.ONLINE)
                     .setCompression(Compression.NONE)
                     .setBulkDeleteSplittingEnabled(false)
-                    
                     .enableIntents(Arrays.stream(GatewayIntent.values()).collect(Collectors.toList()))
                     .build().awaitReady();
         } catch (InterruptedException | LoginException e) {
@@ -82,7 +78,7 @@ public class Bot {
         commandManager.registerCommand(new PlayCommand("play", "Plays a given song from youtube or spotify", ""));
         commandManager.registerCommand(new PlayCommand("p", "Plays a given song from youtube or spotify", ""));
         commandManager.registerCommand(new QueueCommand("queue", "Shows you the queue", ""));
-        commandManager.registerCommand(new QueueCommand("q", "Shows you the queue",""));
+        commandManager.registerCommand(new QueueCommand("q", "Shows you the queue", ""));
         //commandManager.registerCommand(new HelpCommand("help", "help bot", "gives you help", ""));
         commandManager.registerCommand(new CopilotCommand("copilot", "plays the copilot song", ""));
         commandManager.registerCommand(new LeaveCommand("leave", "bot leave", ""));
@@ -96,6 +92,9 @@ public class Bot {
         commandManager.registerCommand(new HouseCommand("house", "plays the house playlist", ""));
         commandManager.registerCommand(new KarnevalCommand("karneval", "plays a karneval playlist", ""));
         commandManager.registerCommand(new DiscordCommand("discord", "plays the discord playlist", ""));
+        commandManager.registerCommand(new StopCommand("stop", "stops a playing song", ""));
+        commandManager.registerCommand(new RuskyCommand("rusky", "plays russian songs", ""));
+
 
         Scanner scanner = new Scanner(System.in);
 

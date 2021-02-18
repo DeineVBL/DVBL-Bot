@@ -26,6 +26,8 @@ import java.util.TimeZone;
 
 public class MessageManager {
 
+    private Message latestPlayingMessage;
+
     EmbedBuilder builder = new EmbedBuilder();
 
     public void printJoinMessage(String channelID, Member member) {
@@ -76,9 +78,24 @@ public class MessageManager {
         textChannel.sendMessage(builder.build()).queue(message -> message.addReaction("👎🏻").queue(void2 -> Bot.getInstance().getJda().shutdownNow()));
     }
 
-    public void printPlayingSongMessage(AudioTrack audioTrack, Member commandSender, TextChannel textChannel) {
-        Guild g = Bot.getInstance().getDVBL();
-        textChannel.sendMessage(new EmbedMessage("Test", "DVBL-Bot - " + commandSender.getEffectiveName(), audioTrack.getInfo().title, "", null).raw(true, audioTrack, Color.green).build()).queue(exitMessage -> exitMessage.addReaction("U+1F3B6").queue());
+    public void handlePlayingSongMessage(AudioTrack audioTrack, Member commandSender, TextChannel textChannel) {
+        if (latestPlayingMessage != null) {
+            long latestMessageIdLong = textChannel.getLatestMessageIdLong();
+            if (latestMessageIdLong == latestPlayingMessage.getIdLong()) {
+                textChannel.editMessageById(latestMessageIdLong, new EmbedMessage("Test", "DVBL-Bot - " + commandSender.getEffectiveName(), audioTrack.getInfo().title, "", null).raw(true, audioTrack, Color.green).build()).queue();
+            } else {
+                printPlayingSongMessage(audioTrack, commandSender, textChannel);
+            }
+        } else {
+            printPlayingSongMessage(audioTrack, commandSender, textChannel);
+        }
+    }
+
+    private void printPlayingSongMessage (AudioTrack audioTrack, Member commandSender, TextChannel textChannel) {
+        textChannel.sendMessage(new EmbedMessage("Test", "DVBL-Bot - " + commandSender.getEffectiveName(), audioTrack.getInfo().title, "", null).raw(true, audioTrack, Color.green).build()).queue(exitMessage -> {
+            exitMessage.addReaction("U+1F3B6").queue();
+            setLatestPlayingMessage(exitMessage);
+        });
     }
 
     public void printSongAddedQueueMessage(AudioTrack audioTrack, Member commandSender, TextChannel textChannel) {
@@ -116,7 +133,7 @@ public class MessageManager {
         textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("❌").queue());
     }
 
-    public void printErrorStopCommand(Member commandSender, TextChannel textChannel) {
+    public void printErrorPlayingSong(Member commandSender, TextChannel textChannel) {
         builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
         builder.setColor(Color.red);
@@ -124,6 +141,16 @@ public class MessageManager {
         builder.setDescription("Aktuell spielt kein Song!");
         builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021");
         textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("❌").queue());
+    }
+
+    public MessageEmbed printLyricsNotFound(Member commandSender) {
+        builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
+        builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
+        builder.setColor(Color.red);
+        builder.setTitle("Fehler [ERROR 008]");
+        builder.setDescription("Es wurden keine Lyrics zu diesem Song gefunden!");
+        builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021");
+        return builder.build();
     }
 
     public void printErrorPlayCommand(Member commandSender, TextChannel textChannel) {
@@ -137,7 +164,7 @@ public class MessageManager {
     }
 
     public void printCommandNotFoundMessage(Member commandSender, TextChannel textChannel) {
-        builder.setAuthor("DVBL-Bot - ");
+        builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
         builder.setColor(Color.red);
         builder.setTitle("Fehler [ERROR 001]");
@@ -191,5 +218,23 @@ public class MessageManager {
         builder.setDescription(playlist.getTracks().size() + " Titel wurden zur Playlist hinzugefügt!");
         builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021");
         textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F60D").queue());
+    }
+
+    public void printSearchingLyrics(Member commandSender, TextChannel textChannel, AudioTrack track) {
+        builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
+        builder.setTitle("Lyrics");
+        builder.setColor(Color.red);
+        builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
+        builder.setDescription("Die Lyrics zu dem Lied " + track.getInfo().title + " werden gesucht...");
+        builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021");
+        textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F60D").queue());
+    }
+
+    public Message getLatestPlayingMessage() {
+        return latestPlayingMessage;
+    }
+
+    public void setLatestPlayingMessage(Message latestPlayingMessage) {
+        this.latestPlayingMessage = latestPlayingMessage;
     }
 }

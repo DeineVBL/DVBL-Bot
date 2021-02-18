@@ -45,7 +45,7 @@ public class StopCommand extends ICommand {
                 Bot.getInstance().getMessageManager().printErrorVoiceChannel(commandSender, textChannel);
             }
         } else {
-            Bot.getInstance().getMessageManager().printErrorStopCommand(commandSender, textChannel);
+            Bot.getInstance().getMessageManager().printErrorPlayingSong(commandSender, textChannel);
         }
     }
 }

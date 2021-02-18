@@ -159,7 +159,6 @@ public class MusicController {
                     for (int i = 0; i < (Math.min(playlist.getTracks().size(), PLAYLIST_LIMIT)); i++) {
                         getManager(guild).queue(playlist.getTracks().get(i), playlist, author, msg.getTextChannel(), msg);
                     }
-                    Bot.getInstance().getMessageManager().printPlaylistAddedMessage(author, msg.getTextChannel(), playlist);
                 }
             }
 

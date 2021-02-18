@@ -94,6 +94,8 @@ public class Bot {
         commandManager.registerCommand(new DiscordCommand("discord", "plays the discord playlist", ""));
         commandManager.registerCommand(new StopCommand("stop", "stops a playing song", ""));
         commandManager.registerCommand(new RuskyCommand("rusky", "plays russian songs", ""));
+        commandManager.registerCommand(new LyricsCommand("lyrics", "shows the lyrics of a song", ""));
+        commandManager.registerCommand(new TimCommand("tim", "plays the playlist of tixosix", ""));
 
 
         Scanner scanner = new Scanner(System.in);

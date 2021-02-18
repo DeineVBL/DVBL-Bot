@@ -47,7 +47,7 @@ public class LeaveCommand extends ICommand {
                 Bot.getInstance().getMessageManager().printErrorVoiceChannel(commandSender, textChannel);
             }
         } else {
-            Bot.getInstance().getMessageManager().printErrorStopCommand(commandSender, textChannel);
+            Bot.getInstance().getMessageManager().printErrorPlayingSong(commandSender, textChannel);
         }
     }
 }

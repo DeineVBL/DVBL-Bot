@@ -17,7 +17,6 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import net.dv8tion.jda.api.entities.*;
 import real.entwickler.dvblbot.Bot;
-import real.entwickler.dvblbot.utils.EmbedMessage;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -26,8 +25,6 @@ public class TrackManager extends AudioEventAdapter {
 
     private final AudioPlayer PLAYER;
     private final Queue<AudioInfo> queue;
-
-    private Message latestPlayingMessage;
 
     /**
      * Erstellt eine Instanz der Klasse TrackManager.
@@ -54,7 +51,7 @@ public class TrackManager extends AudioEventAdapter {
             PLAYER.playTrack(track);
 
             if (!identifier.contains("list")) {
-                Bot.getInstance().getMessageManager().printPlayingSongMessage(track, author, textChannel);
+                Bot.getInstance().getMessageManager().handlePlayingSongMessage(track, author, textChannel);
             } else {
                 Bot.getInstance().getMessageManager().printPlaylistAddedMessage(author, textChannel, playlist);
             }
@@ -64,7 +61,7 @@ public class TrackManager extends AudioEventAdapter {
             } else {
                 String contentRaw = message.getContentRaw();
 
-                if (!contentRaw.equalsIgnoreCase(".karneval") && !contentRaw.equalsIgnoreCase(".house") && !contentRaw.equalsIgnoreCase(".discord") && !contentRaw.equalsIgnoreCase(".rusky")) {
+                if (!contentRaw.equalsIgnoreCase(".karneval") && !contentRaw.equalsIgnoreCase(".house") && !contentRaw.equalsIgnoreCase(".discord") && !contentRaw.equalsIgnoreCase(".rusky") && !contentRaw.equalsIgnoreCase(".tim")) {
                     Bot.getInstance().getMessageManager().printSongAddedQueueMessage(track, author, textChannel);
                 }
             }
@@ -155,17 +152,7 @@ public class TrackManager extends AudioEventAdapter {
         } else {
             AudioInfo nextTrack = queue.element();
             player.playTrack(nextTrack.getTrack());
-            Bot.getInstance().getMessageManager().printPlayingSongMessage(nextTrack.getTrack(), nextTrack.getAuthor(), nextTrack.getChannel());
-        }
-
+            Bot.getInstance().getMessageManager().handlePlayingSongMessage(nextTrack.getTrack(), nextTrack.getAuthor(), nextTrack.getChannel());
+            }
     }
-
-    public Message getLatestPlayingMessage() {
-        return latestPlayingMessage;
-    }
-
-    public void setLatestPlayingMessage(Message latestPlayingMessage) {
-        this.latestPlayingMessage = latestPlayingMessage;
-    }
-
 }

@@ -51,6 +51,7 @@ public class Property {
 
                 // set the properties value
                 prop.setProperty("token", "delete_me");
+                prop.setProperty("genius-token", "delete_me");
 
                 // save properties to project folder
                 prop.store(output, null);

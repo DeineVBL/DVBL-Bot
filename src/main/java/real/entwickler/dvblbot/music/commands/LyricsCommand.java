@@ -23,68 +23,51 @@ import real.entwickler.dvblbot.utils.ICommand;
 import java.awt.*;
 
 public class LyricsCommand extends ICommand {
-
     public LyricsCommand(String name, String description, String... roles) {
         super(name, description, roles);
     }
 
+    @Override
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
+        AudioPlayer player = Bot.getInstance().getMusicController().getPlayer(message.getGuild());
+        GeniusClient geniusClient = Bot.getInstance().getGeniusClient();
 
-        GeniusClient geniusClient = new GeniusClient(Bot.getInstance().getProperty().get("cfg", "genius-token"));
-        AudioPlayer player = Bot.getInstance().getMusicController().getPlayer(textChannel.getGuild());
-
-        if (player.getPlayingTrack() == null) {
-            if (args.length == 1) {
-                System.out.println("1");
-                Bot.getInstance().getMessageManager().printErrorPlayingSong(commandSender, textChannel);
+        if (player.isPaused())
+            if (args.length == 0) {
+                System.out.println("Error");
             } else {
-                System.out.println("2");
-                //TODO: searching lyrics message
-                Bot.getInstance().getMessageManager().printSearchingLyrics(commandSender, textChannel, player.getPlayingTrack());
+                System.out.println("command.lyrics.searching.title" + "command.lyrics.searching.description");
+                String lyricsUrl = getLyricsUrl(String.join(" ", args), geniusClient);
+
+                if (lyricsUrl == null) {
+                    System.out.println("command.lyrics.notfound" + "phrases.nothingfound");
+                } else {
+                    textChannel.sendMessage(getLyricsEmbed(geniusClient, lyricsUrl).build()).queue();
+                }
+            }
+        else {
+            if (args.length == 0) {
+                System.out.println("command.lyrics.searching.title" + "command.lyrics.searching.description");
+                String lyricsUrl = getLyricsUrl(player.getPlayingTrack().getInfo().title, geniusClient);
+
+                if (lyricsUrl == null)
+                    System.out.println("command.lyrics.notfound" + "phrases.nothingfound");
+                else
+                    textChannel.sendMessage(getLyricsEmbed(geniusClient, lyricsUrl, player.getPlayingTrack().getInfo().title).build()).queue();
+            } else {
+                System.out.println("command.lyrics.searching.title" + "command.lyrics.searching.description");
                 String lyricsUrl = getLyricsUrl(String.join(" ", args), geniusClient);
 
                 if (lyricsUrl == null)
-                    //TODO: didnt found any lyrics
-                    message.editMessage(Bot.getInstance().getMessageManager().printLyricsNotFound(commandSender)).queue(message1 -> message1.addReaction("❌").queue());
-                else {
-                    //TODO: send lyrics
-                    message.editMessage(getLyricsEmbed(geniusClient, lyricsUrl, player.getPlayingTrack().getInfo().title).build()).queue();
-                }
-            }
-        } else {
-            if (args.length == 1) {
-                System.out.println("3");
-                //TODO: searching lyrics message
-                Bot.getInstance().getMessageManager().printSearchingLyrics(commandSender, textChannel, player.getPlayingTrack());
-                String lyricsUrl = getLyricsUrl(player.getPlayingTrack().getInfo().title, geniusClient);
-
-                if (lyricsUrl == null) {
-                    System.out.println("4");
-                    //TODO: didnt found any lyrics
-                    Bot.getInstance().getMessageManager().printLyricsNotFound(commandSender);
-                } else {
-                    //TODO: send lyrics
-                    message.editMessage(getLyricsEmbed(geniusClient, lyricsUrl, player.getPlayingTrack().getInfo().title).build()).queue();
-                }
-            } else {
-                System.out.println("5");
-                //TODO: search lyrics
-                Bot.getInstance().getMessageManager().printSearchingLyrics(commandSender, textChannel, player.getPlayingTrack());
-                String lyricsUrl = getLyricsUrl(String.join(" ", args), geniusClient);
-
-                if (lyricsUrl == null) {
-                    //TODO: lyrics not found
-                    message.editMessage(Bot.getInstance().getMessageManager().printLyricsNotFound(commandSender)).queue();
-                } else {
-                    //TODO: send lyrics
-                    message.editMessage(getLyricsEmbed(geniusClient, lyricsUrl, player.getPlayingTrack().getInfo().title).build()).queue();
-                }
+                    System.out.println("command.lyrics.notfound" + "phrases.nothingfound");
+                else
+                    textChannel.sendMessage(getLyricsEmbed(geniusClient, lyricsUrl).build()).queue();
             }
         }
     }
 
     private EmbedBuilder getLyricsEmbed(GeniusClient geniusClient, String lyricsUrl, String title) {
-        EmbedBuilder embedBuilder = new EmbedBuilder().setTitle(title, lyricsUrl).setColor(Color.DARK_GRAY);
+        EmbedBuilder embedBuilder = new EmbedBuilder().setTitle(title, lyricsUrl).setColor(Color.RED);
         String[] comps = getLyrics(lyricsUrl, geniusClient);
         String[] tempLine = new String[2];
         tempLine[0] = null;

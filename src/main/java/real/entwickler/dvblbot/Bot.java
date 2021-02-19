@@ -27,6 +27,7 @@ import real.entwickler.dvblbot.manager.MessageManager;
 import real.entwickler.dvblbot.music.MusicController;
 import real.entwickler.dvblbot.music.PlayCustomSong;
 import real.entwickler.dvblbot.music.commands.*;
+import real.entwickler.dvblbot.utils.GeniusClient;
 import real.entwickler.dvblbot.utils.Property;
 
 import javax.security.auth.login.LoginException;
@@ -42,6 +43,8 @@ public class Bot {
     private MusicController musicController;
     private JDA jda;
     private CommandManager commandManager;
+
+    private GeniusClient geniusClient;
 
     public static void main(String[] args) {
         new Bot(args);
@@ -67,6 +70,7 @@ public class Bot {
         this.messageManager = new MessageManager();
         this.commandManager = new CommandManager();
         this.musicController = new MusicController();
+        this.geniusClient = new GeniusClient(property.get("cfg", "genius-token"));
         MusicController.guild = getDVBL();
         this.jda.addEventListener(new GuildMemberJoinListener());
         this.jda.addEventListener(new GuildMemberLeaveListener());
@@ -105,6 +109,10 @@ public class Bot {
         }
 
 
+    }
+
+    public GeniusClient getGeniusClient() {
+        return geniusClient;
     }
 
     public CommandManager getCommandManager() {

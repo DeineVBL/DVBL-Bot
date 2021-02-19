@@ -15,11 +15,14 @@ import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
+import lombok.SneakyThrows;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.internal.entities.AbstractMessage;
 import real.entwickler.dvblbot.Bot;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 public class TrackManager extends AudioEventAdapter {
 
@@ -143,12 +146,24 @@ public class TrackManager extends AudioEventAdapter {
      * @param track
      * @param endReason
      */
+    @SneakyThrows
     @Override
-    public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
+    public void onTrackEnd (AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         Guild g = queue.poll().getAuthor().getGuild();
+        Message latestPlayingMessage = Bot.getInstance().getMessageManager().getLatestPlayingMessage();
 
         if (queue.isEmpty()) {
-            g.getAudioManager().closeAudioConnection();
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if (player.getPlayingTrack() == null) {
+                        final AudioInfo poll = queue.poll();
+                        Bot.getInstance().getMessageManager().printInactivityTimeoutMessage(latestPlayingMessage.getTextChannel());
+                        g.getAudioManager().closeAudioConnection();
+                    }
+                }
+            }, TimeUnit.SECONDS.toMillis(60));
         } else {
             AudioInfo nextTrack = queue.element();
             player.playTrack(nextTrack.getTrack());

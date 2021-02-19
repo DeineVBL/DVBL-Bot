@@ -14,6 +14,8 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.internal.entities.AbstractMessage;
+import net.dv8tion.jda.internal.entities.ReceivedMessage;
 import real.entwickler.dvblbot.Bot;
 import real.entwickler.dvblbot.enums.EChannel;
 import real.entwickler.dvblbot.utils.EmbedMessage;
@@ -22,6 +24,7 @@ import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.TimeZone;
 
 public class MessageManager {
@@ -45,7 +48,7 @@ public class MessageManager {
 
     public void printLeaveMessage(String channelID, User user) {
         TextChannel textChannel = Bot.getInstance().getJda().getTextChannelById(channelID);
-        builder.setColor(Color.red);
+        builder.setColor(Color.RED);
         builder.setTitle("Auf Wiedersehen!");
         builder.addField("User • 👤", "» " + user.getAsMention(), false);
         builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021");
@@ -68,7 +71,7 @@ public class MessageManager {
 
     public void printStopMessage(String channelID) {
         TextChannel textChannel = Bot.getInstance().getJda().getTextChannelById(channelID);
-        builder.setColor(Color.red);
+        builder.setColor(Color.RED);
         builder.setDescription("Der Bot wird gestoppt!");
         SelfUser user = Bot.getInstance().getJda().getSelfUser();
         builder.setAuthor(user.getAsTag(), "https://github.com/realEntwickler/DVBL-Bot", user.getAvatarUrl());
@@ -106,7 +109,7 @@ public class MessageManager {
     public void printErrorVoiceChannel(Member commandSender, TextChannel textChannel) {
         builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
-        builder.setColor(Color.red);
+        builder.setColor(Color.RED);
         builder.setTitle("Fehler [ERROR 003]");
         builder.setDescription("Huch, du bist wohl in keinem Voicechannel!");
         builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021");
@@ -116,7 +119,7 @@ public class MessageManager {
     public void printBotQueueEmpty(Member commandSender, TextChannel textChannel) {
         builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         builder.setTitle("Fehler [Error 006]");
-        builder.setColor(Color.red);
+        builder.setColor(Color.RED);
         builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
         builder.setDescription("In der Queue sind keine Lieder vorhanden!");
         builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021");
@@ -126,7 +129,7 @@ public class MessageManager {
     public void printBotErrorVoiceChannel(Member commandSender, TextChannel textChannel) {
         builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         builder.setTitle("Fehler [Error 005]");
-        builder.setColor(Color.red);
+        builder.setColor(Color.RED);
         builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
         builder.setDescription("Der Bot ist aktuell in keinem Voicechannel!");
         builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021");
@@ -136,7 +139,7 @@ public class MessageManager {
     public void printErrorPlayingSong(Member commandSender, TextChannel textChannel) {
         builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
-        builder.setColor(Color.red);
+        builder.setColor(Color.RED);
         builder.setTitle("Fehler [ERROR 004]");
         builder.setDescription("Aktuell spielt kein Song!");
         builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021");
@@ -146,7 +149,7 @@ public class MessageManager {
     public MessageEmbed printLyricsNotFound(Member commandSender) {
         builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
-        builder.setColor(Color.red);
+        builder.setColor(Color.RED);
         builder.setTitle("Fehler [ERROR 008]");
         builder.setDescription("Es wurden keine Lyrics zu diesem Song gefunden!");
         builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021");
@@ -156,7 +159,7 @@ public class MessageManager {
     public void printErrorPlayCommand(Member commandSender, TextChannel textChannel) {
         builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
-        builder.setColor(Color.red);
+        builder.setColor(Color.RED);
         builder.setTitle("Fehler [ERROR 002]");
         builder.setDescription("Bitte benutze .play (Songlink) wenn du Musik abspielen möchtest!");
         builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021");
@@ -166,7 +169,7 @@ public class MessageManager {
     public void printCommandNotFoundMessage(Member commandSender, TextChannel textChannel) {
         builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
-        builder.setColor(Color.red);
+        builder.setColor(Color.RED);
         builder.setTitle("Fehler [ERROR 001]");
         builder.setDescription("Dieser Command wurde nicht gefunden!");
         builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021");
@@ -176,7 +179,7 @@ public class MessageManager {
     public void printCoPilotSong(Member commandSender, TextChannel textChannel) {
         builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         builder.setTitle("DVBL Song");
-        builder.setColor(Color.red);
+        builder.setColor(Color.RED);
         builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
         builder.setDescription("Viel Spaß mit dem besten Song aller Zeiten! <3");
         builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021");
@@ -213,7 +216,7 @@ public class MessageManager {
     public void printPlaylistAddedMessage(Member commandSender, TextChannel textChannel, AudioPlaylist playlist) {
         builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         builder.setTitle("Playlist");
-        builder.setColor(Color.red);
+        builder.setColor(Color.RED);
         builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
         builder.setDescription(playlist.getTracks().size() + " Titel wurden zur Playlist hinzugefügt!");
         builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021");
@@ -223,7 +226,27 @@ public class MessageManager {
     public void printSearchingLyrics(Member commandSender, TextChannel textChannel, AudioTrack track) {
         builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         builder.setTitle("Lyrics");
-        builder.setColor(Color.red);
+        builder.setColor(Color.RED);
+        builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
+        builder.setDescription("Die Lyrics zu dem Lied " + track.getInfo().title + " werden gesucht...");
+        builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021");
+        textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F60D").queue());
+    }
+
+    public void printInactivityTimeoutMessage(TextChannel textChannel) {
+        builder.setAuthor(latestPlayingMessage.getEmbeds().get(0).getAuthor().getName());
+        builder.setTitle("Timeout [Queue empty]");
+        builder.setColor(Color.RED);
+        builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
+        builder.setDescription("Ich habe den Channnel aufgrund von Inaktivität verlassen!");
+        builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021");
+        textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("👋").queue());
+    }
+
+    public void printSchoolBBBLinks(Member commandSender, TextChannel textChannel) {
+        builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
+        builder.setTitle("BBB Links");
+        builder.setColor(Color.BLUE);
         builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
         builder.setDescription("Die Lyrics zu dem Lied " + track.getInfo().title + " werden gesucht...");
         builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021");

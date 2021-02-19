@@ -243,16 +243,6 @@ public class MessageManager {
         textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("👋").queue());
     }
 
-    public void printSchoolBBBLinks(Member commandSender, TextChannel textChannel) {
-        builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
-        builder.setTitle("BBB Links");
-        builder.setColor(Color.BLUE);
-        builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
-        builder.setDescription("Die Lyrics zu dem Lied " + track.getInfo().title + " werden gesucht...");
-        builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021");
-        textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F60D").queue());
-    }
-
     public Message getLatestPlayingMessage() {
         return latestPlayingMessage;
     }

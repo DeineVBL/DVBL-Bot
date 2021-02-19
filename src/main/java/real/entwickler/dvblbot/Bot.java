@@ -28,6 +28,7 @@ import real.entwickler.dvblbot.music.MusicController;
 import real.entwickler.dvblbot.music.PlayCustomSong;
 import real.entwickler.dvblbot.music.commands.*;
 import real.entwickler.dvblbot.school.BBBCommand;
+import real.entwickler.dvblbot.school.FileinfoCommand;
 import real.entwickler.dvblbot.school.LinkCommand;
 import real.entwickler.dvblbot.school.UploadCommand;
 import real.entwickler.dvblbot.utils.GeniusClient;
@@ -82,30 +83,38 @@ public class Bot {
 
         messageManager.printReadyMessage(EChannel.CHANGES.getChannelID());
 
+
+        //commandManager.registerCommand(new HelpCommand("help", "help bot", "gives you help", ""));
+
         commandManager.registerCommand(new PlayCommand("play", "Plays a given song from youtube or spotify", ""));
         commandManager.registerCommand(new PlayCommand("p", "Plays a given song from youtube or spotify", ""));
         commandManager.registerCommand(new QueueCommand("queue", "Shows you the queue", ""));
         commandManager.registerCommand(new QueueCommand("q", "Shows you the queue", ""));
-        //commandManager.registerCommand(new HelpCommand("help", "help bot", "gives you help", ""));
-        commandManager.registerCommand(new CopilotCommand("copilot", "plays the copilot song", ""));
-        commandManager.registerCommand(new LeaveCommand("leave", "bot leave", ""));
-        commandManager.registerCommand(new PlayCustomSong("paulymarz", "plays the pauly marz", ""));
         commandManager.registerCommand(new SkipCommand("skip", "skips a queued song", ""));
         commandManager.registerCommand(new SkipCommand("s", "skips a queued song", ""));
-        commandManager.registerCommand(new ShuffleCommand("shuffle", "shuffles a queue", ""));
-        commandManager.registerCommand(new ResumeCommand("resume", "resumes a paused song", ""));
-        commandManager.registerCommand(new PauseCommand("pause", "pauses a playing song", ""));
         commandManager.registerCommand(new ClearCommand("clear", "clears a queue", ""));
+        commandManager.registerCommand(new ClearCommand("c", "clears a queue", ""));
+        commandManager.registerCommand(new LeaveCommand("leave", "bot leave", ""));
+        commandManager.registerCommand(new PauseCommand("pause", "pauses a playing song", ""));
+        commandManager.registerCommand(new ResumeCommand("resume", "resumes a paused song", ""));
+        commandManager.registerCommand(new StopCommand("stop", "stops a playing song", ""));
+        //commandManager.registerCommand(new LyricsCommand("lyrics", "shows the lyrics of a song", ""));
+        commandManager.registerCommand(new ShuffleCommand("shuffle", "shuffles a queue", ""));
+        commandManager.registerCommand(new PlayCustomSong("paulymarz", "plays the pauly marz", ""));
+        commandManager.registerCommand(new CopilotCommand("copilot", "plays the copilot song", ""));
         commandManager.registerCommand(new HouseCommand("house", "plays the house playlist", ""));
         commandManager.registerCommand(new KarnevalCommand("karneval", "plays a karneval playlist", ""));
         commandManager.registerCommand(new DiscordCommand("discord", "plays the discord playlist", ""));
-        commandManager.registerCommand(new StopCommand("stop", "stops a playing song", ""));
         commandManager.registerCommand(new RuskyCommand("rusky", "plays russian songs", ""));
-        commandManager.registerCommand(new LyricsCommand("lyrics", "shows the lyrics of a song", ""));
         commandManager.registerCommand(new TimCommand("tim", "plays the playlist of tixosix", ""));
+
         commandManager.registerCommand(new BBBCommand("bbb", "shows the bbb links", ""));
         commandManager.registerCommand(new UploadCommand("upload", "shows the upload links", ""));
+        commandManager.registerCommand(new UploadCommand("u", "shows the upload links", ""));
         commandManager.registerCommand(new LinkCommand("links", "shows you links for school", ""));
+        commandManager.registerCommand(new LinkCommand("l", "shows you links for school", ""));
+        commandManager.registerCommand(new FileinfoCommand("fileinfo", "shows you how to name a file", ""));
+        commandManager.registerCommand(new FileinfoCommand("fi", "shows you how to name a file", ""));
 
 
         Scanner scanner = new Scanner(System.in);

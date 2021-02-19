@@ -10,10 +10,7 @@
 
 package real.entwickler.dvblbot.music.commands;
 
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import real.entwickler.dvblbot.Bot;
 import real.entwickler.dvblbot.utils.ICommand;
@@ -34,6 +31,7 @@ public class CopilotCommand extends ICommand {
 
     @Override
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
+        Guild g = Bot.getInstance().getDVBL();
         if (args.length == 1) {
             Bot.getInstance().getMusicController().loadTrack("https://www.youtube.com/watch?v=gr9J3BLxgeo", commandSender, message, null);
             Bot.getInstance().getMessageManager().printCoPilotSong(commandSender, textChannel);

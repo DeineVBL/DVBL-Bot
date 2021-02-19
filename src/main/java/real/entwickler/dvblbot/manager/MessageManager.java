@@ -195,13 +195,13 @@ public class MessageManager {
 
         Bot.getInstance().getMusicController().getManager(guild).getQueue().forEach(audioInfo -> tracks.add(Bot.getInstance().getMusicController().buildQueueMessage(audioInfo)));
 
-        if (tracks.size() > 20)
-            trackSublist = tracks.subList((sideNumb - 1) * 20, (sideNumb - 1) * 20 + 20);
+        if (tracks.size() > 10)
+            trackSublist = tracks.subList((sideNumb - 1) * 10, (sideNumb - 1) * 10 + 10);
         else
             trackSublist = tracks;
 
         String out = String.join("\n", trackSublist);
-        int sideNumbAll = tracks.size() >= 20 ? tracks.size() / 20 : 1;
+        int sideNumbAll = tracks.size() >= 10 ? tracks.size() / 10 : 1;
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(Color.RED);
@@ -210,7 +210,7 @@ public class MessageManager {
         embedBuilder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
         embedBuilder.setDescription(out);
         embedBuilder.setFooter("DVBL-Bot - Copyright © swausb || realEntwickler 2021 ").setTimestamp(LocalDateTime.now().atZone(TimeZone.getTimeZone("Europe/Berlin").toZoneId()));
-        textChannel.sendMessage(embedBuilder.build()).queue();
+        textChannel.sendMessage(embedBuilder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F4FB").queue());
     }
 
     public void printPlaylistAddedMessage(Member commandSender, TextChannel textChannel, AudioPlaylist playlist) {

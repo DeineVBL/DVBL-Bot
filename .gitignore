@@ -137,3 +137,6 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 /src/main/java/real/entwickler/dvblbot/school/BBBCommand.java
+/src/main/java/real/entwickler/dvblbot/school/FileinfoCommand.java
+/src/main/java/real/entwickler/dvblbot/school/LinkCommand.java
+/src/main/java/real/entwickler/dvblbot/school/UploadCommand.java

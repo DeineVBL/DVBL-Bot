@@ -28,6 +28,7 @@ import real.entwickler.dvblbot.music.MusicController;
 import real.entwickler.dvblbot.music.PlayCustomSong;
 import real.entwickler.dvblbot.music.commands.*;
 import real.entwickler.dvblbot.school.BBBCommand;
+import real.entwickler.dvblbot.school.UploadCommand;
 import real.entwickler.dvblbot.utils.GeniusClient;
 import real.entwickler.dvblbot.utils.Property;
 
@@ -102,6 +103,7 @@ public class Bot {
         commandManager.registerCommand(new LyricsCommand("lyrics", "shows the lyrics of a song", ""));
         commandManager.registerCommand(new TimCommand("tim", "plays the playlist of tixosix", ""));
         commandManager.registerCommand(new BBBCommand("bbb", "shows the bbb links", ""));
+        commandManager.registerCommand(new UploadCommand("upload", "shows the upload links", ""));
 
 
         Scanner scanner = new Scanner(System.in);

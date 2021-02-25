@@ -98,15 +98,22 @@ public class Bot {
         commandManager.registerCommand(new PauseCommand("pause", "pauses a playing song", ""));
         commandManager.registerCommand(new ResumeCommand("resume", "resumes a paused song", ""));
         commandManager.registerCommand(new StopCommand("stop", "stops a playing song", ""));
-        //commandManager.registerCommand(new LyricsCommand("lyrics", "shows the lyrics of a song", ""));
+        commandManager.registerCommand(new LyricsCommand("lyrics", "shows the lyrics of a song", ""));
         commandManager.registerCommand(new ShuffleCommand("shuffle", "shuffles a queue", ""));
         commandManager.registerCommand(new PlayCustomSong("paulymarz", "plays the pauly marz", ""));
         commandManager.registerCommand(new CopilotCommand("copilot", "plays the copilot song", ""));
         commandManager.registerCommand(new HouseCommand("house", "plays the house playlist", ""));
         commandManager.registerCommand(new KarnevalCommand("karneval", "plays a karneval playlist", ""));
         commandManager.registerCommand(new DiscordCommand("discord", "plays the discord playlist", ""));
+        commandManager.registerCommand(new DiscordCommand("dc", "plays the discord playlist", ""));
         commandManager.registerCommand(new RuskyCommand("rusky", "plays russian songs", ""));
         commandManager.registerCommand(new TimCommand("tim", "plays the playlist of tixosix", ""));
+        commandManager.registerCommand(new BirthdayCommand("birthday", "plays celebration times", ""));
+        commandManager.registerCommand(new BirthdayCommand("bday", "plays celebration times", ""));
+        commandManager.registerCommand(new SchlagerCommand("schlager", "plays the schlager playlist", ""));
+        commandManager.registerCommand(new MusicSchoolCommand("musik", "plays a pauly marz musik hit", ""));
+        commandManager.registerCommand(new FaeaschtbaenklerCommand("fä", "plays fäschtbänkler songs", ""));
+        commandManager.registerCommand(new FaeaschtbaenklerCommand("fäaschtbänkler", "plays fäschtbänkler songs", ""));
 
         commandManager.registerCommand(new BBBCommand("bbb", "shows the bbb links", ""));
         commandManager.registerCommand(new UploadCommand("upload", "shows the upload links", ""));
@@ -115,6 +122,8 @@ public class Bot {
         commandManager.registerCommand(new LinkCommand("l", "shows you links for school", ""));
         commandManager.registerCommand(new FileinfoCommand("fileinfo", "shows you how to name a file", ""));
         commandManager.registerCommand(new FileinfoCommand("fi", "shows you how to name a file", ""));
+
+        commandManager.registerCommand(new MSFSCommand("msfs", "shows useful msfs links", ""));
 
 
         Scanner scanner = new Scanner(System.in);

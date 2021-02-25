@@ -14,8 +14,6 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.internal.entities.AbstractMessage;
-import net.dv8tion.jda.internal.entities.ReceivedMessage;
 import real.entwickler.dvblbot.Bot;
 import real.entwickler.dvblbot.enums.EChannel;
 import real.entwickler.dvblbot.utils.EmbedMessage;
@@ -23,8 +21,8 @@ import real.entwickler.dvblbot.utils.EmbedMessage;
 import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.TimeZone;
 
 public class MessageManager {
@@ -95,10 +93,10 @@ public class MessageManager {
     }
 
     private void printPlayingSongMessage (AudioTrack audioTrack, Member commandSender, TextChannel textChannel) {
-        textChannel.sendMessage(new EmbedMessage("Test", "DVBL-Bot - " + commandSender.getEffectiveName(), audioTrack.getInfo().title, "", null).raw(true, audioTrack, Color.green).build()).queue(exitMessage -> {
-            exitMessage.addReaction("U+1F3B6").queue();
-            setLatestPlayingMessage(exitMessage);
-        });
+            textChannel.sendMessage(new EmbedMessage("Test", "DVBL-Bot - " + commandSender.getEffectiveName(), audioTrack.getInfo().title, "", null).raw(true, audioTrack, Color.green).build()).queue(exitMessage -> {
+                exitMessage.addReaction("U+1F3B6").queue();
+                setLatestPlayingMessage(exitMessage);
+            });
     }
 
     public void printSongAddedQueueMessage(AudioTrack audioTrack, Member commandSender, TextChannel textChannel) {
@@ -241,6 +239,72 @@ public class MessageManager {
         builder.setDescription("Ich habe den Channnel aufgrund von Inaktivität verlassen!");
         builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021");
         textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("👋").queue());
+    }
+
+    public void printBirthdayMessage (Member commandSender, TextChannel textChannel, Message message, String[] args) {
+            if (args[1].equalsIgnoreCase("hölper")) {
+                builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
+                builder.setTitle("Happy Birthday!");
+                builder.setColor(Color.RED);
+                builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/birthday.png");
+                builder.setDescription("Alles Gute zu deinem Geburtstag! <@532203008843448350>");
+                builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021");
+                textChannel.sendMessage(builder.build()).queue(exitMessage -> {
+
+                    exitMessage.addReaction("U+1F389").queue();
+                    exitMessage.addReaction("U+1F967").queue();
+                    exitMessage.addReaction("U+1F973").queue();
+
+                    exitMessage.editMessage(builder.setColor(Color.BLUE).build()).queue();
+                    exitMessage.editMessage(builder.setColor(Color.GREEN).build()).queue();
+                    exitMessage.editMessage(builder.setColor(Color.red).build()).queue();
+                    exitMessage.editMessage(builder.setColor(Color.GREEN).build()).queue();
+                    exitMessage.editMessage(builder.setColor(Color.YELLOW).build()).queue();
+                    exitMessage.editMessage(builder.setColor(Color.DARK_GRAY).build()).queue();
+                    exitMessage.editMessage(builder.setColor(Color.YELLOW).build()).queue();
+                    exitMessage.editMessage(builder.setColor(Color.MAGENTA).build()).queue();
+                    exitMessage.editMessage(builder.setColor(Color.BLUE).build()).queue();
+                    exitMessage.editMessage(builder.setColor(Color.LIGHT_GRAY).build()).queue();
+                    exitMessage.editMessage(builder.setColor(Color.YELLOW).build()).queue();
+                    exitMessage.editMessage(builder.setColor(Color.RED).build()).queue();
+                    exitMessage.editMessage(builder.setColor(Color.BLUE).build()).queue();
+                    exitMessage.editMessage(builder.setColor(Color.PINK).build()).queue();
+                    exitMessage.editMessage(builder.setColor(Color.YELLOW).build()).queue();
+                    exitMessage.editMessage(builder.setColor(Color.ORANGE).build()).queue();
+                    exitMessage.editMessage(builder.setColor(Color.PINK).build()).queue();
+                });
+        } if (args[1].equalsIgnoreCase("tim")) {
+            builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
+            builder.setTitle("Happy Birthday!");
+            builder.setColor(Color.RED);
+            builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/birthday.png");
+            builder.setDescription("Alles Gute zu deinem Geburtstag! <@418067954198904833>");
+            builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021");
+            textChannel.sendMessage(builder.build()).queue(exitMessage -> {
+
+                exitMessage.addReaction("U+1F389").queue();
+                exitMessage.addReaction("U+1F967").queue();
+                exitMessage.addReaction("U+1F973").queue();
+
+                exitMessage.editMessage(builder.setColor(Color.BLUE).build()).queue();
+                exitMessage.editMessage(builder.setColor(Color.GREEN).build()).queue();
+                exitMessage.editMessage(builder.setColor(Color.red).build()).queue();
+                exitMessage.editMessage(builder.setColor(Color.GREEN).build()).queue();
+                exitMessage.editMessage(builder.setColor(Color.YELLOW).build()).queue();
+                exitMessage.editMessage(builder.setColor(Color.DARK_GRAY).build()).queue();
+                exitMessage.editMessage(builder.setColor(Color.YELLOW).build()).queue();
+                exitMessage.editMessage(builder.setColor(Color.MAGENTA).build()).queue();
+                exitMessage.editMessage(builder.setColor(Color.BLUE).build()).queue();
+                exitMessage.editMessage(builder.setColor(Color.LIGHT_GRAY).build()).queue();
+                exitMessage.editMessage(builder.setColor(Color.YELLOW).build()).queue();
+                exitMessage.editMessage(builder.setColor(Color.RED).build()).queue();
+                exitMessage.editMessage(builder.setColor(Color.BLUE).build()).queue();
+                exitMessage.editMessage(builder.setColor(Color.PINK).build()).queue();
+                exitMessage.editMessage(builder.setColor(Color.YELLOW).build()).queue();
+                exitMessage.editMessage(builder.setColor(Color.ORANGE).build()).queue();
+                exitMessage.editMessage(builder.setColor(Color.PINK).build()).queue();
+            });
+        }
     }
 
     public Message getLatestPlayingMessage() {

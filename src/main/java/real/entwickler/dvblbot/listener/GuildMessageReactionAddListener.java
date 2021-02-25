@@ -19,13 +19,14 @@ import real.entwickler.dvblbot.enums.EChannel;
 
 public class GuildMessageReactionAddListener extends ListenerAdapter {
 
+
+
     @Override
     public void onGuildMessageReactionAdd(@NotNull GuildMessageReactionAddEvent event) {
         TextChannel textChannel = event.getChannel();
         Member member = event.getMember();
 
         if (EChannel.ROLES.getChannel().getIdLong() == textChannel.getIdLong()) {
-
         }
     }
 }

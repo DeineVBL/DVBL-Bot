@@ -64,7 +64,7 @@ public class TrackManager extends AudioEventAdapter {
             } else {
                 String contentRaw = message.getContentRaw();
 
-                if (!contentRaw.equalsIgnoreCase(".karneval") && !contentRaw.equalsIgnoreCase(".house") && !contentRaw.equalsIgnoreCase(".discord") && !contentRaw.equalsIgnoreCase(".rusky") && !contentRaw.equalsIgnoreCase(".tim")) {
+                if (!contentRaw.equalsIgnoreCase(".karneval") && !contentRaw.equalsIgnoreCase(".house") && !contentRaw.equalsIgnoreCase(".discord") && !contentRaw.equalsIgnoreCase(".rusky") && !contentRaw.equalsIgnoreCase(".tim") && !contentRaw.equalsIgnoreCase(".dc") && !contentRaw.equalsIgnoreCase(".schlager") && !contentRaw.equalsIgnoreCase(".fä") && !contentRaw.equalsIgnoreCase(".fäaschtbänkler")) {
                     Bot.getInstance().getMessageManager().printSongAddedQueueMessage(track, author, textChannel);
                 }
             }
@@ -163,7 +163,7 @@ public class TrackManager extends AudioEventAdapter {
                         g.getAudioManager().closeAudioConnection();
                     }
                 }
-            }, TimeUnit.SECONDS.toMillis(60));
+            }, TimeUnit.SECONDS.toMillis(150));
         } else {
             AudioInfo nextTrack = queue.element();
             player.playTrack(nextTrack.getTrack());

@@ -184,7 +184,7 @@ public class MessageManager {
         textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F60D").queue());
     }
 
-    public void printCurrentQueue(Member commandSender, TextChannel textChannel, String[] args) {
+    /*public void printCurrentQueue(Member commandSender, TextChannel textChannel, String[] args) {
         Guild guild = Bot.getInstance().getDVBL();
         int sideNumb = args.length > 1 ? Integer.parseInt(args[1]) : 1;
 
@@ -209,7 +209,7 @@ public class MessageManager {
         embedBuilder.setDescription(out);
         embedBuilder.setFooter("DVBL-Bot - Copyright © swausb || realEntwickler 2021 ").setTimestamp(LocalDateTime.now().atZone(TimeZone.getTimeZone("Europe/Berlin").toZoneId()));
         textChannel.sendMessage(embedBuilder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F4FB").queue());
-    }
+    }*/
 
     public void printPlaylistAddedMessage(Member commandSender, TextChannel textChannel, AudioPlaylist playlist) {
         builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());

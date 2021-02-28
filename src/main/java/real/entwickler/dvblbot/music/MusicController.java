@@ -112,7 +112,13 @@ public class MusicController {
         AudioTrackInfo trackInfo = info.getTrack().getInfo();
         String title = trackInfo.title;
         long length = trackInfo.length;
-        return "`[ " + getTimestamp(length) + " ]` " + title + "\n";
+        int trackIndexOfQueue = 0;
+        for (AudioInfo audioInfo : getManager(info.getChannel().getGuild()).getQueue2()) {
+            if (!audioInfo.getTrack().getInfo().uri.equalsIgnoreCase(info.getTrack().getInfo().uri)) {
+                trackIndexOfQueue++;
+            }
+        }
+        return trackIndexOfQueue + ") `[ " + getTimestamp(length) + " ]` " + title + "\n";
     }
 
     /**

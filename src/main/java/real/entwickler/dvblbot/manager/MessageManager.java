@@ -241,6 +241,18 @@ public class MessageManager {
         textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("👋").queue());
     }
 
+    public void printBigFMMashupRadioLoaded(Member commandSender, TextChannel textChannel) {
+        builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
+        builder.setTitle("Now playing:", "https://ilr.bigfm.de/bigfm-mashup-128-mp3");
+        builder.setDescription("Viel Spaß mit BigFM Mashup!");
+        builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/bigfm.png");
+        builder.setColor(Color.GREEN);
+        builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021");
+        textChannel.sendMessage(builder.build()).queue(exitMessage -> {
+            exitMessage.addReaction("U+1F3B6").queue();
+        });
+    }
+
     public void printBirthdayMessage (Member commandSender, TextChannel textChannel, Message message, String[] args) {
             if (args[1].equalsIgnoreCase("hölper")) {
                 builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());

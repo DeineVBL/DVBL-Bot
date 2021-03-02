@@ -10,10 +10,12 @@
 
 package real.entwickler.dvblbot.radio.commands;
 
+import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import real.entwickler.dvblbot.Bot;
+import real.entwickler.dvblbot.music.AudioInfo;
 import real.entwickler.dvblbot.utils.EmbedMessage;
 import real.entwickler.dvblbot.utils.ICommand;
 
@@ -40,12 +42,6 @@ public class BigFMCommand extends ICommand {
             Bot.getInstance().getMusicController().loadTrack("https://ilr.bigfm.de/bigfm-mashup-128-mp3", commandSender, message, null);
         }
         if (Bot.getInstance().getMusicController().isIdle(Bot.getInstance().getDVBL())) return;
-        message.addReaction("U+1F3B6").queue();
-
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
-        embedBuilder.setTitle("Now playing:", "https://ilr.bigfm.de/bigfm-mashup-128-mp3");
-        embedBuilder.setDescription("Viel Spaß mit BigFM Mashup!");
-        embedBuilder.setColor(Color.GREEN);
+        Bot.getInstance().getMessageManager().printBigFMMashupRadioLoaded(commandSender, textChannel);
     }
 }

@@ -25,7 +25,7 @@ import real.entwickler.dvblbot.listener.GuildMessageReceivedListener;
 import real.entwickler.dvblbot.manager.CommandManager;
 import real.entwickler.dvblbot.manager.MessageManager;
 import real.entwickler.dvblbot.music.MusicController;
-import real.entwickler.dvblbot.music.PlayCustomSong;
+import real.entwickler.dvblbot.music.commands.PlayCustomSong;
 import real.entwickler.dvblbot.music.commands.*;
 import real.entwickler.dvblbot.school.BBBCommand;
 import real.entwickler.dvblbot.school.FileinfoCommand;
@@ -114,6 +114,7 @@ public class Bot {
         commandManager.registerCommand(new MusicSchoolCommand("musik", "plays a pauly marz musik hit", ""));
         commandManager.registerCommand(new FaeaschtbaenklerCommand("fä", "plays fäschtbänkler songs", ""));
         commandManager.registerCommand(new FaeaschtbaenklerCommand("fäaschtbänkler", "plays fäschtbänkler songs", ""));
+        //commandManager.registerCommand(new MoveCommand("move", "moves a song to a specific position", ""));
 
         commandManager.registerCommand(new BBBCommand("bbb", "shows the bbb links", ""));
         commandManager.registerCommand(new UploadCommand("upload", "shows the upload links", ""));
@@ -165,6 +166,10 @@ public class Bot {
 
     public static Bot getInstance() {
         return instance;
+    }
+
+    public boolean isPlaying() {
+        return Bot.getInstance().getMusicController().getPlayer(getDVBL()).getPlayingTrack() != null;
     }
 
 }

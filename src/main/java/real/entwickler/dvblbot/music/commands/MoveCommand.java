@@ -10,15 +10,10 @@
 
 package real.entwickler.dvblbot.music.commands;
 
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
-import real.entwickler.dvblbot.Bot;
-import real.entwickler.dvblbot.music.TrackManager;
 import real.entwickler.dvblbot.utils.ICommand;
-
-import java.util.LinkedList;
 
 public class MoveCommand extends ICommand {
 
@@ -28,27 +23,28 @@ public class MoveCommand extends ICommand {
 
     @Override
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
-        if (args.length == 3) {
-            int toMove = 0, moveIndex = 0;
-            try {
-                 toMove = Integer.parseInt(args[1]);
-                 moveIndex = Integer.parseInt(args[2]);
-            } catch (NumberFormatException ec) {
-                //TOOO Sent message --> User typed words instead of numbers
-                return;
-            }
-            TrackManager manager = Bot.getInstance().getMusicController().getManager(message.getGuild());
+//        if (args.length == 3) {
+//            int toMove = 0, moveIndex = 0;
+//            try {
+//                 toMove = Integer.parseInt(args[1]);
+//                 moveIndex = Integer.parseInt(args[2]);
+//            } catch (NumberFormatException ec) {
+//                //TOOO Sent message --> User typed words instead of numbers
+//                return;
+//            }
+//            TrackManager manager = Bot.getInstance().getMusicController().getManager(message.getGuild());
+//
+//            if (toMove <= manager.getQueue2().size() && toMove > 2) {
+//                if (moveIndex <= manager.getQueue2().size() && moveIndex > 1) {
+//
+//                } else{
+//                    //TODO: Die "moveIndex" ist = 1 oder befindet sich außerhalb der Queue
+//                }
+//            } else {
+//                //TODO: Die "toMove" Stelle befindet sich außerhalb der Queue
+//            }
+//        }
 
-            if (toMove <= manager.getQueue2().size() && toMove > 2) {
-                if (moveIndex <= manager.getQueue2().size() && moveIndex > 1) {
-
-                } else{
-                    //TODO: Die "moveIndex" ist = 1 oder befindet sich außerhalb der Queue
-                }
-            } else {
-                //TODO: Die "toMove" Stelle befindet sich außerhalb der Queue
-            }
-        }
     }
 }
 

@@ -27,6 +27,7 @@ import real.entwickler.dvblbot.manager.MessageManager;
 import real.entwickler.dvblbot.music.MusicController;
 import real.entwickler.dvblbot.music.PlayCustomSong;
 import real.entwickler.dvblbot.music.commands.*;
+import real.entwickler.dvblbot.radio.commands.BigFMCommand;
 import real.entwickler.dvblbot.school.BBBCommand;
 import real.entwickler.dvblbot.school.FileinfoCommand;
 import real.entwickler.dvblbot.school.LinkCommand;
@@ -114,6 +115,9 @@ public class Bot {
         commandManager.registerCommand(new MusicSchoolCommand("musik", "plays a pauly marz musik hit", ""));
         commandManager.registerCommand(new FaeaschtbaenklerCommand("fä", "plays fäschtbänkler songs", ""));
         commandManager.registerCommand(new FaeaschtbaenklerCommand("fäaschtbänkler", "plays fäschtbänkler songs", ""));
+        commandManager.registerCommand(new MoveCommand("move", "Moves the given song to a given index in the queue", ""));
+
+        commandManager.registerCommand(new BigFMCommand("bigfm", "plays big fm mashup radio", ""));
 
         commandManager.registerCommand(new BBBCommand("bbb", "shows the bbb links", ""));
         commandManager.registerCommand(new UploadCommand("upload", "shows the upload links", ""));

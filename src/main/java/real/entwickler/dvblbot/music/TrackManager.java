@@ -15,15 +15,11 @@ import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
-import lombok.Getter;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.internal.entities.AbstractMessage;
 import real.entwickler.dvblbot.Bot;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -31,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 public class TrackManager extends AudioEventAdapter {
 
     private final AudioPlayer PLAYER;
-    private HashMap<Integer, AudioInfo> queue;
+    private final Queue<AudioInfo> queue;
 
     /**
      * Erstellt eine Instanz der Klasse TrackManager.
@@ -40,7 +36,7 @@ public class TrackManager extends AudioEventAdapter {
      */
     public TrackManager(AudioPlayer player) {
         this.PLAYER = player;
-        this.queue = new HashMap<>();
+        this.queue = new LinkedBlockingQueue<>();
     }
 
     /**
@@ -52,7 +48,7 @@ public class TrackManager extends AudioEventAdapter {
     public void queue(AudioTrack track, AudioPlaylist playlist, Member author, TextChannel textChannel, Message message) {
         String identifier = message.getContentRaw();
         AudioInfo info = new AudioInfo(track, author, textChannel);
-        queue.put(queue.size() + 1, info);
+        queue.add(info);
 
         if (PLAYER.getPlayingTrack() == null) {
             PLAYER.playTrack(track);
@@ -75,7 +71,16 @@ public class TrackManager extends AudioEventAdapter {
         }
     }
 
-    public HashMap<Integer, AudioInfo> getQueue() {
+    /**
+     * Returnt die momentane Queue als LinkedHashSet.
+     *
+     * @return Queue
+     */
+    public Set<AudioInfo> getQueue() {
+        return new LinkedHashSet<>(queue);
+    }
+
+    public Queue<AudioInfo> getQueue2() {
         return queue;
     }
 
@@ -86,17 +91,9 @@ public class TrackManager extends AudioEventAdapter {
      * @return AudioInfo
      */
     public AudioInfo getInfo(AudioTrack track) {
-        return queue.values().stream()
+        return queue.stream()
                 .filter(info -> info.getTrack().equals(track))
                 .findFirst().orElse(null);
-    }
-
-    @Getter
-    public Queue<AudioTrack> trackQueue;
-
-
-    public void Player() {
-        this.trackQueue = new LinkedList<>();
     }
 
     /**
@@ -110,15 +107,13 @@ public class TrackManager extends AudioEventAdapter {
      * Shufflet die momentane Queue.
      */
     public void shuffleQueue() {
-        List<AudioInfo> cQueue = new ArrayList<>(queue.values());
+        List<AudioInfo> cQueue = new ArrayList<>(getQueue());
         AudioInfo current = cQueue.get(0);
         cQueue.remove(0);
         Collections.shuffle(cQueue);
         cQueue.add(0, current);
         purgeQueue();
-        cQueue.forEach(all -> {
-            queue.put(queue.size() + 1, all);
-        });
+        queue.addAll(cQueue);
     }
 
     /**
@@ -131,7 +126,7 @@ public class TrackManager extends AudioEventAdapter {
      */
     @Override
     public void onTrackStart(AudioPlayer player, AudioTrack track) {
-        AudioTrack info = player.getPlayingTrack();
+        AudioInfo info = queue.element();
         VoiceChannel vChan = info.getAuthor().getVoiceState().getChannel();
 
         if (vChan == null)

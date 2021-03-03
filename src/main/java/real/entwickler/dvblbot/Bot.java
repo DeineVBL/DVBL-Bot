@@ -29,10 +29,8 @@ import real.entwickler.dvblbot.music.PlayCustomSong;
 import real.entwickler.dvblbot.music.commands.*;
 import real.entwickler.dvblbot.radio.RadioCommand;
 import real.entwickler.dvblbot.radio.commands.BigFMCommand;
-import real.entwickler.dvblbot.school.BBBCommand;
-import real.entwickler.dvblbot.school.FileinfoCommand;
-import real.entwickler.dvblbot.school.LinkCommand;
-import real.entwickler.dvblbot.school.UploadCommand;
+import real.entwickler.dvblbot.radio.commands.RadioListCommand;
+import real.entwickler.dvblbot.school.*;
 import real.entwickler.dvblbot.utils.GeniusClient;
 import real.entwickler.dvblbot.utils.Property;
 
@@ -120,6 +118,8 @@ public class Bot {
 
         commandManager.registerCommand(new RadioCommand("r", "plays a radio sender", ""));
         commandManager.registerCommand(new RadioCommand("radio", "plays a radio sender", ""));
+        commandManager.registerCommand(new RadioListCommand("rl", "shows all available radio sender", ""));
+        commandManager.registerCommand(new RadioListCommand("radiolist", "shows all available radio sender", ""));
         commandManager.registerCommand(new BigFMCommand("bigfm", "plays big fm mashup radio", ""));
         commandManager.registerCommand(new BigFMCommand("bf", "plays big fm mashup radio", ""));
 
@@ -132,6 +132,8 @@ public class Bot {
         commandManager.registerCommand(new FileinfoCommand("fi", "shows you how to name a file", ""));
 
         commandManager.registerCommand(new MSFSCommand("msfs", "shows useful msfs links", ""));
+
+        commandManager.registerCommand(new BeleidigungCommand("ficken", "kicks a user for a beleidigung", ""));
 
 
         Scanner scanner = new Scanner(System.in);

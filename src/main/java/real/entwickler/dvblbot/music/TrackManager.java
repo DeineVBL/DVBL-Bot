@@ -64,7 +64,7 @@ public class TrackManager extends AudioEventAdapter {
             } else {
                 String contentRaw = message.getContentRaw();
 
-                if (!contentRaw.equalsIgnoreCase(".karneval") && !contentRaw.equalsIgnoreCase(".house") && !contentRaw.equalsIgnoreCase(".discord") && !contentRaw.equalsIgnoreCase(".rusky") && !contentRaw.equalsIgnoreCase(".tim") && !contentRaw.equalsIgnoreCase(".dc") && !contentRaw.equalsIgnoreCase(".schlager") && !contentRaw.equalsIgnoreCase(".fä") && !contentRaw.equalsIgnoreCase(".fäaschtbänkler") && !contentRaw.equalsIgnoreCase(".bigfm") && !contentRaw.equalsIgnoreCase("bf")) {
+                if (!contentRaw.equalsIgnoreCase(".karneval") && !contentRaw.equalsIgnoreCase(".house") && !contentRaw.equalsIgnoreCase(".discord") && !contentRaw.equalsIgnoreCase(".rusky") && !contentRaw.equalsIgnoreCase(".tim") && !contentRaw.equalsIgnoreCase(".dc") && !contentRaw.equalsIgnoreCase(".schlager") && !contentRaw.equalsIgnoreCase(".fä") && !contentRaw.equalsIgnoreCase(".fäaschtbänkler") && !contentRaw.equalsIgnoreCase(".bigfm") && !contentRaw.equalsIgnoreCase("bf") && !contentRaw.equalsIgnoreCase("rl") && !contentRaw.equalsIgnoreCase("radiolist")) {
                     Bot.getInstance().getMessageManager().printSongAddedQueueMessage(track, author, textChannel);
                 }
             }

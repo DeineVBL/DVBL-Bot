@@ -29,12 +29,6 @@ public class BigFMCommand extends ICommand {
 
     }
 
-    public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        TextChannel txtChannel = event.getChannel();
-        User user = event.getAuthor();
-        Message message = event.getMessage();
-    }
-
     @Override
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
         Guild g = Bot.getInstance().getDVBL();

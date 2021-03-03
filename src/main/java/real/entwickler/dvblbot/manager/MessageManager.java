@@ -246,10 +246,22 @@ public class MessageManager {
         builder.setTitle("Now playing:", "https://ilr.bigfm.de/bigfm-mashup-128-mp3");
         builder.setDescription("Viel Spaß mit BigFM Mashup!");
         builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/bigfm.png");
-        builder.setColor(Color.GREEN);
+        builder.setColor(Color.PINK);
         builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021");
         textChannel.sendMessage(builder.build()).queue(exitMessage -> {
-            exitMessage.addReaction("U+1F3B6").queue();
+            exitMessage.addReaction("U+1F4FB").queue();
+        });
+    }
+
+    public void printRadioSenderList(Member commandSender, TextChannel textChannel) {
+        builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
+        builder.setTitle("[ Senderliste ]", "https://www.hendrikjansen.nl/henk/streaming5.html#za");
+        builder.setDescription("Oben auf den Link klicken, für eine vollständige Senderliste!");
+        builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
+        builder.setColor(Color.PINK);
+        builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021");
+        textChannel.sendMessage(builder.build()).queue(exitMessage -> {
+            exitMessage.addReaction("U+1F4FB").queue();
         });
     }
 

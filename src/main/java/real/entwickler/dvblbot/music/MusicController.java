@@ -35,11 +35,13 @@ public class MusicController {
     public static Guild guild;
     private static AudioPlayerManager MANAGER;
     private static Map<Guild, Map.Entry<AudioPlayer, TrackManager>> PLAYERS;
+    private boolean loopMode;
 
     public MusicController() {
         MANAGER = new DefaultAudioPlayerManager();
         PLAYERS = new HashMap<>();
         AudioSourceManagers.registerRemoteSources(MANAGER);
+        this.loopMode = false;
     }
 
     /**
@@ -97,8 +99,6 @@ public class MusicController {
     public boolean isIdle(Guild g) {
         return !hasPlayer(g);
     }
-
-    public boolean loop;
 
     public boolean isQueueFilled(Guild g) {
         return getPlayer(g).getPlayingTrack() == null;
@@ -230,5 +230,13 @@ public class MusicController {
      */
     public void skip(Guild g) {
         getPlayer(g).stopTrack();
+    }
+
+    public boolean isLoopMode() {
+        return loopMode;
+    }
+
+    public void setLoopMode(boolean loopMode) {
+        this.loopMode = loopMode;
     }
 }

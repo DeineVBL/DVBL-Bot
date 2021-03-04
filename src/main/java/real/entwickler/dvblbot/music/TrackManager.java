@@ -12,6 +12,7 @@ package real.entwickler.dvblbot.music;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
+import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
@@ -28,6 +29,7 @@ public class TrackManager extends AudioEventAdapter {
 
     private final AudioPlayer PLAYER;
     private final Queue<AudioInfo> queue;
+    private AudioTrack currentTrack;
 
     /**
      * Erstellt eine Instanz der Klasse TrackManager.
@@ -52,6 +54,7 @@ public class TrackManager extends AudioEventAdapter {
 
         if (PLAYER.getPlayingTrack() == null) {
             PLAYER.playTrack(track);
+            currentTrack = track;
 
             if (!identifier.contains("list")) {
                 Bot.getInstance().getMessageManager().handlePlayingSongMessage(track, author, textChannel);
@@ -135,6 +138,7 @@ public class TrackManager extends AudioEventAdapter {
             info.getAuthor().getGuild().getAudioManager().openAudioConnection(vChan);
             info.getAuthor().getGuild().getAudioManager().setSelfDeafened(true);
         }
+        currentTrack = track;
     }
 
     /**
@@ -152,13 +156,20 @@ public class TrackManager extends AudioEventAdapter {
         Guild g = Objects.requireNonNull(queue.poll()).getAuthor().getGuild();
         Message latestPlayingMessage = Bot.getInstance().getMessageManager().getLatestPlayingMessage();
 
+
+
+        if (Bot.getInstance().getMusicController().isLoopMode()) {
+            player.playTrack(currentTrack.makeClone());
+            return;
+        }
+
         if (queue.isEmpty()) {
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     if (player.getPlayingTrack() == null) {
-                        final AudioInfo poll = queue.poll();
+                        final AudioInfo poll = queue.element();
                         Bot.getInstance().getMessageManager().printInactivityTimeoutMessage(latestPlayingMessage.getTextChannel());
                         g.getAudioManager().closeAudioConnection();
                     }
@@ -170,4 +181,5 @@ public class TrackManager extends AudioEventAdapter {
             Bot.getInstance().getMessageManager().handlePlayingSongMessage(nextTrack.getTrack(), nextTrack.getAuthor(), nextTrack.getChannel());
             }
     }
+
 }

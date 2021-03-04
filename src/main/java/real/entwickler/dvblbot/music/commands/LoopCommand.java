@@ -29,5 +29,8 @@ public class LoopCommand extends ICommand {
         Guild guild = Bot.getInstance().getDVBL();
         AudioPlayer player = Bot.getInstance().getMusicController().getPlayer(guild);
 
-            }
+        Bot.getInstance().getMusicController().setLoopMode(!Bot.getInstance().getMusicController().isLoopMode());
+        textChannel.sendMessage("loop: " + Bot.getInstance().getMusicController().isLoopMode()).queue();
+        //TODO: Nachricht whether loop mode is active or deactivated
+    }
 }

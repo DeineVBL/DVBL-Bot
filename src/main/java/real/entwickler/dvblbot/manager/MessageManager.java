@@ -331,6 +331,18 @@ public class MessageManager {
         }
     }
 
+    public void printHelpMessage(Member commandSender, TextChannel textChannel) {
+        builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
+        builder.setTitle("Help");
+        builder.setDescription("");
+        builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
+        builder.setColor(Color.RED);
+        builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021");
+        textChannel.sendMessage(builder.build()).queue(exitMessage -> {
+            exitMessage.addReaction("U+2753").queue();
+        });
+    }
+
     public Message getLatestPlayingMessage() {
         return latestPlayingMessage;
     }
@@ -338,4 +350,6 @@ public class MessageManager {
     public void setLatestPlayingMessage(Message latestPlayingMessage) {
         this.latestPlayingMessage = latestPlayingMessage;
     }
+
+
 }

@@ -84,7 +84,8 @@ public class Bot {
         messageManager.printReadyMessage(EChannel.CHANGES.getChannelID());
 
 
-        //commandManager.registerCommand(new HelpCommand("help", "help bot", "gives you help", ""));
+        commandManager.registerCommand(new HelpCommand("help", "help bot", "gives you help", ""));
+        commandManager.registerCommand(new HelpCommand("h", "help bot", "gives you help", ""));
 
         commandManager.registerCommand(new PlayCommand("play", "Plays a given song from youtube or spotify", ""));
         commandManager.registerCommand(new PlayCommand("p", "Plays a given song from youtube or spotify", ""));
@@ -115,6 +116,7 @@ public class Bot {
         commandManager.registerCommand(new FaeaschtbaenklerCommand("fä", "plays fäschtbänkler songs", ""));
         commandManager.registerCommand(new FaeaschtbaenklerCommand("fäaschtbänkler", "plays fäschtbänkler songs", ""));
         commandManager.registerCommand(new MoveCommand("move", "Moves the given song to a given index in the queue", ""));
+        commandManager.registerCommand(new LoopCommand("loop", "loops a current song", ""));
 
         commandManager.registerCommand(new RadioCommand("r", "plays a radio sender", ""));
         commandManager.registerCommand(new RadioCommand("radio", "plays a radio sender", ""));
@@ -141,8 +143,6 @@ public class Bot {
         if (new Scanner(System.in).nextLine().equalsIgnoreCase("stop")) {
             messageManager.printStopMessage(EChannel.CHANGES.getChannelID());
         }
-
-
     }
 
     public GeniusClient getGeniusClient() {

@@ -98,6 +98,8 @@ public class MusicController {
         return !hasPlayer(g);
     }
 
+    public boolean loop;
+
     public boolean isQueueFilled(Guild g) {
         return getPlayer(g).getPlayingTrack() == null;
     }

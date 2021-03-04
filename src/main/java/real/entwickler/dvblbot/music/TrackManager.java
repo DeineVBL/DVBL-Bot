@@ -127,7 +127,7 @@ public class TrackManager extends AudioEventAdapter {
     @Override
     public void onTrackStart(AudioPlayer player, AudioTrack track) {
         AudioInfo info = queue.element();
-        VoiceChannel vChan = info.getAuthor().getVoiceState().getChannel();
+        VoiceChannel vChan = Objects.requireNonNull(info.getAuthor().getVoiceState()).getChannel();
 
         if (vChan == null)
             player.stopTrack();
@@ -149,7 +149,7 @@ public class TrackManager extends AudioEventAdapter {
     @SneakyThrows
     @Override
     public void onTrackEnd (AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
-        Guild g = queue.poll().getAuthor().getGuild();
+        Guild g = Objects.requireNonNull(queue.poll()).getAuthor().getGuild();
         Message latestPlayingMessage = Bot.getInstance().getMessageManager().getLatestPlayingMessage();
 
         if (queue.isEmpty()) {

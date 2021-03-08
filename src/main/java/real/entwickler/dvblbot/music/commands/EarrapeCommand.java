@@ -1,11 +1,11 @@
 /*
  * Copyright notice
  * Copyright (c) Nils Körting-Eberhardt 2021
- * Created: 02.03.2021 @ 20:20:46
+ * Created: 08.03.2021 @ 08:29:17
  *
  * All contents of this source code are protected by copyright. The copyright is owned by Nils Körting-Eberhardt, unless explicitly stated otherwise. All rights reserved.
  *
- * MusicSchoolCommand.java is part of the DVBL-Bot which is licensed under the Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) license.
+ * EarrapeCommand.java is part of the DVBL-Bot which is licensed under the Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) license.
  */
 
 package real.entwickler.dvblbot.music.commands;
@@ -16,21 +16,29 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import real.entwickler.dvblbot.Bot;
+import real.entwickler.dvblbot.music.TrackManager;
 import real.entwickler.dvblbot.utils.ICommand;
 
+public class EarrapeCommand extends ICommand {
 
-public class MusicSchoolCommand extends ICommand {
-
-    public MusicSchoolCommand(String name, String description, String... roles) {
+    public EarrapeCommand(String name, String description, String... roles) {
         super(name, description, roles);
-
     }
 
     @Override
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
         Guild g = Bot.getInstance().getDVBL();
         AudioPlayer player = Bot.getInstance().getMusicController().getPlayer(g);
+        TrackManager manager = Bot.getInstance().getMusicController().getManager(g);
+        Bot.getInstance().getMusicController().setEarrapeMode(!Bot.getInstance().getMusicController().isEarrapeMode());
 
-        Bot.getInstance().getMusicController().loadTrack("https://www.youtube.com/watch?v=TRGIQAUHqhM", commandSender, message, null);
+        if (Bot.getInstance().getMusicController().isEarrapeMode()) {
+            message.addReaction("U+2714").queue();
+        }
+
+        if (!Bot.getInstance().getMusicController().isEarrapeMode()) {
+            message.addReaction("U+274C").queue();
+        }
+
     }
 }

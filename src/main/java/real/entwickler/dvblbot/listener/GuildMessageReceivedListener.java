@@ -10,14 +10,10 @@
 
 package real.entwickler.dvblbot.listener;
 
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import real.entwickler.dvblbot.Bot;
-import real.entwickler.dvblbot.music.TrackManager;
 import real.entwickler.dvblbot.utils.ICommand;
 
 
@@ -27,6 +23,7 @@ public class GuildMessageReceivedListener extends ListenerAdapter {
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         TextChannel txtChannel = event.getChannel();
         User user = event.getAuthor();
+        Member member = event.getMember();
         Message message = event.getMessage();
 
         /**

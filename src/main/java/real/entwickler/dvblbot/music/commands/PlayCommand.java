@@ -28,13 +28,25 @@ public class PlayCommand extends ICommand {
 
     @Override
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
-        if (args.length >= 2) {
-                String input = Arrays.stream(args).skip(1).map(s -> " " + s).collect(Collectors.joining()).substring(1);
+        String input = Arrays.stream(args).skip(1).map(s -> " " + s).collect(Collectors.joining()).substring(1);
 
-                if (!(input.startsWith("http://") || input.startsWith("https://")))
-                    input = "ytsearch: " + input;
+        if (args.length >= 2) {
+
+            if (!(input.startsWith("http://") || input.startsWith("https://"))) {
+
+                if (Bot.getInstance().getMusicController().isBassboostMode()) {
+                    input = "ytsearch:" + input + " bassboost";
+                    Bot.getInstance().getMusicController().loadTrack(input, commandSender, message, null);
+
+                    return;
+                }
+                input = "ytsearch: " + input;
 
                 Bot.getInstance().getMusicController().loadTrack(input, commandSender, message, null);
+
+                return;
             }
+            Bot.getInstance().getMusicController().loadTrack(input, commandSender, message, null);
+        }
     }
 }

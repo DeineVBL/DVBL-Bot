@@ -12,13 +12,11 @@ package real.entwickler.dvblbot.music;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
-import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.internal.entities.AbstractMessage;
 import real.entwickler.dvblbot.Bot;
 
 import java.util.*;
@@ -135,6 +133,12 @@ public class TrackManager extends AudioEventAdapter {
         if (vChan == null)
             player.stopTrack();
         else {
+            if (Bot.getInstance().getMusicController().isEarrapeMode()) {
+                player.setVolume(2147483647);
+            }
+            if (!Bot.getInstance().getMusicController().isEarrapeMode()) {
+                player.setVolume(20);
+            }
             info.getAuthor().getGuild().getAudioManager().openAudioConnection(vChan);
             info.getAuthor().getGuild().getAudioManager().setSelfDeafened(true);
         }
@@ -152,34 +156,34 @@ public class TrackManager extends AudioEventAdapter {
      */
     @SneakyThrows
     @Override
-    public void onTrackEnd (AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
+    public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         Guild g = Objects.requireNonNull(queue.poll()).getAuthor().getGuild();
         Message latestPlayingMessage = Bot.getInstance().getMessageManager().getLatestPlayingMessage();
 
 
-
-        if (Bot.getInstance().getMusicController().isLoopMode()) {
-            player.playTrack(currentTrack.makeClone());
-            return;
-        }
-
         if (queue.isEmpty()) {
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    if (player.getPlayingTrack() == null) {
-                        final AudioInfo poll = queue.element();
-                        Bot.getInstance().getMessageManager().printInactivityTimeoutMessage(latestPlayingMessage.getTextChannel());
-                        g.getAudioManager().closeAudioConnection();
+            if (Bot.getInstance().getMusicController().isLoopMode()) {
+                player.playTrack(currentTrack.makeClone());
+            } else {
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        if (player.getPlayingTrack() == null) {
+                            Bot.getInstance().getMessageManager().printInactivityTimeoutMessage(Objects.requireNonNull(latestPlayingMessage.getMember()), latestPlayingMessage.getTextChannel());
+                            g.getAudioManager().closeAudioConnection();
+                        }
                     }
-                }
-            }, TimeUnit.SECONDS.toMillis(150));
+                }, TimeUnit.SECONDS.toMillis(150));
+            }
         } else {
+            if (Bot.getInstance().getMusicController().isLoopMode()) {
+                player.playTrack(currentTrack.makeClone());
+            }
             AudioInfo nextTrack = queue.element();
             player.playTrack(nextTrack.getTrack());
             Bot.getInstance().getMessageManager().handlePlayingSongMessage(nextTrack.getTrack(), nextTrack.getAuthor(), nextTrack.getChannel());
-            }
+        }
     }
 
 }

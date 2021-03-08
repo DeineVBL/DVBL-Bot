@@ -13,8 +13,7 @@ package real.entwickler.dvblbot;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
-import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.Compression;
 import real.entwickler.dvblbot.enums.EChannel;
@@ -83,7 +82,6 @@ public class Bot {
 
         messageManager.printReadyMessage(EChannel.CHANGES.getChannelID());
 
-
         commandManager.registerCommand(new HelpCommand("help", "help bot", "gives you help", ""));
         commandManager.registerCommand(new HelpCommand("h", "help bot", "gives you help", ""));
 
@@ -117,6 +115,10 @@ public class Bot {
         commandManager.registerCommand(new FaeaschtbaenklerCommand("fäaschtbänkler", "plays fäschtbänkler songs", ""));
         commandManager.registerCommand(new MoveCommand("move", "Moves the given song to a given index in the queue", ""));
         commandManager.registerCommand(new LoopCommand("loop", "loops a current song", ""));
+        commandManager.registerCommand(new EarrapeCommand("earrape", "makes a song to an earrape song", ""));
+        commandManager.registerCommand(new EarrapeCommand("er", "makes a song to an earrape song", ""));
+        commandManager.registerCommand(new BassboostCommand("bassboost", "plays a song in bassboosted", ""));
+        commandManager.registerCommand(new BassboostCommand("bb", "plays a song in bassboosted", ""));
 
         commandManager.registerCommand(new RadioCommand("r", "plays a radio sender", ""));
         commandManager.registerCommand(new RadioCommand("radio", "plays a radio sender", ""));

@@ -36,12 +36,16 @@ public class MusicController {
     private static AudioPlayerManager MANAGER;
     private static Map<Guild, Map.Entry<AudioPlayer, TrackManager>> PLAYERS;
     private boolean loopMode;
+    private boolean earrapeMode;
+    private boolean bassBoostMode;
 
     public MusicController() {
         MANAGER = new DefaultAudioPlayerManager();
         PLAYERS = new HashMap<>();
         AudioSourceManagers.registerRemoteSources(MANAGER);
         this.loopMode = false;
+        this.earrapeMode = false;
+        this.bassBoostMode = false;
     }
 
     /**
@@ -69,7 +73,7 @@ public class MusicController {
 
         PLAYERS.put(g, new AbstractMap.SimpleEntry<>(p, m));
 
-        p.setVolume(15);
+        p.setVolume(20);
 
         return p;
     }
@@ -236,7 +240,23 @@ public class MusicController {
         return loopMode;
     }
 
+    public boolean isEarrapeMode() {
+        return earrapeMode;
+    }
+
     public void setLoopMode(boolean loopMode) {
         this.loopMode = loopMode;
+    }
+
+    public void setEarrapeMode(boolean earrapeMode) {
+        this.earrapeMode = earrapeMode;
+    }
+
+    public boolean isBassboostMode(){
+        return bassBoostMode;
+    }
+
+    public void setBassBoostMode (boolean bassBoostMode) {
+        this.bassBoostMode = bassBoostMode;
     }
 }

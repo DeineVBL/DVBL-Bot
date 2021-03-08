@@ -10,12 +10,12 @@
 
 package real.entwickler.dvblbot.music.commands;
 
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.managers.AudioManager;
 import real.entwickler.dvblbot.Bot;
+import real.entwickler.dvblbot.music.TrackManager;
 import real.entwickler.dvblbot.utils.ICommand;
 
 
@@ -37,20 +37,29 @@ public class SkipCommand extends ICommand {
 
             }
         }
+
         if (Bot.getInstance().getMusicController().getManager(guild).getQueue().size() > 1) {
             if (Bot.getInstance().getMusicController().isIdle(guild)) return;
-            if (args.length == 1) {
-                Bot.getInstance().getMusicController().getPlayer(guild).stopTrack();
-                message.addReaction("U+23E9").queue();
-            } else {
-                for (int i = 0; i < Integer.parseInt(args[1]); i++) {
-                    Bot.getInstance().getMusicController().getPlayer(guild).stopTrack();
-                    message.addReaction("U+23E9").queue();
-                }
+            Bot.getInstance().getMusicController().getPlayer(guild).stopTrack();
+            message.addReaction("U+23E9").queue();
 
+        } else {
+
+            VoiceChannel vc = commandSender.getVoiceState().getChannel();
+
+            if (vc == null) {
+                Bot.getInstance().getMessageManager().printBotErrorVoiceChannel(commandSender, textChannel);
+            } else {
+                Guild g = Bot.getInstance().getDVBL();
+                AudioTrack audioTrack = Bot.getInstance().getMusicController().getPlayer(g).getPlayingTrack();
+                AudioManager manager = vc.getGuild().getAudioManager();
+                manager.closeAudioConnection();
+                message.addReaction("U+23E9").queue();
+                Bot.getInstance().getMessageManager().printSkipQueueEmptyMessage(commandSender, textChannel);
             }
-            AudioTrack audioTrack = Bot.getInstance().getMusicController().getPlayer(guild).getPlayingTrack();
         }
+
+        AudioTrack audioTrack = Bot.getInstance().getMusicController().getPlayer(guild).getPlayingTrack();
     }
 }
 

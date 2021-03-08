@@ -12,6 +12,7 @@ package real.entwickler.dvblbot.utils;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
 import java.awt.*;
@@ -37,8 +38,8 @@ public class EmbedMessage {
         this.fields = fields;
     }
 
-    public EmbedBuilder raw(boolean playTrackNow, AudioTrack track, Color color) {
-        EmbedBuilder builder = new EmbedBuilder().setAuthor(author).setDescription(description).setColor(color).setFooter("DVBL-Bot - Copyright © swausb || realEntwickler 2021").setTimestamp(LocalDateTime.now().atZone(TimeZone.getTimeZone("Europe/Berlin").toZoneId()));
+    public EmbedBuilder raw(Member commandSender, boolean playTrackNow, AudioTrack track, Color color) {
+        EmbedBuilder builder = new EmbedBuilder().setAuthor(author).setDescription(description).setColor(color).setFooter("DVBL-Bot - Copyright © swausb || realEntwickler 2021", commandSender.getUser().getEffectiveAvatarUrl()).setTimestamp(LocalDateTime.now().atZone(TimeZone.getTimeZone("Europe/Berlin").toZoneId()));
         String query = URI.create(track.getInfo().uri).getQuery();
         String[] split = query.split("&");
 

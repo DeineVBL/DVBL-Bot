@@ -119,6 +119,8 @@ public class Bot {
         commandManager.registerCommand(new EarrapeCommand("er", "makes a song to an earrape song", ""));
         commandManager.registerCommand(new BassboostCommand("bassboost", "plays a song in bassboosted", ""));
         commandManager.registerCommand(new BassboostCommand("bb", "plays a song in bassboosted", ""));
+        commandManager.registerCommand(new JumpCommand("jump", "jumps to a song in a queue", ""));
+        commandManager.registerCommand(new RemoveCommand("remove", "removes a song in a queue", ""));
 
         commandManager.registerCommand(new RadioCommand("r", "plays a radio sender", ""));
         commandManager.registerCommand(new RadioCommand("radio", "plays a radio sender", ""));

@@ -50,10 +50,14 @@ public class SkipCommand extends ICommand {
             if (vc == null) {
                 Bot.getInstance().getMessageManager().printBotErrorVoiceChannel(commandSender, textChannel);
             } else {
-                Guild g = Bot.getInstance().getDVBL();
-                AudioTrack audioTrack = Bot.getInstance().getMusicController().getPlayer(g).getPlayingTrack();
-                AudioManager manager = vc.getGuild().getAudioManager();
-                manager.closeAudioConnection();
+                AudioTrack audioTrack = Bot.getInstance().getMusicController().getPlayer(guild).getPlayingTrack();
+                AudioPlayer audioPlayer = Bot.getInstance().getMusicController().getPlayer(guild);
+                AudioManager audioManagermanager = vc.getGuild().getAudioManager();
+                TrackManager manager = Bot.getInstance().getMusicController().getManager(guild);
+
+                audioPlayer.stopTrack();
+                manager.purgeQueue();
+                audioManagermanager.closeAudioConnection();
                 message.addReaction("U+23E9").queue();
                 Bot.getInstance().getMessageManager().printSkipQueueEmptyMessage(commandSender, textChannel);
             }

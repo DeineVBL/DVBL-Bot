@@ -240,12 +240,12 @@ public class MusicController {
         return loopMode;
     }
 
-    public boolean isEarrapeMode() {
-        return earrapeMode;
-    }
-
     public void setLoopMode(boolean loopMode) {
         this.loopMode = loopMode;
+    }
+
+    public boolean isEarrapeMode() {
+        return earrapeMode;
     }
 
     public void setEarrapeMode(boolean earrapeMode) {

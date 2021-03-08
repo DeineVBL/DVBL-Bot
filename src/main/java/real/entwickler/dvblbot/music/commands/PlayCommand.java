@@ -30,23 +30,27 @@ public class PlayCommand extends ICommand {
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
         String input = Arrays.stream(args).skip(1).map(s -> " " + s).collect(Collectors.joining()).substring(1);
 
-        if (args.length >= 2) {
+        if (commandSender.getVoiceState().getChannel() != null) {
 
-            if (!(input.startsWith("http://") || input.startsWith("https://"))) {
+            if (args.length >= 2) {
 
-                if (Bot.getInstance().getMusicController().isBassboostMode()) {
-                    input = "ytsearch:" + input + " bassboost";
+                if (!(input.startsWith("http://") || input.startsWith("https://"))) {
+
+                    if (Bot.getInstance().getMusicController().isBassboostMode()) {
+                        input = "ytsearch:" + input + " bassboost";
+                        Bot.getInstance().getMusicController().loadTrack(input, commandSender, message, null);
+
+                        return;
+                    }
+                    input = "ytsearch: " + input;
                     Bot.getInstance().getMusicController().loadTrack(input, commandSender, message, null);
 
                     return;
                 }
-                input = "ytsearch: " + input;
-
                 Bot.getInstance().getMusicController().loadTrack(input, commandSender, message, null);
-
-                return;
             }
-            Bot.getInstance().getMusicController().loadTrack(input, commandSender, message, null);
+        } else {
+            Bot.getInstance().getMessageManager().printErrorVoiceChannel(commandSender, textChannel);
         }
     }
 }

@@ -35,7 +35,7 @@ public class ClearCommand extends ICommand {
                     if(manager.isConnected()) {
                         Bot.getInstance().getMusicController().getManager(g).purgeQueue();
                         Bot.getInstance().getMusicController().getPlayer(g).stopTrack();
-                        message.addReaction("U+2757").queue();
+                        message.addReaction("U+1F6AE").queue();
                     } else {
                         Bot.getInstance().getMessageManager().printBotErrorVoiceChannel(commandSender, textChannel);
                     }

@@ -123,6 +123,9 @@ public class Bot {
         commandManager.registerCommand(new RemoveCommand("remove", "removes a song in a queue", ""));
         commandManager.registerCommand(new SetVolumeCommand("setvolume", "sets the player volume", ""));
         commandManager.registerCommand(new SetVolumeCommand("sv", "sets the player volume", ""));
+        commandManager.registerCommand(new AchtDAudioCommand("8d", "plays 8d audio music", ""));
+        commandManager.registerCommand(new AchtDAudioCommand("achtd", "plays 8d audio music", ""));
+        commandManager.registerCommand(new AchtDAudioCommand("8daudio", "plays 8d audio music", ""));
 
         commandManager.registerCommand(new RadioCommand("r", "plays a radio sender", ""));
         commandManager.registerCommand(new RadioCommand("radio", "plays a radio sender", ""));

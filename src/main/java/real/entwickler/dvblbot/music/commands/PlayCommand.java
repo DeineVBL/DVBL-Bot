@@ -48,6 +48,14 @@ public class PlayCommand extends ICommand {
 
                         return;
                     }
+
+                    if (Bot.getInstance().getMusicController().isAchtDAudioMode()) {
+                        input = "ytsearch:" + input + " 8d audio";
+                        Bot.getInstance().getMusicController().loadTrack(input, commandSender, message, null);
+
+                        return;
+                    }
+
                     input = "ytsearch: " + input;
                     Bot.getInstance().getMusicController().loadTrack(input, commandSender, message, null);
 
@@ -61,7 +69,6 @@ public class PlayCommand extends ICommand {
                     return;
                 }
                 Bot.getInstance().getMusicController().loadTrack(input, commandSender, message, null);
-                return;
             }
         } else {
             Bot.getInstance().getMessageManager().printErrorVoiceChannel(commandSender, textChannel);

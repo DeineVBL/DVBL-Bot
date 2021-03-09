@@ -16,6 +16,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import real.entwickler.dvblbot.Bot;
 import real.entwickler.dvblbot.music.AudioInfo;
+import real.entwickler.dvblbot.music.TrackManager;
 import real.entwickler.dvblbot.utils.ICommand;
 
 import java.util.ArrayList;
@@ -32,14 +33,24 @@ public class RemoveCommand extends ICommand {
     @Override
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
         Guild guild = Bot.getInstance().getDVBL();
-        Integer position = Integer.parseInt(args[1]);
-        Queue<AudioInfo> queue = Bot.getInstance().getMusicController().getManager(guild).getQueue2();
+
+        int position = 0;
+        try {
+            position = Integer.parseInt(args[1]) - 1;
+        } catch (NumberFormatException ec) {
+            //TODO: Nachricht, dass keine Zahl angegeben wuzrde
+        }
+
+        TrackManager manager = Bot.getInstance().getMusicController().getManager(guild);
+        if (position > -1 && position > manager.getNewQueue().size()) {
+            //TODO: Nachricht, dass Zahl sich außerhalb des Zahlenbereiches befindet
+            System.out.println("return");
+            return;
+        }
+        AudioInfo remove = manager.getNewQueue().remove(position);
 
 
-        List<AudioInfo> cQueue = new ArrayList<>(Bot.getInstance().getMusicController().getManager(guild).getQueue2());
-        AudioInfo current = cQueue.get(0);
-        cQueue.remove(position);
-        cQueue.add(position, null);
+        //TODO: Nachricht, dass geklappt hat
     }
 
 

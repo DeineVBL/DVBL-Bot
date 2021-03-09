@@ -15,10 +15,16 @@ import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
+import com.wrapper.spotify.SpotifyApi;
+import com.wrapper.spotify.exceptions.SpotifyWebApiException;
+import com.wrapper.spotify.model_objects.specification.Track;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.entities.*;
+import org.apache.hc.core5.http.ParseException;
 import real.entwickler.dvblbot.Bot;
+import real.entwickler.dvblbot.music.commands.SetVolumeCommand;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -26,7 +32,9 @@ import java.util.concurrent.TimeUnit;
 public class TrackManager extends AudioEventAdapter {
 
     private final AudioPlayer PLAYER;
-    private final Queue<AudioInfo> queue;
+    //private final Queue<AudioInfo> queue;
+    private final ArrayList<AudioInfo> queue2;
+
     private AudioTrack currentTrack;
 
     /**
@@ -36,7 +44,8 @@ public class TrackManager extends AudioEventAdapter {
      */
     public TrackManager(AudioPlayer player) {
         this.PLAYER = player;
-        this.queue = new LinkedBlockingQueue<>();
+        //this.queue = new LinkedBlockingQueue<>();
+        this.queue2 = new ArrayList<AudioInfo>();
     }
 
     /**
@@ -48,7 +57,8 @@ public class TrackManager extends AudioEventAdapter {
     public void queue(AudioTrack track, AudioPlaylist playlist, Member author, TextChannel textChannel, Message message) {
         String identifier = message.getContentRaw();
         AudioInfo info = new AudioInfo(track, author, textChannel);
-        queue.add(info);
+        //queue.add(info);
+        queue2.add(info);
 
         if (PLAYER.getPlayingTrack() == null) {
             PLAYER.playTrack(track);
@@ -77,13 +87,28 @@ public class TrackManager extends AudioEventAdapter {
      *
      * @return Queue
      */
-    public Set<AudioInfo> getQueue() {
+    /*public Set<AudioInfo> getQueue() {
         return new LinkedHashSet<>(queue);
+    }*/
+    public Set<AudioInfo> getQueue() {
+        return new LinkedHashSet<>(queue2);
     }
 
-    public Queue<AudioInfo> getQueue2() {
+    /*public Queue<AudioInfo> getQueue2() {
         return queue;
+    }*/
+
+    public Queue<AudioInfo> getQueue2() {
+        return new LinkedBlockingQueue<>(queue2);
     }
+
+    public ArrayList<AudioInfo> getNewQueue() {
+        return queue2;
+    }
+
+    /*public ArrayList<AudioInfo> getQueueAsArray() {
+        return new ArrayList<>(queue);
+    }*/
 
     /**
      * Returnt AudioInfo des Tracks aus der Queue.
@@ -92,7 +117,10 @@ public class TrackManager extends AudioEventAdapter {
      * @return AudioInfo
      */
     public AudioInfo getInfo(AudioTrack track) {
-        return queue.stream()
+        /*return queue.stream()
+                .filter(info -> info.getTrack().equals(track))
+                .findFirst().orElse(null);*/
+        return queue2.stream()
                 .filter(info -> info.getTrack().equals(track))
                 .findFirst().orElse(null);
     }
@@ -101,7 +129,8 @@ public class TrackManager extends AudioEventAdapter {
      * Leert die gesammte Queue.
      */
     public void purgeQueue() {
-        queue.clear();
+        //queue.clear();
+        queue2.clear();
     }
 
     /**
@@ -114,7 +143,8 @@ public class TrackManager extends AudioEventAdapter {
         Collections.shuffle(cQueue);
         cQueue.add(0, current);
         purgeQueue();
-        queue.addAll(cQueue);
+        //queue.addAll(cQueue);
+        queue2.addAll(cQueue);
     }
 
     /**
@@ -127,7 +157,8 @@ public class TrackManager extends AudioEventAdapter {
      */
     @Override
     public void onTrackStart(AudioPlayer player, AudioTrack track) {
-        AudioInfo info = queue.element();
+        //AudioInfo info = queue.element();
+        AudioInfo info = queue2.get(0);
         VoiceChannel vChan = Objects.requireNonNull(info.getAuthor().getVoiceState()).getChannel();
 
         if (vChan == null)
@@ -137,7 +168,7 @@ public class TrackManager extends AudioEventAdapter {
                 player.setVolume(2147483647);
             }
             if (!Bot.getInstance().getMusicController().isEarrapeMode()) {
-                player.setVolume(20);
+                SetVolumeCommand setVolumeCommand;
             }
             info.getAuthor().getGuild().getAudioManager().openAudioConnection(vChan);
             info.getAuthor().getGuild().getAudioManager().setSelfDeafened(true);
@@ -157,11 +188,13 @@ public class TrackManager extends AudioEventAdapter {
     @SneakyThrows
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
-        Guild g = Objects.requireNonNull(queue.poll()).getAuthor().getGuild();
+        //Guild g = Objects.requireNonNull(queue.poll()).getAuthor().getGuild();
+        Guild g = Objects.requireNonNull(queue2.remove(0)).getAuthor().getGuild();
         Message latestPlayingMessage = Bot.getInstance().getMessageManager().getLatestPlayingMessage();
 
 
-        if (queue.isEmpty()) {
+       // if (queue.isEmpty()) {
+       if (queue2.isEmpty()) {
             if (Bot.getInstance().getMusicController().isLoopMode()) {
                 player.playTrack(currentTrack.makeClone());
             } else {
@@ -180,10 +213,10 @@ public class TrackManager extends AudioEventAdapter {
             if (Bot.getInstance().getMusicController().isLoopMode()) {
                 player.playTrack(currentTrack.makeClone());
             }
-            AudioInfo nextTrack = queue.element();
+            //AudioInfo nextTrack = queue.element();
+            AudioInfo nextTrack = queue2.get(0);
             player.playTrack(nextTrack.getTrack());
             Bot.getInstance().getMessageManager().handlePlayingSongMessage(nextTrack.getTrack(), nextTrack.getAuthor(), nextTrack.getChannel());
         }
     }
-
 }

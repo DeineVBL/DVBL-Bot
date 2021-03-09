@@ -74,7 +74,6 @@ public class Bot {
         this.commandManager = new CommandManager();
         this.musicController = new MusicController();
         this.geniusClient = new GeniusClient(property.get("cfg", "genius-token"));
-        MusicController.guild = getDVBL();
         this.jda.addEventListener(new GuildMemberJoinListener());
         this.jda.addEventListener(new GuildMemberLeaveListener());
         this.jda.addEventListener(new GuildMessageReactionAddListener());
@@ -84,6 +83,7 @@ public class Bot {
 
         commandManager.registerCommand(new HelpCommand("help", "help bot", "gives you help", ""));
         commandManager.registerCommand(new HelpCommand("h", "help bot", "gives you help", ""));
+        commandManager.registerCommand(new ResetCommand("reset", "resets the bot", ""));
 
         commandManager.registerCommand(new PlayCommand("play", "Plays a given song from youtube or spotify", ""));
         commandManager.registerCommand(new PlayCommand("p", "Plays a given song from youtube or spotify", ""));
@@ -97,7 +97,7 @@ public class Bot {
         commandManager.registerCommand(new PauseCommand("pause", "pauses a playing song", ""));
         commandManager.registerCommand(new ResumeCommand("resume", "resumes a paused song", ""));
         commandManager.registerCommand(new StopCommand("stop", "stops a playing song", ""));
-        commandManager.registerCommand(new LyricsCommand("lyrics", "shows the lyrics of a song", ""));
+        //commandManager.registerCommand(new LyricsCommand("lyrics", "shows the lyrics of a song", ""));
         commandManager.registerCommand(new ShuffleCommand("shuffle", "shuffles a queue", ""));
         commandManager.registerCommand(new PlayCustomSong("paulymarz", "plays the pauly marz", ""));
         commandManager.registerCommand(new CopilotCommand("copilot", "plays the copilot song", ""));
@@ -121,6 +121,8 @@ public class Bot {
         commandManager.registerCommand(new BassboostCommand("bb", "plays a song in bassboosted", ""));
         commandManager.registerCommand(new JumpCommand("jump", "jumps to a song in a queue", ""));
         commandManager.registerCommand(new RemoveCommand("remove", "removes a song in a queue", ""));
+        commandManager.registerCommand(new SetVolumeCommand("setvolume", "sets the player volume", ""));
+        commandManager.registerCommand(new SetVolumeCommand("sv", "sets the player volume", ""));
 
         commandManager.registerCommand(new RadioCommand("r", "plays a radio sender", ""));
         commandManager.registerCommand(new RadioCommand("radio", "plays a radio sender", ""));
@@ -141,6 +143,7 @@ public class Bot {
 
         commandManager.registerCommand(new BeleidigungCommand("ficken", "kicks a user for a beleidigung", ""));
 
+        MusicController.guild = getDVBL();
 
         Scanner scanner = new Scanner(System.in);
 

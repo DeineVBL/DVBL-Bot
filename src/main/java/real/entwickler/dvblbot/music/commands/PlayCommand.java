@@ -10,12 +10,18 @@
 
 package real.entwickler.dvblbot.music.commands;
 
+import com.wrapper.spotify.SpotifyApi;
+import com.wrapper.spotify.exceptions.SpotifyWebApiException;
+import com.wrapper.spotify.model_objects.specification.Track;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
+import org.apache.hc.core5.http.ParseException;
 import real.entwickler.dvblbot.Bot;
 import real.entwickler.dvblbot.utils.ICommand;
+import real.entwickler.dvblbot.utils.Property;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -47,10 +53,27 @@ public class PlayCommand extends ICommand {
 
                     return;
                 }
+                if (input.startsWith("https://open.spotify.com/track/")) {
+                    String spotifyId = input.substring(31, 53);
+                    //System.out.println("spo:" + spotifyId);
+                    Track spotifyTrack = getSpotifyTrack(spotifyId);
+                    Bot.getInstance().getMusicController().loadTrack("ytsearch: " + spotifyTrack.getName(), commandSender, message, null);
+                    return;
+                }
                 Bot.getInstance().getMusicController().loadTrack(input, commandSender, message, null);
+                return;
             }
         } else {
             Bot.getInstance().getMessageManager().printErrorVoiceChannel(commandSender, textChannel);
+        }
+    }
+    public Track getSpotifyTrack (String id) {
+        try {
+            Property property = Bot.getInstance().getProperty();
+            return new SpotifyApi.Builder().setAccessToken(property.get("cfg", "access_token")).build().getTrack(id).build().execute();
+        } catch (IOException | SpotifyWebApiException | ParseException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

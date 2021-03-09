@@ -30,6 +30,7 @@ public class ResumeCommand extends ICommand {
     }
 
     private void lastTrack() {
+        //Bot.getInstance().getMusicController().getManager(Bot.getInstance().getDVBL()).getQueue2().element().getTrack().getInfo();
         Bot.getInstance().getMusicController().getManager(Bot.getInstance().getDVBL()).getQueue2().element().getTrack().getInfo();
     }
 

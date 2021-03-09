@@ -39,6 +39,8 @@ public class ResetCommand extends ICommand {
         controller.setEarrapeMode(false);
         controller.setLoopMode(false);
         controller.setBassBoostMode(false);
+        controller.setAchtDAudioMode(false);
+        audioPlayer.setVolume(20);
         manager.purgeQueue();
         audioManager.closeAudioConnection();
 

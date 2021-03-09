@@ -84,6 +84,7 @@ public class Bot {
         commandManager.registerCommand(new HelpCommand("help", "help bot", "gives you help", ""));
         commandManager.registerCommand(new HelpCommand("h", "help bot", "gives you help", ""));
         commandManager.registerCommand(new ResetCommand("reset", "resets the bot", ""));
+        commandManager.registerCommand(new CheckCommand("check", "checks the modi", ""));
 
         commandManager.registerCommand(new PlayCommand("play", "Plays a given song from youtube or spotify", ""));
         commandManager.registerCommand(new PlayCommand("p", "Plays a given song from youtube or spotify", ""));

@@ -16,6 +16,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.*;
 import real.entwickler.dvblbot.Bot;
 import real.entwickler.dvblbot.enums.EChannel;
+import real.entwickler.dvblbot.music.MusicController;
 import real.entwickler.dvblbot.utils.EmbedMessage;
 
 import java.awt.*;
@@ -196,12 +197,12 @@ public class MessageManager {
         int sideNumbAll = tracks.size() >= 10 ? tracks.size() / 10 : 1;
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setColor(Color.RED);
+        embedBuilder.setColor(Color.CYAN);
         embedBuilder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         embedBuilder.setTitle("Current Queue [Page " + sideNumb + " / " + sideNumbAll + "]");
         embedBuilder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
         embedBuilder.setDescription(out);
-        embedBuilder.setFooter("DVBL-Bot - Copyright © swausb || realEntwickler 2021 ").setTimestamp(LocalDateTime.now().atZone(TimeZone.getTimeZone("Europe/Berlin").toZoneId()));
+        embedBuilder.setFooter("DVBL-Bot - Copyright © swausb || realEntwickler 2021 ", commandSender.getUser().getEffectiveAvatarUrl()).setTimestamp(LocalDateTime.now().atZone(TimeZone.getTimeZone("Europe/Berlin").toZoneId()));
         textChannel.sendMessage(embedBuilder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F4FB").queue());
     }
 

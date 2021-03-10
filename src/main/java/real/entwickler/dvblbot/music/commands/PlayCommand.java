@@ -13,6 +13,7 @@ package real.entwickler.dvblbot.music.commands;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.specification.Track;
+import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeRefreshRequest;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -23,10 +24,23 @@ import real.entwickler.dvblbot.utils.Property;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
 public class PlayCommand extends ICommand {
+
+    Property property = Bot.getInstance().getProperty();
+
+    private final SpotifyApi spotifyApi = new SpotifyApi.Builder()
+            .setClientId(property.get("cfg", "client_id"))
+            .setClientSecret(property.get("cfg", "client_secret"))
+            .setRefreshToken(property.get("cfg", "refresh_token"))
+            .build();
+
+    private final AuthorizationCodeRefreshRequest authorizationCodeRefreshRequest = spotifyApi.authorizationCodeRefresh()
+            .build();
+
 
     public PlayCommand(String name, String description, String... roles) {
         super(name, description, roles);
@@ -36,7 +50,7 @@ public class PlayCommand extends ICommand {
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
         String input = Arrays.stream(args).skip(1).map(s -> " " + s).collect(Collectors.joining()).substring(1);
 
-        if (commandSender.getVoiceState().getChannel() != null) {
+        if (Objects.requireNonNull(commandSender.getVoiceState()).getChannel() != null) {
 
             if (args.length >= 2) {
 
@@ -63,7 +77,6 @@ public class PlayCommand extends ICommand {
                 }
                 if (input.startsWith("https://open.spotify.com/track/")) {
                     String spotifyId = input.substring(31, 53);
-                    //System.out.println("spo:" + spotifyId);
                     Track spotifyTrack = getSpotifyTrack(spotifyId);
                     Bot.getInstance().getMusicController().loadTrack("ytsearch: " + spotifyTrack.getName(), commandSender, message, null);
                     return;
@@ -74,13 +87,23 @@ public class PlayCommand extends ICommand {
             Bot.getInstance().getMessageManager().printErrorVoiceChannel(commandSender, textChannel);
         }
     }
-    public Track getSpotifyTrack (String id) {
+
+    public Track getSpotifyTrack(String id){
+        String accesstoken = null;
+        try {
+            accesstoken = authorizationCodeRefreshRequest.execute().getAccessToken();
+        } catch (IOException | ParseException | SpotifyWebApiException e) {
+            e.printStackTrace();
+        }
         try {
             Property property = Bot.getInstance().getProperty();
-            return new SpotifyApi.Builder().setAccessToken(property.get("cfg", "access_token")).build().getTrack(id).build().execute();
+            return new SpotifyApi.Builder().setAccessToken(accesstoken).build().getTrack(id).build().execute();
         } catch (IOException | SpotifyWebApiException | ParseException e) {
             e.printStackTrace();
             return null;
         }
     }
 }
+
+
+

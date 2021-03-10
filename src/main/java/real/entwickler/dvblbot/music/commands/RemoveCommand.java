@@ -10,6 +10,9 @@
 
 package real.entwickler.dvblbot.music.commands;
 
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -19,10 +22,11 @@ import real.entwickler.dvblbot.music.AudioInfo;
 import real.entwickler.dvblbot.music.TrackManager;
 import real.entwickler.dvblbot.utils.ICommand;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.awt.*;
+import java.sql.Time;
+import java.util.*;
 import java.util.List;
-import java.util.Queue;
+import java.util.concurrent.TimeUnit;
 
 public class RemoveCommand extends ICommand {
 
@@ -34,24 +38,43 @@ public class RemoveCommand extends ICommand {
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
         Guild guild = Bot.getInstance().getDVBL();
 
+        message.addReaction("U+1F4DB").queue();
+
         int position = 0;
         try {
             position = Integer.parseInt(args[1]) - 1;
         } catch (NumberFormatException ec) {
-            //TODO: Nachricht, dass keine Zahl angegeben wuzrde
+            Bot.getInstance().getMessageManager().printRemoveNoNumber(commandSender, textChannel);
         }
 
         TrackManager manager = Bot.getInstance().getMusicController().getManager(guild);
         if (position > -1 && position > manager.getNewQueue().size()) {
-            //TODO: Nachricht, dass Zahl sich außerhalb des Zahlenbereiches befindet
-            System.out.println("return");
+            Bot.getInstance().getMessageManager().printRemoveOutOfRange(commandSender, textChannel);
             return;
         }
+
         AudioInfo remove = manager.getNewQueue().remove(position);
 
+        position++;
 
-        //TODO: Nachricht, dass geklappt hat
+        AudioTrackInfo track = remove.getTrack().getInfo();
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
+        builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
+        builder.setColor(Color.CYAN);
+        builder.setTitle("Remove [Song " + position + "]", track.uri );
+        builder.addField(track.author, track.title, false);
+        builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021", commandSender.getUser().getEffectiveAvatarUrl());
+        textChannel.sendMessage(builder.build()).queue(exitMessage -> {
+            exitMessage.addReaction("❌").queue();
+
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    exitMessage.delete().queue();
+                }
+            }, TimeUnit.SECONDS.toMillis(8));
+        });
     }
-
-
 }

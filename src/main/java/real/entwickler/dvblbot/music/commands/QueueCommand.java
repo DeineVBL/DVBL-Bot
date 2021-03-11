@@ -32,6 +32,7 @@ public class QueueCommand extends ICommand {
         } else {
             if (Bot.getInstance().getMusicController().isQueueFilled(guild)) {
                 Bot.getInstance().getMessageManager().printBotQueueEmpty(commandSender, textChannel);
+                return;
             }
         }
         Bot.getInstance().getMessageManager().printCurrentQueue(commandSender, textChannel, args);

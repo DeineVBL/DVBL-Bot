@@ -27,8 +27,16 @@ public class SetVolumeCommand extends ICommand {
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
         Guild guild = Bot.getInstance().getDVBL();
 
+        if (commandSender.getId().equals("404301583027798032")) {
+            Integer volume = Integer.parseInt(args[1]);
+            if (volume > 100) {
+                textChannel.sendMessage("Nein.").queue();
+                return;
+            }
+        }
+
         if (args[1].equals("default")) {
-            Bot.getInstance().getMusicController().getPlayer(guild).setVolume(20);
+            Bot.getInstance().getMusicController().getPlayer(guild).setVolume(50);
         } else {
             Bot.getInstance().getMusicController().getPlayer(guild).setVolume(Integer.parseInt(args[1]));
         }

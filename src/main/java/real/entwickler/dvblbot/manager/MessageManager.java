@@ -280,7 +280,7 @@ public class MessageManager {
 
     public void printRadioSenderList(Member commandSender, TextChannel textChannel) {
         builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
-        builder.setTitle("[ Senderliste ]", "https://www.hendrikjansen.nl/henk/streaming5.html#za");
+        builder.setTitle("[ Senderliste ]", "https://linux-club.de/wiki/opensuse/Radiosender");
         builder.setDescription("Oben auf den Link klicken, für eine vollständige Senderliste!");
         builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
         builder.setColor(Color.PINK);
@@ -359,7 +359,7 @@ public class MessageManager {
     public void printHelpMessage(Member commandSender, TextChannel textChannel) {
         builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         builder.setTitle("Help");
-        builder.setDescription("");
+        builder.setDescription("Lieber " + commandSender.getEffectiveName() + ", leider kann ich dir hier noch nicht weiterhelfen. Ich hoffe ich konnte dir in diesem Fall weiterhelfen! LG DVBL-Bot");
         builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
         builder.setColor(Color.RED);
         builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021", commandSender.getUser().getEffectiveAvatarUrl());

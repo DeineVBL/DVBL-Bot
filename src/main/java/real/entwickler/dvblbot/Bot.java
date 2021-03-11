@@ -16,6 +16,8 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.Compression;
+import real.entwickler.dvblbot.commands.BanCommand;
+import real.entwickler.dvblbot.commands.KickCommand;
 import real.entwickler.dvblbot.enums.EChannel;
 import real.entwickler.dvblbot.listener.GuildMemberJoinListener;
 import real.entwickler.dvblbot.listener.GuildMemberLeaveListener;
@@ -85,6 +87,11 @@ public class Bot {
         commandManager.registerCommand(new HelpCommand("h", "help bot", "gives you help", ""));
         commandManager.registerCommand(new ResetCommand("reset", "resets the bot", ""));
         commandManager.registerCommand(new CheckCommand("check", "checks the modi", ""));
+        commandManager.registerCommand(new KickCommand("kick", "kicks a user",""));
+        commandManager.registerCommand(new BanCommand("ban", "bans a user", ""));
+
+        commandManager.registerCommand(new WendlerCommand("wendler", "plays a wendler audio message", ""));
+        commandManager.registerCommand(new WendlerCommand("michi", "plays a wendler audio message", ""));
 
         commandManager.registerCommand(new PlayCommand("play", "Plays a given song from youtube or spotify", ""));
         commandManager.registerCommand(new PlayCommand("p", "Plays a given song from youtube or spotify", ""));

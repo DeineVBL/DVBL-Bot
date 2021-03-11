@@ -32,6 +32,10 @@ public class EarrapeCommand extends ICommand {
         TrackManager manager = Bot.getInstance().getMusicController().getManager(g);
         Bot.getInstance().getMusicController().setEarrapeMode(!Bot.getInstance().getMusicController().isEarrapeMode());
 
+        if (!commandSender.isOwner()) {
+            return;
+        }
+
         if (Bot.getInstance().getMusicController().isEarrapeMode()) {
             message.addReaction("U+2714").queue();
         }

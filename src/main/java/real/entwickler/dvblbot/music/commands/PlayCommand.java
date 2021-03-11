@@ -12,8 +12,9 @@ package real.entwickler.dvblbot.music.commands;
 
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
-import com.wrapper.spotify.model_objects.specification.Track;
+import com.wrapper.spotify.model_objects.specification.*;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeRefreshRequest;
+import com.wrapper.spotify.requests.data.playlists.GetPlaylistsItemsRequest;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -81,6 +82,28 @@ public class PlayCommand extends ICommand {
                     Bot.getInstance().getMusicController().loadTrack("ytsearch: " + spotifyTrack.getName(), commandSender, message, null);
                     return;
                 }
+                if (input.startsWith("https://open.spotify.com/playlist/")) {
+                    String spotifyId = input.substring(34, 56);
+                    Paging<PlaylistTrack> trackSimplifiedPaging = getPlaylistsItems(spotifyId);
+
+                    StringBuilder stringBuilder = null;
+                    for (PlaylistTrack item : trackSimplifiedPaging.getItems()) {
+
+                        Track spotifyTrack = getSpotifyTrack(item.getTrack().getId());
+                        ArtistSimplified[] artists = spotifyTrack.getArtists();
+                        stringBuilder = new StringBuilder();
+
+                        for (ArtistSimplified artist : artists) {
+                            stringBuilder.append(artist.getName()).append(", ");
+                        }
+                        stringBuilder = new StringBuilder(stringBuilder.substring(0, stringBuilder.toString().length() - 2));
+                        stringBuilder.append(" - ").append(spotifyTrack.getName());
+                        Bot.getInstance().getMusicController().loadTrack("ytsearch: " + stringBuilder.toString(), commandSender, message, null);
+                    }
+
+                    return;
+                }
+
                 Bot.getInstance().getMusicController().loadTrack(input, commandSender, message, null);
             }
         } else {
@@ -96,9 +119,23 @@ public class PlayCommand extends ICommand {
             e.printStackTrace();
         }
         try {
-            Property property = Bot.getInstance().getProperty();
             return new SpotifyApi.Builder().setAccessToken(accesstoken).build().getTrack(id).build().execute();
         } catch (IOException | SpotifyWebApiException | ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Paging<PlaylistTrack> getPlaylistsItems(String spotifyId) {
+        String accesstoken = null;
+        try {
+            accesstoken = authorizationCodeRefreshRequest.execute().getAccessToken();
+        } catch (IOException | ParseException | SpotifyWebApiException e) {
+            e.printStackTrace();
+        }
+        try {
+            return new SpotifyApi.Builder().setAccessToken(accesstoken).build().getPlaylistsItems(spotifyId).build().execute();
+        } catch (ParseException | SpotifyWebApiException | IOException e) {
             e.printStackTrace();
             return null;
         }

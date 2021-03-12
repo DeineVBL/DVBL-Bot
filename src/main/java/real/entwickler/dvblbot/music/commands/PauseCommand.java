@@ -10,8 +10,10 @@
 
 package real.entwickler.dvblbot.music.commands;
 
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.managers.AudioManager;
 import real.entwickler.dvblbot.Bot;
 import real.entwickler.dvblbot.music.MusicController;
 import real.entwickler.dvblbot.utils.ICommand;
@@ -23,20 +25,30 @@ public class PauseCommand extends ICommand {
 
     }
 
-    public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        TextChannel txtChannel = event.getChannel();
-        User user = event.getAuthor();
-        Message message = event.getMessage();
-    }
-
     @Override
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
-        MusicController musicController = Bot.getInstance().getMusicController();
-        Guild guild = message.getGuild();
-        if (Bot.getInstance().getMusicController().isIdle(guild)) return;
-        Bot.getInstance().getMusicController().getPlayer(guild).isPaused();
-        Bot.getInstance().getMusicController().getPlayer(guild).setPaused(true);
-        message.addReaction("⏸").queue();
+        GuildVoiceState gvs;
+        if ((gvs = commandSender.getVoiceState()) != null) {
+            VoiceChannel vc;
+            if ((vc = gvs.getChannel()) != null) {
+                Guild g = Bot.getInstance().getDVBL();
+                AudioTrack audioTrack = Bot.getInstance().getMusicController().getPlayer(g).getPlayingTrack();
+                AudioManager manager = vc.getGuild().getAudioManager();
+
+                if (manager.isConnected()) {
+                    MusicController musicController = Bot.getInstance().getMusicController();
+                    Guild guild = message.getGuild();
+                    if (Bot.getInstance().getMusicController().isIdle(guild)) return;
+                    Bot.getInstance().getMusicController().getPlayer(guild).isPaused();
+                    Bot.getInstance().getMusicController().getPlayer(guild).setPaused(true);
+                    message.addReaction("⏸").queue();
+                } else {
+                    Bot.getInstance().getMessageManager().printBotErrorVoiceChannel(commandSender, textChannel);
+                }
+            }
+        } else {
+            Bot.getInstance().getMessageManager().printErrorVoiceChannel(commandSender, textChannel);
+        }
     }
 }
 

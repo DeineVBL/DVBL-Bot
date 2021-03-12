@@ -10,7 +10,6 @@
 
 package real.entwickler.dvblbot.music.commands;
 
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.specification.ArtistSimplified;
@@ -18,7 +17,6 @@ import com.wrapper.spotify.model_objects.specification.Paging;
 import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
 import com.wrapper.spotify.model_objects.specification.Track;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeRefreshRequest;
-import com.wrapper.spotify.requests.data.search.simplified.SearchTracksRequest;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -29,13 +27,7 @@ import real.entwickler.dvblbot.utils.Property;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Locale;
 import java.util.Objects;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 

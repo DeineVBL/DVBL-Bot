@@ -28,6 +28,7 @@ import real.entwickler.dvblbot.utils.Property;
 
 import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
@@ -84,42 +85,56 @@ public class LyricsCommand extends ICommand {
 
                             Track firstTrack = Arrays.stream(trackPaging.getItems()).findFirst().orElse(null);
 
-                            if (firstTrack == null) return;
+                            if (firstTrack != null) {
 
-                            LyricsClient lyricsClient = new LyricsClient();
-                            Lyrics lyrics = null;
-                            try {
-                                lyrics = lyricsClient.getLyrics(filteredTrackTitle).get();
-                                EmbedBuilder builder = new EmbedBuilder();
-                                if (args.length == 1) {
+                                LyricsClient lyricsClient = new LyricsClient();
+                                Lyrics lyrics = null;
+                                try {
+                                    lyrics = lyricsClient.getLyrics(filteredTrackTitle).get();
+                                    EmbedBuilder builder = new EmbedBuilder();
 
-                                    String description = (lyrics.getContent().length() > 2048 ? lyrics.getContent().substring(0, 2048) : lyrics.getContent());
+                                    if (args.length == 1) {
 
-                                    builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
-                                    builder.setTitle("Lyrics");
-                                    builder.setColor(Color.CYAN);
-                                    builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
-                                    builder.setDescription(description);
-                                    builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021", commandSender.getUser().getEffectiveAvatarUrl());
-                                    textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F3B6").queue());
+                                        String description = (lyrics.getContent().length() > 2048 ? lyrics.getContent().substring(0, 2048) : lyrics.getContent());
 
-                                } else if (args.length == 2) {
-                                    String substring2 = lyrics.getContent().substring(2048);
-                                    builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
-                                    builder.setTitle("Lyrics");
-                                    builder.setColor(Color.CYAN);
-                                    builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
-                                    builder.setDescription(substring2);
-                                    builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021", commandSender.getUser().getEffectiveAvatarUrl());
-                                    textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F3B6").queue());
+                                        String trackuri = Bot.getInstance().getMusicController().getPlayer(Bot.getInstance().getDVBL()).getPlayingTrack().getInfo().uri;
+
+                                        builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
+                                        builder.setTitle("Lyrics [" + filteredTrackTitle + "]", trackuri);
+                                        builder.setColor(Color.CYAN);
+
+                                        String query = URI.create(Bot.getInstance().getMusicController().getPlayer(Bot.getInstance().getDVBL()).getPlayingTrack().getInfo().uri).getQuery();
+                                        String[] split = query.split("&");
+
+                                        builder.setThumbnail("https://img.youtube.com/vi/" + split[0].substring(2) + "/hqdefault.jpg");
+
+                                        builder.setDescription(description);
+                                        builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021", commandSender.getUser().getEffectiveAvatarUrl());
+                                        textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F3B6").queue());
+
+                                    } else if (args.length == 2) {
+                                        String substring2 = lyrics.getContent().substring(2048);
+                                        builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
+                                        builder.setTitle("Lyrics");
+                                        builder.setColor(Color.CYAN);
+                                        builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
+                                        builder.setDescription(substring2);
+                                        builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021", commandSender.getUser().getEffectiveAvatarUrl());
+                                        textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F3B6").queue());
+                                    }
+
+                                } catch (InterruptedException | ExecutionException e) {
+                                    e.printStackTrace();
                                 }
-
-                            } catch (InterruptedException | ExecutionException e) {
-                                e.printStackTrace();
+                            } else {
+                                Bot.getInstance().getMessageManager().printNoLyricsFound(commandSender, textChannel);
                             }
-                        } catch (ParseException | SpotifyWebApiException | IOException e) {
+
+                        } catch (IOException | SpotifyWebApiException | ParseException e) {
                             e.printStackTrace();
+
                         }
+
                     } else {
                         Bot.getInstance().getMessageManager().printErrorPlayingSong(commandSender, textChannel);
                     }

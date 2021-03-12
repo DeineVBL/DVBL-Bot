@@ -28,6 +28,8 @@ public class JumpCommand extends ICommand {
         Guild guild = Bot.getInstance().getDVBL();
 
         Integer pos = Integer.parseInt(args[1]);
+
+
         System.out.println(pos);
     }
 }

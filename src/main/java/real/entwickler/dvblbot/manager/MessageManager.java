@@ -119,6 +119,16 @@ public class MessageManager {
         textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("❌").queue());
     }
 
+    public void printNoLyricsFound(Member commandSender, TextChannel textChannel) {
+        builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
+        builder.setTitle("Error [011]");
+        builder.setColor(Color.CYAN);
+        builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
+        builder.setDescription("Zu diesem Lied wurden leider keine Lyrics gefunden :(");
+        builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021", commandSender.getUser().getEffectiveAvatarUrl());
+        textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("❌").queue());
+    }
+
     public void printBotErrorVoiceChannel(Member commandSender, TextChannel textChannel) {
         builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         builder.setTitle("Fehler [Error 005]");

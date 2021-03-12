@@ -157,7 +157,6 @@ public class Bot {
 
         commandManager.registerCommand(new MSFSCommand("msfs", "shows useful msfs links", ""));
 
-        commandManager.registerCommand(new BeleidigungCommand("ficken", "kicks a user for a beleidigung", ""));
 
         MusicController.guild = getDVBL();
 

@@ -10,6 +10,8 @@
 
 package real.entwickler.dvblbot;
 
+import com.wrapper.spotify.model_objects.specification.Paging;
+import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -36,8 +38,10 @@ import real.entwickler.dvblbot.utils.GeniusClient;
 import real.entwickler.dvblbot.utils.Property;
 
 import javax.security.auth.login.LoginException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 public class Bot {
@@ -48,8 +52,8 @@ public class Bot {
     private MusicController musicController;
     private JDA jda;
     private CommandManager commandManager;
-
     private GeniusClient geniusClient;
+    private ArrayList<CompletableFuture<Paging<PlaylistTrack>>> runningLoads;
 
     public static void main(String[] args) {
         new Bot(args);
@@ -57,6 +61,7 @@ public class Bot {
 
     public Bot(String[] arguments) {
         instance = this;
+        runningLoads = new ArrayList<>();
         property = new Property();
         property.setDefaultProps();
 
@@ -105,7 +110,7 @@ public class Bot {
         commandManager.registerCommand(new PauseCommand("pause", "pauses a playing song", ""));
         commandManager.registerCommand(new ResumeCommand("resume", "resumes a paused song", ""));
         commandManager.registerCommand(new StopCommand("stop", "stops a playing song", ""));
-        //commandManager.registerCommand(new LyricsCommand("lyrics", "shows the lyrics of a song", ""));
+        commandManager.registerCommand(new LyricsCommand("lyrics", "shows the lyrics of a song", ""));
         commandManager.registerCommand(new ShuffleCommand("shuffle", "shuffles a queue", ""));
         commandManager.registerCommand(new PlayCustomSong("paulymarz", "plays the pauly marz", ""));
         commandManager.registerCommand(new CopilotCommand("copilot", "plays the copilot song", ""));
@@ -195,4 +200,7 @@ public class Bot {
         return instance;
     }
 
+    public ArrayList<CompletableFuture<Paging<PlaylistTrack>>> getRunningLoads() {
+        return runningLoads;
+    }
 }

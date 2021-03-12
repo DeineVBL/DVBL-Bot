@@ -10,11 +10,15 @@
 
 package real.entwickler.dvblbot.music.commands;
 
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
-import com.wrapper.spotify.model_objects.specification.*;
+import com.wrapper.spotify.model_objects.specification.ArtistSimplified;
+import com.wrapper.spotify.model_objects.specification.Paging;
+import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
+import com.wrapper.spotify.model_objects.specification.Track;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeRefreshRequest;
-import com.wrapper.spotify.requests.data.playlists.GetPlaylistsItemsRequest;
+import com.wrapper.spotify.requests.data.search.simplified.SearchTracksRequest;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -25,7 +29,13 @@ import real.entwickler.dvblbot.utils.Property;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 
@@ -42,10 +52,6 @@ public class PlayCommand extends ICommand {
     private final AuthorizationCodeRefreshRequest authorizationCodeRefreshRequest = spotifyApi.authorizationCodeRefresh()
             .build();
 
-
-    public PlayCommand(String name, String description, String... roles) {
-        super(name, description, roles);
-    }
 
     @Override
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
@@ -84,10 +90,8 @@ public class PlayCommand extends ICommand {
                 }
                 if (input.startsWith("https://open.spotify.com/playlist/")) {
                     String spotifyId = input.substring(34, 56);
-                    Paging<PlaylistTrack> trackSimplifiedPaging = getPlaylistsItems(spotifyId);
-
-                    StringBuilder stringBuilder = null;
-                    for (PlaylistTrack item : trackSimplifiedPaging.getItems()) {
+                    StringBuilder stringBuilder;
+                    for (PlaylistTrack item : getPlaylistsItems(spotifyId).getItems()) {
 
                         Track spotifyTrack = getSpotifyTrack(item.getTrack().getId());
                         ArtistSimplified[] artists = spotifyTrack.getArtists();
@@ -98,20 +102,25 @@ public class PlayCommand extends ICommand {
                         }
                         stringBuilder = new StringBuilder(stringBuilder.substring(0, stringBuilder.toString().length() - 2));
                         stringBuilder.append(" - ").append(spotifyTrack.getName());
-                        Bot.getInstance().getMusicController().loadTrack("ytsearch: " + stringBuilder.toString(), commandSender, message, null);
+                        Bot.getInstance().getMusicController().loadPlaylist("ytsearch: " + stringBuilder.toString(), commandSender, message, null);
                     }
-
                     return;
                 }
 
                 Bot.getInstance().getMusicController().loadTrack(input, commandSender, message, null);
             }
+
         } else {
             Bot.getInstance().getMessageManager().printErrorVoiceChannel(commandSender, textChannel);
         }
     }
 
-    public Track getSpotifyTrack(String id){
+
+    public PlayCommand(String name, String description, String... roles) {
+        super(name, description, roles);
+    }
+
+    public Track getSpotifyTrack(String id) {
         String accesstoken = null;
         try {
             accesstoken = authorizationCodeRefreshRequest.execute().getAccessToken();

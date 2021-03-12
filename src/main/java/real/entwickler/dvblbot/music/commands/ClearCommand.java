@@ -32,9 +32,9 @@ public class ClearCommand extends ICommand {
                     AudioTrack audioTrack = Bot.getInstance().getMusicController().getPlayer(g).getPlayingTrack();
                     AudioManager manager = vc.getGuild().getAudioManager();
 
-                    if(manager.isConnected()) {
-                        Bot.getInstance().getMusicController().getManager(g).purgeQueue();
+                    if (manager.isConnected()) {
                         Bot.getInstance().getMusicController().getPlayer(g).stopTrack();
+                        Bot.getInstance().getMusicController().getManager(g).purgeQueue();
                         message.addReaction("U+1F6AE").queue();
                     } else {
                         Bot.getInstance().getMessageManager().printBotErrorVoiceChannel(commandSender, textChannel);

@@ -17,6 +17,8 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
+import com.wrapper.spotify.model_objects.specification.Paging;
+import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
 import com.wrapper.spotify.model_objects.specification.Track;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.entities.*;
@@ -26,8 +28,10 @@ import real.entwickler.dvblbot.music.commands.SetVolumeCommand;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiConsumer;
 
 public class TrackManager extends AudioEventAdapter {
 
@@ -75,7 +79,7 @@ public class TrackManager extends AudioEventAdapter {
             } else {
                 String contentRaw = message.getContentRaw();
 
-                if (!contentRaw.equalsIgnoreCase(".karneval") && !contentRaw.equalsIgnoreCase(".house") && !contentRaw.equalsIgnoreCase(".discord") && !contentRaw.equalsIgnoreCase(".rusky") && !contentRaw.equalsIgnoreCase(".tim") && !contentRaw.equalsIgnoreCase(".dc") && !contentRaw.equalsIgnoreCase(".schlager") && !contentRaw.equalsIgnoreCase(".fä") && !contentRaw.equalsIgnoreCase(".fäaschtbänkler") && !contentRaw.equalsIgnoreCase(".bigfm") && !contentRaw.equalsIgnoreCase("bf") && !contentRaw.equalsIgnoreCase("rl") && !contentRaw.equalsIgnoreCase("radiolist") && !contentRaw.equalsIgnoreCase("playlist")) {
+                if (!contentRaw.equalsIgnoreCase(".karneval") && !contentRaw.equalsIgnoreCase(".house") && !contentRaw.equalsIgnoreCase(".discord") && !contentRaw.equalsIgnoreCase(".rusky") && !contentRaw.equalsIgnoreCase(".tim") && !contentRaw.equalsIgnoreCase(".dc") && !contentRaw.equalsIgnoreCase(".schlager") && !contentRaw.equalsIgnoreCase(".fä") && !contentRaw.equalsIgnoreCase(".fäaschtbänkler") && !contentRaw.equalsIgnoreCase(".bigfm") && !contentRaw.equalsIgnoreCase("bf") && !contentRaw.equalsIgnoreCase("rl") && !contentRaw.equalsIgnoreCase("radiolist")) /*&& !contentRaw.equalsIgnoreCase("playlist")) */{
                     Bot.getInstance().getMessageManager().printSongAddedQueueMessage(track, author, textChannel);
                 }
             }

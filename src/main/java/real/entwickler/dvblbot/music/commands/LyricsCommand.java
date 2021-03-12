@@ -10,100 +10,146 @@
 
 package real.entwickler.dvblbot.music.commands;
 
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
+import com.jagrosh.jlyrics.Lyrics;
+import com.jagrosh.jlyrics.LyricsClient;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import com.wrapper.spotify.SpotifyApi;
+import com.wrapper.spotify.exceptions.SpotifyWebApiException;
+import com.wrapper.spotify.model_objects.specification.Paging;
+import com.wrapper.spotify.model_objects.specification.Track;
+import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeRefreshRequest;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.managers.AudioManager;
+import org.apache.hc.core5.http.ParseException;
 import real.entwickler.dvblbot.Bot;
-import real.entwickler.dvblbot.utils.FormatUtil;
-import real.entwickler.dvblbot.utils.GeniusClient;
 import real.entwickler.dvblbot.utils.ICommand;
+import real.entwickler.dvblbot.utils.Property;
 
 import java.awt.*;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
 
 public class LyricsCommand extends ICommand {
+
+
     public LyricsCommand(String name, String description, String... roles) {
         super(name, description, roles);
     }
 
     @Override
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
-        AudioPlayer player = Bot.getInstance().getMusicController().getPlayer(message.getGuild());
-        GeniusClient geniusClient = Bot.getInstance().getGeniusClient();
 
-        if (player.isPaused())
-            if (args.length == 0) {
-                System.out.println("Error");
-            } else {
-                System.out.println("command.lyrics.searching.title" + "command.lyrics.searching.description");
-                String lyricsUrl = getLyricsUrl(String.join(" ", args), geniusClient);
+        GuildVoiceState gvs;
 
-                if (lyricsUrl == null) {
-                    System.out.println("command.lyrics.notfound" + "phrases.nothingfound");
+        if ((gvs = commandSender.getVoiceState()) != null) {
+
+            VoiceChannel vc;
+
+            if ((vc = gvs.getChannel()) != null) {
+
+
+                AudioManager manager = vc.getGuild().getAudioManager();
+
+                if (manager.isConnected()) {
+
+                    if (Bot.getInstance().getMusicController().getPlayer(Bot.getInstance().getDVBL()).getPlayingTrack() != null) {
+
+                        Property property = Bot.getInstance().getProperty();
+
+                        final SpotifyApi spotifyApi = new SpotifyApi.Builder()
+                                .setClientId(property.get("cfg", "client_id"))
+                                .setClientSecret(property.get("cfg", "client_secret"))
+                                .setRefreshToken(property.get("cfg", "refresh_token"))
+                                .build();
+
+
+                        final AuthorizationCodeRefreshRequest authorizationCodeRefreshRequest = spotifyApi.authorizationCodeRefresh()
+                                .build();
+
+                        String accesstoken = null;
+                        try {
+                            accesstoken = authorizationCodeRefreshRequest.execute().getAccessToken();
+                        } catch (IOException | ParseException | SpotifyWebApiException e) {
+                            e.printStackTrace();
+                        }
+
+                        spotifyApi.setAccessToken(accesstoken);
+
+                        AudioTrack audioTrack = Bot.getInstance().getMusicController().getPlayer(Bot.getInstance().getDVBL()).getPlayingTrack();
+                        String filteredTrackTitle = filterTrackTitle(audioTrack.getInfo().title);
+                        try {
+                            final Paging<Track> trackPaging = spotifyApi.searchTracks(filteredTrackTitle).build().execute();
+
+                            Track firstTrack = Arrays.stream(trackPaging.getItems()).findFirst().orElse(null);
+
+                            if (firstTrack == null) return;
+
+                            LyricsClient lyricsClient = new LyricsClient();
+                            Lyrics lyrics = null;
+                            try {
+                                lyrics = lyricsClient.getLyrics(filteredTrackTitle).get();
+                                EmbedBuilder builder = new EmbedBuilder();
+                                if (args.length == 1) {
+
+                                    String description = (lyrics.getContent().length() > 2048 ? lyrics.getContent().substring(0, 2048) : lyrics.getContent());
+
+                                    builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
+                                    builder.setTitle("Lyrics");
+                                    builder.setColor(Color.CYAN);
+                                    builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
+                                    builder.setDescription(description);
+                                    builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021", commandSender.getUser().getEffectiveAvatarUrl());
+                                    textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F3B6").queue());
+
+                                } else if (args.length == 2) {
+                                    String substring2 = lyrics.getContent().substring(2048);
+                                    builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
+                                    builder.setTitle("Lyrics");
+                                    builder.setColor(Color.CYAN);
+                                    builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
+                                    builder.setDescription(substring2);
+                                    builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021", commandSender.getUser().getEffectiveAvatarUrl());
+                                    textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F3B6").queue());
+                                }
+
+                            } catch (InterruptedException | ExecutionException e) {
+                                e.printStackTrace();
+                            }
+                        } catch (ParseException | SpotifyWebApiException | IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Bot.getInstance().getMessageManager().printErrorPlayingSong(commandSender, textChannel);
+                    }
                 } else {
-                    textChannel.sendMessage(getLyricsEmbed(geniusClient, lyricsUrl).build()).queue();
+                    Bot.getInstance().getMessageManager().printBotErrorVoiceChannel(commandSender, textChannel);
                 }
             }
-        else {
-            if (args.length == 0) {
-                System.out.println("command.lyrics.searching.title" + "command.lyrics.searching.description");
-                String lyricsUrl = getLyricsUrl(player.getPlayingTrack().getInfo().title, geniusClient);
-
-                if (lyricsUrl == null)
-                    System.out.println("command.lyrics.notfound" + "phrases.nothingfound");
-                else
-                    textChannel.sendMessage(getLyricsEmbed(geniusClient, lyricsUrl, player.getPlayingTrack().getInfo().title).build()).queue();
-            } else {
-                System.out.println("command.lyrics.searching.title" + "command.lyrics.searching.description");
-                String lyricsUrl = getLyricsUrl(String.join(" ", args), geniusClient);
-
-                if (lyricsUrl == null)
-                    System.out.println("command.lyrics.notfound" + "phrases.nothingfound");
-                else
-                    textChannel.sendMessage(getLyricsEmbed(geniusClient, lyricsUrl).build()).queue();
-            }
+        } else {
+            Bot.getInstance().getMessageManager().printErrorVoiceChannel(commandSender, textChannel);
         }
     }
 
-    private EmbedBuilder getLyricsEmbed(GeniusClient geniusClient, String lyricsUrl, String title) {
-        EmbedBuilder embedBuilder = new EmbedBuilder().setTitle(title, lyricsUrl).setColor(Color.RED);
-        String[] comps = getLyrics(lyricsUrl, geniusClient);
-        String[] tempLine = new String[2];
-        tempLine[0] = null;
-        tempLine[1] = null;
-        int count = 0;
-        for (String comp : comps) {
-            if (count == 0 && !comp.startsWith("t:"))
-                embedBuilder.setDescription(comp);
-            else {
-                if (comp.startsWith("t:")) {
-                    comp = comp.replace("t:", "");
-                    tempLine[0] = comp;
-                } else {
-                    if (count == 0) tempLine[0] = "\u200b";
-                    tempLine[1] = comp;
-                }
-                if (tempLine[0] != null && tempLine[1] != null) {
-                    embedBuilder.addField(tempLine[0], tempLine[1], false);
-                    tempLine[0] = null;
-                    tempLine[1] = null;
+    private String filterTrackTitle(String toFilter) {
+        String preFinished = "";
+        if (toFilter.contains("(")) {
+            int bracesBegin = toFilter.indexOf("(");
+            int bracesEnd = 0;
+            for (int i = bracesBegin; i < toFilter.length(); i++) {
+                if (toFilter.charAt(i) == ')') {
+                    bracesEnd = i;
                 }
             }
-            count++;
+            preFinished = toFilter.substring(0, bracesBegin - 1) + toFilter.substring(bracesEnd + 1);
         }
-        return embedBuilder;
-    }
-
-    private EmbedBuilder getLyricsEmbed(GeniusClient geniusClient, String lyricsUrl) {
-        return getLyricsEmbed(geniusClient, lyricsUrl, geniusClient.getTitle(lyricsUrl));
-    }
-
-    private String getLyricsUrl(String query, GeniusClient geniusClient) {
-        return geniusClient.searchSong(query);
-    }
-
-    public String[] getLyrics(String lyricsUrl, GeniusClient geniusClient) {
-        return FormatUtil.formatLyrics(geniusClient.getLyrics(lyricsUrl));
+        if (preFinished.contains("ft.")) {
+            preFinished = preFinished.substring(0, preFinished.indexOf("ft."));
+        }
+        if (preFinished.contains("feat.")) {
+            preFinished = preFinished.substring(0, preFinished.indexOf("feat."));
+        }
+        return preFinished.length() == 0 ? toFilter : preFinished;
     }
 }

@@ -24,7 +24,7 @@ public class QueueCommand extends ICommand {
     }
 
     @Override
-    public void onCommand(Member commandSender, TextChannel textChannel, Message message,  String[] args) {
+    public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
         Guild guild = message.getGuild();
         if (Bot.getInstance().getMusicController().isIdle(guild)) {
             Bot.getInstance().getMessageManager().printBotErrorVoiceChannel(commandSender, textChannel);

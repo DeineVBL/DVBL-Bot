@@ -34,7 +34,6 @@ import real.entwickler.dvblbot.radio.RadioCommand;
 import real.entwickler.dvblbot.radio.commands.BigFMCommand;
 import real.entwickler.dvblbot.radio.commands.RadioListCommand;
 import real.entwickler.dvblbot.school.*;
-import real.entwickler.dvblbot.utils.GeniusClient;
 import real.entwickler.dvblbot.utils.Property;
 
 import javax.security.auth.login.LoginException;
@@ -52,7 +51,6 @@ public class Bot {
     private MusicController musicController;
     private JDA jda;
     private CommandManager commandManager;
-    private GeniusClient geniusClient;
     private ArrayList<CompletableFuture<Paging<PlaylistTrack>>> runningLoads;
 
     public static void main(String[] args) {
@@ -80,7 +78,6 @@ public class Bot {
         this.messageManager = new MessageManager();
         this.commandManager = new CommandManager();
         this.musicController = new MusicController();
-        this.geniusClient = new GeniusClient(property.get("cfg", "genius-token"));
         this.jda.addEventListener(new GuildMemberJoinListener());
         this.jda.addEventListener(new GuildMemberLeaveListener());
         this.jda.addEventListener(new GuildMessageReactionAddListener());
@@ -165,10 +162,6 @@ public class Bot {
         if (new Scanner(System.in).nextLine().equalsIgnoreCase("stop")) {
             messageManager.printStopMessage(EChannel.CHANGES.getChannelID());
         }
-    }
-
-    public GeniusClient getGeniusClient() {
-        return geniusClient;
     }
 
     public CommandManager getCommandManager() {

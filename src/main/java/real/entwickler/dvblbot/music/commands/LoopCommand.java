@@ -11,10 +11,9 @@
 package real.entwickler.dvblbot.music.commands;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.managers.AudioManager;
 import real.entwickler.dvblbot.Bot;
 import real.entwickler.dvblbot.utils.ICommand;
 
@@ -29,14 +28,35 @@ public class LoopCommand extends ICommand {
         Guild guild = Bot.getInstance().getDVBL();
         AudioPlayer player = Bot.getInstance().getMusicController().getPlayer(guild);
 
-        Bot.getInstance().getMusicController().setLoopMode(!Bot.getInstance().getMusicController().isLoopMode());
+        GuildVoiceState gvs;
+        if ((gvs = commandSender.getVoiceState()) != null) {
+            VoiceChannel vc;
+            if ((vc = gvs.getChannel()) != null) {
+                AudioTrack audioTrack = Bot.getInstance().getMusicController().getPlayer(guild).getPlayingTrack();
+                AudioManager manager = vc.getGuild().getAudioManager();
 
-        if (Bot.getInstance().getMusicController().isLoopMode()) {
-            message.addReaction("U+2714").queue();
-        }
+                if (Bot.getInstance().getMusicController().getPlayer(guild).getPlayingTrack() != null) {
 
-        if (!Bot.getInstance().getMusicController().isLoopMode()) {
-            message.addReaction("U+274C").queue();
+                    if (manager.isConnected()) {
+
+                        Bot.getInstance().getMusicController().setLoopMode(!Bot.getInstance().getMusicController().isLoopMode());
+
+                        if (Bot.getInstance().getMusicController().isLoopMode()) {
+                            message.addReaction("U+2714").queue();
+                        }
+
+                        if (!Bot.getInstance().getMusicController().isLoopMode()) {
+                            message.addReaction("U+274C").queue();
+                        }
+                    } else {
+                        Bot.getInstance().getMessageManager().printBotErrorVoiceChannel(commandSender, textChannel);
+                    }
+                }
+            } else {
+                Bot.getInstance().getMessageManager().printErrorVoiceChannel(commandSender, textChannel);
+            }
+        } else {
+            Bot.getInstance().getMessageManager().printErrorPlayingSong(commandSender, textChannel);
         }
     }
 }

@@ -10,10 +10,9 @@
 
 package real.entwickler.dvblbot.music.commands;
 
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.managers.AudioManager;
 import real.entwickler.dvblbot.Bot;
 import real.entwickler.dvblbot.utils.ICommand;
 
@@ -27,19 +26,36 @@ public class SetVolumeCommand extends ICommand {
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
         Guild guild = Bot.getInstance().getDVBL();
 
-        if (commandSender.getId().equals("404301583027798032")) {
-            Integer volume = Integer.parseInt(args[1]);
-            if (volume > 100) {
-                textChannel.sendMessage("Nein.").queue();
-                return;
-            }
-        }
+        GuildVoiceState gvs;
+        if ((gvs = commandSender.getVoiceState()) != null) {
+            VoiceChannel vc;
+            if ((vc = gvs.getChannel()) != null) {
+                Guild g = Bot.getInstance().getDVBL();
+                AudioTrack audioTrack = Bot.getInstance().getMusicController().getPlayer(g).getPlayingTrack();
+                AudioManager manager = vc.getGuild().getAudioManager();
 
-        if (args[1].equals("default")) {
-            Bot.getInstance().getMusicController().getPlayer(guild).setVolume(50);
+                if (manager.isConnected()) {
+
+                    if (commandSender.getId().equals("404301583027798032")) {
+                        Integer volume = Integer.parseInt(args[1]);
+                        if (volume > 100) {
+                            textChannel.sendMessage("Nein.").queue();
+                            return;
+                        }
+                    }
+
+                    if (args[1].equals("default")) {
+                        Bot.getInstance().getMusicController().getPlayer(guild).setVolume(50);
+                    } else {
+                        Bot.getInstance().getMusicController().getPlayer(guild).setVolume(Integer.parseInt(args[1]));
+                    }
+                    message.addReaction("U+1F50A").queue();
+                } else {
+                    Bot.getInstance().getMessageManager().printBotErrorVoiceChannel(commandSender, textChannel);
+                }
+            }
         } else {
-            Bot.getInstance().getMusicController().getPlayer(guild).setVolume(Integer.parseInt(args[1]));
+            Bot.getInstance().getMessageManager().printErrorVoiceChannel(commandSender, textChannel);
         }
-        message.addReaction("U+1F50A").queue();
     }
 }

@@ -90,7 +90,7 @@ public class LyricsCommand extends ICommand {
                                 LyricsClient lyricsClient = new LyricsClient();
                                 Lyrics lyrics = null;
                                 try {
-                                    lyrics = lyricsClient.getLyrics(filteredTrackTitle).get();
+                                    lyrics = lyricsClient.getLyrics(firstTrack.getName() + Arrays.stream(firstTrack.getArtists()).findFirst().get().getName()).get();
                                     EmbedBuilder builder = new EmbedBuilder();
 
                                     if (args.length == 1) {
@@ -159,11 +159,58 @@ public class LyricsCommand extends ICommand {
             }
             preFinished = toFilter.substring(0, bracesBegin - 1) + toFilter.substring(bracesEnd + 1);
         }
+
+        if (toFilter.contains("[")) {
+            int bracesBegin = toFilter.indexOf("{");
+            int bracesEnd = 0;
+            for (int i = bracesBegin; i < toFilter.length(); i++) {
+                if (toFilter.charAt(i) == ']') {
+                    bracesEnd = i;
+                }
+            }
+            preFinished = toFilter.substring(0, bracesBegin - 1) + toFilter.substring(bracesEnd + 1);
+        }
         if (preFinished.contains("ft.")) {
             preFinished = preFinished.substring(0, preFinished.indexOf("ft."));
         }
         if (preFinished.contains("feat.")) {
             preFinished = preFinished.substring(0, preFinished.indexOf("feat."));
+        }
+        if (preFinished.contains("7")) {
+            preFinished = preFinished.substring(0, preFinished.indexOf("7"));
+        }
+        if (preFinished.contains("4")) {
+            preFinished = preFinished.substring(0, preFinished.indexOf("4"));
+        }
+        if (preFinished.contains("1")) {
+            preFinished = preFinished.substring(0, preFinished.indexOf("1"));
+        }
+        if (preFinished.contains("Official")) {
+            preFinished = preFinished.substring(0, preFinished.indexOf("Official"));
+        }
+        if (preFinished.contains("official")) {
+            preFinished = preFinished.substring(0, preFinished.indexOf("official"));
+        }
+        if (preFinished.contains("Music")) {
+            preFinished = preFinished.substring(0, preFinished.indexOf("Music"));
+        }
+        if (preFinished.contains("music")) {
+            preFinished = preFinished.substring(0, preFinished.indexOf("music"));
+        }
+        if (preFinished.contains("Video")) {
+            preFinished = preFinished.substring(0, preFinished.indexOf("Video"));
+        }
+        if (preFinished.contains("video")) {
+            preFinished = preFinished.substring(0, preFinished.indexOf("video"));
+        }
+        if (preFinished.contains("Remix")) {
+            preFinished = preFinished.substring(0, preFinished.indexOf("Remix"));
+        }
+        if (preFinished.contains("remix")) {
+            preFinished = preFinished.substring(0, preFinished.indexOf("remix"));
+        }
+        if (preFinished.contains("|")) {
+            preFinished = preFinished.substring(0, preFinished.indexOf("|"));
         }
         return preFinished.length() == 0 ? toFilter : preFinished;
     }

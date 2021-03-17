@@ -21,10 +21,7 @@ import net.dv8tion.jda.api.utils.Compression;
 import real.entwickler.dvblbot.commands.BanCommand;
 import real.entwickler.dvblbot.commands.KickCommand;
 import real.entwickler.dvblbot.enums.EChannel;
-import real.entwickler.dvblbot.listener.GuildMemberJoinListener;
-import real.entwickler.dvblbot.listener.GuildMemberLeaveListener;
-import real.entwickler.dvblbot.listener.GuildMessageReactionAddListener;
-import real.entwickler.dvblbot.listener.GuildMessageReceivedListener;
+import real.entwickler.dvblbot.listener.*;
 import real.entwickler.dvblbot.manager.CommandManager;
 import real.entwickler.dvblbot.manager.MessageManager;
 import real.entwickler.dvblbot.music.MusicController;
@@ -32,6 +29,7 @@ import real.entwickler.dvblbot.music.PlayCustomSong;
 import real.entwickler.dvblbot.music.commands.*;
 import real.entwickler.dvblbot.radio.RadioCommand;
 import real.entwickler.dvblbot.radio.commands.BigFMCommand;
+import real.entwickler.dvblbot.radio.commands.HitRadioFFHCommand;
 import real.entwickler.dvblbot.radio.commands.RadioListCommand;
 import real.entwickler.dvblbot.school.*;
 import real.entwickler.dvblbot.utils.Property;
@@ -82,6 +80,7 @@ public class Bot {
         this.jda.addEventListener(new GuildMemberLeaveListener());
         this.jda.addEventListener(new GuildMessageReactionAddListener());
         this.jda.addEventListener(new GuildMessageReceivedListener());
+        this.jda.addEventListener(new GuildMemberUpdateListener());
 
         messageManager.printReadyMessage(EChannel.CHANGES.getChannelID());
 
@@ -136,13 +135,19 @@ public class Bot {
         commandManager.registerCommand(new AchtDAudioCommand("8d", "plays 8d audio music", ""));
         commandManager.registerCommand(new AchtDAudioCommand("achtd", "plays 8d audio music", ""));
         commandManager.registerCommand(new AchtDAudioCommand("8daudio", "plays 8d audio music", ""));
+        commandManager.registerCommand(new RemixCommand("remix", "plays a song remixed", ""));
+        commandManager.registerCommand(new RemixCommand("mix", "plays a song remixed", ""));
+        commandManager.registerCommand(new SpotifyProfileCommand("spotify", "shows a spotify profile",""));
 
         commandManager.registerCommand(new RadioCommand("r", "plays a radio sender", ""));
         commandManager.registerCommand(new RadioCommand("radio", "plays a radio sender", ""));
         commandManager.registerCommand(new RadioListCommand("rl", "shows all available radio sender", ""));
         commandManager.registerCommand(new RadioListCommand("radiolist", "shows all available radio sender", ""));
-        commandManager.registerCommand(new BigFMCommand("bigfm", "plays big fm mashup radio", ""));
-        commandManager.registerCommand(new BigFMCommand("bf", "plays big fm mashup radio", ""));
+        commandManager.registerCommand(new BigFMCommand("bigfm", "plays big fm radio", ""));
+        commandManager.registerCommand(new BigFMCommand("bf", "plays big fm radio", ""));
+        commandManager.registerCommand(new BigFMCommand("bigfm mashup", "plays big fm mashup radio", ""));
+        commandManager.registerCommand(new BigFMCommand("bfm", "plays big fm mashup radio", ""));
+        commandManager.registerCommand(new HitRadioFFHCommand("ffh", "plays hit radio ffh radio", ""));
 
         commandManager.registerCommand(new BBBCommand("bbb", "shows the bbb links", ""));
         commandManager.registerCommand(new UploadCommand("upload", "shows the upload links", ""));

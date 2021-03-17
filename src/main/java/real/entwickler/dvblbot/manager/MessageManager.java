@@ -288,9 +288,33 @@ public class MessageManager {
         });
     }
 
+    public void printBigFMRadioLoaded(Member commandSender, TextChannel textChannel) {
+        builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
+        builder.setTitle("Now playing:", "https://ilr.bigfm.de/bigfm-mashup-128-mp3");
+        builder.setDescription("Viel Spaß mit BigFM!");
+        builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/bigfm.png");
+        builder.setColor(Color.PINK);
+        builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021", commandSender.getUser().getEffectiveAvatarUrl());
+        textChannel.sendMessage(builder.build()).queue(exitMessage -> {
+            exitMessage.addReaction("U+1F4FB").queue();
+        });
+    }
+
+    public void printHitRadioFFHLoaded(Member commandSender, TextChannel textChannel) {
+        builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
+        builder.setTitle("Now playing:", "https://ilr.bigfm.de/bigfm-mashup-128-mp3");
+        builder.setDescription("Viel Spaß mit HitRadio FFH!");
+        builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/bigfm.png");
+        builder.setColor(Color.PINK);
+        builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021", commandSender.getUser().getEffectiveAvatarUrl());
+        textChannel.sendMessage(builder.build()).queue(exitMessage -> {
+            exitMessage.addReaction("U+1F4FB").queue();
+        });
+    }
+
     public void printRadioSenderList(Member commandSender, TextChannel textChannel) {
         builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
-        builder.setTitle("[ Senderliste ]", "https://linux-club.de/wiki/opensuse/Radiosender");
+        builder.setTitle("[ Senderliste ]", "https://deluuxe.dev/streamlinks.html");
         builder.setDescription("Oben auf den Link klicken, für eine vollständige Senderliste!");
         builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
         builder.setColor(Color.PINK);

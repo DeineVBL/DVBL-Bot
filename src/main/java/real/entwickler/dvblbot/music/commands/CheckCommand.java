@@ -40,6 +40,7 @@ public class CheckCommand extends ICommand {
         String input2;
         String input3;
         String input4;
+        String input5;
 
         if (controller.isLoopMode()) {
             input1 = "✅";
@@ -65,6 +66,12 @@ public class CheckCommand extends ICommand {
             input4 = ":x:";
         }
 
+        if (controller.isRemixMode()) {
+            input5 = "✅";
+        } else {
+            input5 = ":x:";
+        }
+
         builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
         builder.setTitle("Check");
         builder.setColor(Color.CYAN);
@@ -74,6 +81,7 @@ public class CheckCommand extends ICommand {
         builder.addField("Bassboost", input2, false);
         builder.addField("8d Audio", input3, false);
         builder.addField("Earrape", input4, false);
+        builder.addField("Remix", input5, false);
         builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021", commandSender.getUser().getEffectiveAvatarUrl());
 
         textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F60D").queue());

@@ -20,6 +20,7 @@ import real.entwickler.dvblbot.utils.EmbedMessage;
 import real.entwickler.dvblbot.utils.ICommand;
 
 import java.awt.*;
+import java.util.Arrays;
 
 
 public class BigFMCommand extends ICommand {
@@ -33,9 +34,22 @@ public class BigFMCommand extends ICommand {
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
         Guild g = Bot.getInstance().getDVBL();
         if (args.length == 1) {
-            Bot.getInstance().getMusicController().loadTrack("https://ilr.bigfm.de/bigfm-mashup-128-mp3", commandSender, message, null);
+            if (message.getContentRaw().equalsIgnoreCase(".bf")) {
+                Bot.getInstance().getMusicController().loadTrack("http://streams.bigfm.de/bigfm-deutschland-128-mp3", commandSender, message, null);
+                Bot.getInstance().getMessageManager().printBigFMRadioLoaded(commandSender, textChannel);
+            }
+            if (message.getContentRaw().equalsIgnoreCase(".bigfm")) {
+                Bot.getInstance().getMusicController().loadTrack("http://streams.bigfm.de/bigfm-deutschland-128-mp3", commandSender, message, null);
+                Bot.getInstance().getMessageManager().printBigFMRadioLoaded(commandSender, textChannel);
+            }
+            if (message.getContentRaw().equalsIgnoreCase(".bfm")) {
+                Bot.getInstance().getMusicController().loadTrack("https://ilr.bigfm.de/bigfm-mashup-128-mp3", commandSender, message, null);
+                Bot.getInstance().getMessageManager().printBigFMMashupRadioLoaded(commandSender, textChannel);
+            }
+            if (message.getContentRaw().equalsIgnoreCase(".bigfm mashup")) {
+                Bot.getInstance().getMusicController().loadTrack("https://ilr.bigfm.de/bigfm-mashup-128-mp3", commandSender, message, null);
+                Bot.getInstance().getMessageManager().printBigFMMashupRadioLoaded(commandSender, textChannel);
+            }
         }
-        if (Bot.getInstance().getMusicController().isIdle(Bot.getInstance().getDVBL())) return;
-        Bot.getInstance().getMessageManager().printBigFMMashupRadioLoaded(commandSender, textChannel);
     }
 }

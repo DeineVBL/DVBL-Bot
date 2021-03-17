@@ -39,6 +39,7 @@ public class MusicController {
     private boolean earrapeMode;
     private boolean bassBoostMode;
     public boolean achtDAudioMode;
+    public boolean remixMode;
 
     public MusicController() {
         MANAGER = new DefaultAudioPlayerManager();
@@ -48,6 +49,7 @@ public class MusicController {
         this.earrapeMode = false;
         this.bassBoostMode = false;
         this.achtDAudioMode = false;
+        this.remixMode = false;
     }
 
     /**
@@ -265,4 +267,8 @@ public class MusicController {
     public boolean isAchtDAudioMode() { return achtDAudioMode;}
 
     public void setAchtDAudioMode (boolean achtDAudioMode) { this.achtDAudioMode = achtDAudioMode; }
+
+    public boolean isRemixMode() { return remixMode; }
+
+    public void setRemixMode (boolean remixMode) { this.remixMode = remixMode; }
 }

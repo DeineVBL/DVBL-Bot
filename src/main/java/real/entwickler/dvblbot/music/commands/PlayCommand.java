@@ -69,6 +69,10 @@ public class PlayCommand extends ICommand {
                         return;
                     }
 
+                    if (Bot.getInstance().getMusicController().isRemixMode()) {
+                        input = "ytsearch:" + input + " remix";
+                    }
+
                     input = "ytsearch: " + input;
                     Bot.getInstance().getMusicController().loadTrack(input, commandSender, message, null);
 

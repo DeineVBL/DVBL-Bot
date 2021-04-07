@@ -35,19 +35,19 @@ public class BigFMCommand extends ICommand {
         Guild g = Bot.getInstance().getDVBL();
         if (args.length == 1) {
             if (message.getContentRaw().equalsIgnoreCase(".bf")) {
-                Bot.getInstance().getMusicController().loadTrack("http://streams.bigfm.de/bigfm-deutschland-128-mp3", commandSender, message, null);
+                Bot.getInstance().getMusicController().loadTrack("http://streams.bigfm.de/bigfm-deutschland-128-mp3", commandSender, message);
                 Bot.getInstance().getMessageManager().printBigFMRadioLoaded(commandSender, textChannel);
             }
             if (message.getContentRaw().equalsIgnoreCase(".bigfm")) {
-                Bot.getInstance().getMusicController().loadTrack("http://streams.bigfm.de/bigfm-deutschland-128-mp3", commandSender, message, null);
+                Bot.getInstance().getMusicController().loadTrack("http://streams.bigfm.de/bigfm-deutschland-128-mp3", commandSender, message);
                 Bot.getInstance().getMessageManager().printBigFMRadioLoaded(commandSender, textChannel);
             }
             if (message.getContentRaw().equalsIgnoreCase(".bfm")) {
-                Bot.getInstance().getMusicController().loadTrack("https://ilr.bigfm.de/bigfm-mashup-128-mp3", commandSender, message, null);
+                Bot.getInstance().getMusicController().loadTrack("https://ilr.bigfm.de/bigfm-mashup-128-mp3", commandSender, message);
                 Bot.getInstance().getMessageManager().printBigFMMashupRadioLoaded(commandSender, textChannel);
             }
             if (message.getContentRaw().equalsIgnoreCase(".bigfm mashup")) {
-                Bot.getInstance().getMusicController().loadTrack("https://ilr.bigfm.de/bigfm-mashup-128-mp3", commandSender, message, null);
+                Bot.getInstance().getMusicController().loadTrack("https://ilr.bigfm.de/bigfm-mashup-128-mp3", commandSender, message);
                 Bot.getInstance().getMessageManager().printBigFMMashupRadioLoaded(commandSender, textChannel);
             }
         }

@@ -34,24 +34,41 @@ public class HitRadioFFHCommand extends ICommand {
                 VoiceChannel vc;
                 if ((vc = gvs.getChannel()) != null) {
                     if (message.getContentRaw().equalsIgnoreCase(".ffh")) {
-                        Bot.getInstance().getMusicController().loadTrack("http://mp3.ffh.de/fs_radioffh/hqlivestream.mp3", commandSender, message, null);
+                        Bot.getInstance().getMusicController().loadTrack("http://mp3.ffh.de/fs_radioffh/hqlivestream.mp3", commandSender, message);
                         messageManager.printHitRadioFFHLoaded(commandSender, textChannel);
                     }
                     if (message.getContentRaw().equalsIgnoreCase(".ffh party")) {
-                        Bot.getInstance().getMusicController().loadTrack("http://mp3.ffh.de/fs_ffhchannels/hqparty.mp3", commandSender, message, null);
+                        Bot.getInstance().getMusicController().loadTrack("http://mp3.ffh.de/fs_ffhchannels/hqparty.mp3", commandSender, message);
                         messageManager.printHitRadioFFHLoaded(commandSender, textChannel);
                     }
                     if (message.getContentRaw().equalsIgnoreCase(".ffh schlager")) {
-                        Bot.getInstance().getMusicController().loadTrack("http://mp3.ffh.de/fs_ffhchannels/hqschlager.mp3", commandSender, message, null);
+                        Bot.getInstance().getMusicController().loadTrack("http://mp3.ffh.de/fs_ffhchannels/hqschlager.mp3", commandSender, message);
                         messageManager.printHitRadioFFHLoaded(commandSender, textChannel);
                     }
                     if (message.getContentRaw().equalsIgnoreCase(".ffh rock")) {
-                        Bot.getInstance().getMusicController().loadTrack("http://mp3.ffh.de/fs_ffhchannels/hqrock.mp3", commandSender, message, null);
+                        Bot.getInstance().getMusicController().loadTrack("http://mp3.ffh.de/fs_ffhchannels/hqrock.mp3", commandSender, message);
                         messageManager.printHitRadioFFHLoaded(commandSender, textChannel);
                     }
                     if (message.getContentRaw().equalsIgnoreCase(".ffh brandneu")) {
-                        Bot.getInstance().getMusicController().loadTrack("http://mp3.ffh.de/fs_ffhchannels/hqbrandneu.mp3", commandSender, message, null);
+                        Bot.getInstance().getMusicController().loadTrack("http://mp3.ffh.de/fs_ffhchannels/hqbrandneu.mp3", commandSender, message);
                         messageManager.printHitRadioFFHLoaded(commandSender, textChannel);
+                    }
+
+                    if (message.getContentRaw().equalsIgnoreCase(".ffh")) {
+                        //Sachen tun
+                    } else if (message.getContentRaw().split(" ").length == 2) {
+                        switch (message.getContentRaw().split(" ")[1]) {
+                            case "party":
+                                break;
+                            case "schlager":
+                                break;
+                            case "rock":
+                                break;
+                            case "brandneu":
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 }
             } else {

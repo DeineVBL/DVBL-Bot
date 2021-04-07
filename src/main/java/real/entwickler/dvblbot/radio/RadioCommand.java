@@ -34,7 +34,7 @@ public class RadioCommand extends ICommand {
                 if (!(input.startsWith("http://") || input.startsWith("https://")))
                     input = "ytsearch: " + input;
 
-                Bot.getInstance().getMusicController().loadTrack(input, commandSender, message, null);
+                Bot.getInstance().getMusicController().loadTrack(input, commandSender, message);
             }
         }
     }

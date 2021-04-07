@@ -27,6 +27,7 @@ import real.entwickler.dvblbot.Bot;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 public class MusicController {
@@ -148,9 +149,42 @@ public class MusicController {
      * @param author     Member, der den Track / die Playlist eingereiht hat
      * @param msg        Message des Contents
      */
-    public void loadTrack(String identifier, Member author, Message msg, AudioPlaylist playlist) {
+    public void loadTrack(String identifier, Member author, Message msg) {
 
-        Guild guild = author.getGuild();
+        System.out.println(identifier.toString());
+        Guild guild = Bot.getInstance().getDVBL();
+        TrackScheduler trackScheduler = new TrackScheduler(getPlayer(guild));
+
+        MANAGER.setFrameBufferDuration(5000);
+        MANAGER.loadItem(identifier, new AudioLoadResultHandler() {
+            @Override
+            public void trackLoaded(AudioTrack track) {
+                System.out.println("Track");
+                System.out.println(track.getInfo().title);
+                getManager(guild).queue(track, null, author, msg.getTextChannel(), msg);
+            }
+
+            @Override
+            public void playlistLoaded(AudioPlaylist playlist) {
+                System.out.println("Playlist");
+                trackLoaded(playlist.getTracks().stream().findFirst().get());
+            }
+
+            @Override
+            public void noMatches() {
+                System.out.println("No matches");
+                // Notify the user that we've got nothing
+            }
+
+            @Override
+            public void loadFailed(FriendlyException throwable) {
+                System.out.println("Load failed");
+                // Notify the user that everything exploded
+            }
+        });
+    }
+
+        /*Guild guild = author.getGuild();
         getPlayer(guild);
 
         MANAGER.setFrameBufferDuration(5000);
@@ -184,6 +218,7 @@ public class MusicController {
         });
     }
 
+
     public void loadPlaylist(String identifier, Member author, Message msg, Consumer<AudioPlaylist> consumer) {
 
         Guild guild = author.getGuild();
@@ -194,7 +229,6 @@ public class MusicController {
 
             @Override
             public void trackLoaded(AudioTrack audioTrack) {
-                return;
             }
 
             @Override
@@ -219,7 +253,7 @@ public class MusicController {
                 exception.printStackTrace();
             }
         });
-    }
+    }*/
 
     /**
      * Returnt den momentanen TrackManager der Guild aus der PLAYERS-Map.
@@ -227,6 +261,7 @@ public class MusicController {
      * @param g Guild
      * @return TrackManager
      */
+
     public TrackManager getManager(Guild g) {
         return PLAYERS.get(g).getValue();
     }
@@ -256,19 +291,27 @@ public class MusicController {
         this.earrapeMode = earrapeMode;
     }
 
-    public boolean isBassboostMode(){
+    public boolean isBassboostMode() {
         return bassBoostMode;
     }
 
-    public void setBassBoostMode (boolean bassBoostMode) {
+    public void setBassBoostMode(boolean bassBoostMode) {
         this.bassBoostMode = bassBoostMode;
     }
 
-    public boolean isAchtDAudioMode() { return achtDAudioMode;}
+    public boolean isAchtDAudioMode() {
+        return achtDAudioMode;
+    }
 
-    public void setAchtDAudioMode (boolean achtDAudioMode) { this.achtDAudioMode = achtDAudioMode; }
+    public void setAchtDAudioMode(boolean achtDAudioMode) {
+        this.achtDAudioMode = achtDAudioMode;
+    }
 
-    public boolean isRemixMode() { return remixMode; }
+    public boolean isRemixMode() {
+        return remixMode;
+    }
 
-    public void setRemixMode (boolean remixMode) { this.remixMode = remixMode; }
+    public void setRemixMode(boolean remixMode) {
+        this.remixMode = remixMode;
+    }
 }

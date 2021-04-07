@@ -36,9 +36,24 @@ public class SetVolumeCommand extends ICommand {
 
                 if (manager.isConnected()) {
 
+                    Integer volume = Integer.parseInt(args[1]);
+
                     if (commandSender.getId().equals("404301583027798032")) {
-                        Integer volume = Integer.parseInt(args[1]);
                         if (volume > 100) {
+                            textChannel.sendMessage("Nein.").queue();
+                            return;
+                        }
+                    }
+
+                    if (commandSender.getId().equals("697772960261472282")) {
+                        if (volume > 100) {
+                            textChannel.sendMessage("Nein.").queue();
+                            return;
+                        }
+                    }
+
+                    if (!commandSender.isOwner()) {
+                        if (volume > 400) {
                             textChannel.sendMessage("Nein.").queue();
                             return;
                         }

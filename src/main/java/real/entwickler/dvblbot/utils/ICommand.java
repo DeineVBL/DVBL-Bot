@@ -14,6 +14,9 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+
 public abstract class ICommand {
 
     private final String name;
@@ -26,7 +29,7 @@ public abstract class ICommand {
         this.roles = roles;
     }
 
-    public abstract void onCommand (Member commandSender, TextChannel textChannel, Message message, String[] args);
+    public abstract void onCommand (Member commandSender, TextChannel textChannel, Message message, String[] args) throws MalformedURLException, IOException, InterruptedException;
 
     public String getName() {
         return name;

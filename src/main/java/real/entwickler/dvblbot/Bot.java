@@ -18,9 +18,11 @@ import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.Compression;
+import real.entwickler.dvblbot.aviation.AirportData;
+import real.entwickler.dvblbot.aviation.MetarData;
+import real.entwickler.dvblbot.aviation.RunwayData;
 import real.entwickler.dvblbot.commands.BanCommand;
 import real.entwickler.dvblbot.commands.KickCommand;
-import real.entwickler.dvblbot.enums.EChannel;
 import real.entwickler.dvblbot.listener.*;
 import real.entwickler.dvblbot.manager.CommandManager;
 import real.entwickler.dvblbot.manager.MessageManager;
@@ -37,7 +39,6 @@ import real.entwickler.dvblbot.utils.Property;
 import javax.security.auth.login.LoginException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -82,7 +83,7 @@ public class Bot {
         this.jda.addEventListener(new GuildMessageReceivedListener());
         this.jda.addEventListener(new GuildMemberUpdateListener());
 
-        messageManager.printReadyMessage(EChannel.CHANGES.getChannelID());
+        messageManager.printReadyMessage();
 
         commandManager.registerCommand(new HelpCommand("help", "help bot", "gives you help", ""));
         commandManager.registerCommand(new HelpCommand("h", "help bot", "gives you help", ""));
@@ -158,15 +159,17 @@ public class Bot {
         commandManager.registerCommand(new FileinfoCommand("fi", "shows you how to name a file", ""));
 
         commandManager.registerCommand(new MSFSCommand("msfs", "shows useful msfs links", ""));
+        commandManager.registerCommand(new AirportData("airport", "shows airport information", ""));
+        commandManager.registerCommand(new AirportData("ap", "shows airport information", ""));
+        commandManager.registerCommand(new RunwayData("rw", "shows runway information", ""));
+        commandManager.registerCommand(new RunwayData("runway", "shows runway information", ""));
+        commandManager.registerCommand(new MetarData("metar","shows the live metar", ""));
+        commandManager.registerCommand(new MetarData("m","shows the live metar", ""));
+        commandManager.registerCommand(new MetarData("ms","shows the live metar", ""));
 
+        commandManager.registerCommand(new MovieCommand("movie", "shows information about a movie", ""));
 
         MusicController.guild = getDVBL();
-
-        Scanner scanner = new Scanner(System.in);
-
-        if (new Scanner(System.in).nextLine().equalsIgnoreCase("stop")) {
-            messageManager.printStopMessage(EChannel.CHANGES.getChannelID());
-        }
     }
 
     public CommandManager getCommandManager() {

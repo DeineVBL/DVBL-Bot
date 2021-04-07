@@ -15,23 +15,14 @@ import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
-import com.wrapper.spotify.SpotifyApi;
-import com.wrapper.spotify.exceptions.SpotifyWebApiException;
-import com.wrapper.spotify.model_objects.specification.Paging;
-import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
-import com.wrapper.spotify.model_objects.specification.Track;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.entities.*;
-import org.apache.hc.core5.http.ParseException;
 import real.entwickler.dvblbot.Bot;
 import real.entwickler.dvblbot.music.commands.SetVolumeCommand;
 
-import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.function.BiConsumer;
 
 public class TrackManager extends AudioEventAdapter {
 
@@ -71,7 +62,7 @@ public class TrackManager extends AudioEventAdapter {
             if (!identifier.contains("list")) {
                 Bot.getInstance().getMessageManager().handlePlayingSongMessage(track, author, textChannel);
             } else {
-                Bot.getInstance().getMessageManager().printPlaylistAddedMessage(author, textChannel, playlist);
+                Bot.getInstance().getMessageManager().printPlaylistAddedMessage(author, textChannel);
             }
         } else {
             if (identifier.contains("list")) {
@@ -79,7 +70,7 @@ public class TrackManager extends AudioEventAdapter {
             } else {
                 String contentRaw = message.getContentRaw();
 
-                if (!contentRaw.equalsIgnoreCase(".karneval") && !contentRaw.equalsIgnoreCase(".house") && !contentRaw.equalsIgnoreCase(".discord") && !contentRaw.equalsIgnoreCase(".rusky") && !contentRaw.equalsIgnoreCase(".tim") && !contentRaw.equalsIgnoreCase(".dc") && !contentRaw.equalsIgnoreCase(".schlager") && !contentRaw.equalsIgnoreCase(".fä") && !contentRaw.equalsIgnoreCase(".fäaschtbänkler") && !contentRaw.equalsIgnoreCase(".bigfm") && !contentRaw.equalsIgnoreCase("bf") && !contentRaw.equalsIgnoreCase("rl") && !contentRaw.equalsIgnoreCase("radiolist")) /*&& !contentRaw.equalsIgnoreCase("playlist")) */{
+                if (!contentRaw.equalsIgnoreCase(".karneval") && !contentRaw.equalsIgnoreCase(".house") && !contentRaw.equalsIgnoreCase(".discord") && !contentRaw.equalsIgnoreCase(".rusky") && !contentRaw.equalsIgnoreCase(".tim") && !contentRaw.equalsIgnoreCase(".dc") && !contentRaw.equalsIgnoreCase(".schlager") && !contentRaw.equalsIgnoreCase(".fä") && !contentRaw.equalsIgnoreCase(".fäaschtbänkler") && !contentRaw.equalsIgnoreCase(".bigfm") && !contentRaw.equalsIgnoreCase("bf") && !contentRaw.equalsIgnoreCase("rl") && !contentRaw.equalsIgnoreCase("radiolist")) /*&& !contentRaw.equalsIgnoreCase("playlist")) */ {
                     Bot.getInstance().getMessageManager().printSongAddedQueueMessage(track, author, textChannel);
                 }
             }
@@ -133,7 +124,15 @@ public class TrackManager extends AudioEventAdapter {
      * Leert die gesammte Queue.
      */
     public void purgeQueue() {
-        //queue.clear();
+        Guild guild = Bot.getInstance().getDVBL();
+
+        Queue queue = Bot.getInstance().getMusicController().getManager(guild).getQueue2();
+        ArrayList newqueue = Bot.getInstance().getMusicController().getManager(guild).getNewQueue();
+        Set queue1 = Bot.getInstance().getMusicController().getManager(guild).getQueue();
+
+        queue1.clear();
+        newqueue.clear();
+        queue.clear();
         queue2.clear();
     }
 
@@ -197,8 +196,8 @@ public class TrackManager extends AudioEventAdapter {
         Message latestPlayingMessage = Bot.getInstance().getMessageManager().getLatestPlayingMessage();
 
 
-       // if (queue.isEmpty()) {
-       if (queue2.isEmpty()) {
+        // if (queue.isEmpty()) {
+        if (queue2.isEmpty()) {
             if (Bot.getInstance().getMusicController().isLoopMode()) {
                 player.playTrack(currentTrack.makeClone());
             } else {

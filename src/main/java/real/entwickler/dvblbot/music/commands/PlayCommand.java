@@ -47,6 +47,7 @@ public class PlayCommand extends ICommand {
 
     @Override
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
+        System.out.println("Play Command");
         String input = Arrays.stream(args).skip(1).map(s -> " " + s).collect(Collectors.joining()).substring(1);
 
         if (Objects.requireNonNull(commandSender.getVoiceState()).getChannel() != null) {
@@ -57,14 +58,14 @@ public class PlayCommand extends ICommand {
 
                     if (Bot.getInstance().getMusicController().isBassboostMode()) {
                         input = "ytsearch:" + input + " bassboost";
-                        Bot.getInstance().getMusicController().loadTrack(input, commandSender, message, null);
+                        Bot.getInstance().getMusicController().loadTrack(input, commandSender, message);
 
                         return;
                     }
 
                     if (Bot.getInstance().getMusicController().isAchtDAudioMode()) {
                         input = "ytsearch:" + input + " 8d audio";
-                        Bot.getInstance().getMusicController().loadTrack(input, commandSender, message, null);
+                        Bot.getInstance().getMusicController().loadTrack(input, commandSender, message);
 
                         return;
                     }
@@ -74,14 +75,17 @@ public class PlayCommand extends ICommand {
                     }
 
                     input = "ytsearch: " + input;
-                    Bot.getInstance().getMusicController().loadTrack(input, commandSender, message, null);
+                    Bot.getInstance().getMusicController().loadTrack(input, commandSender, message);
 
                     return;
                 }
                 if (input.startsWith("https://open.spotify.com/track/")) {
                     String spotifyId = input.substring(31, 53);
                     Track spotifyTrack = getSpotifyTrack(spotifyId);
-                    Bot.getInstance().getMusicController().loadTrack("ytsearch: " + spotifyTrack.getName(), commandSender, message, null);
+                    input = "ytsearch: " + spotifyTrack.getName();
+
+                    Bot.getInstance().getMusicController().loadTrack(input, commandSender, message);
+
                     return;
                 }
                 if (input.startsWith("https://open.spotify.com/playlist/")) {
@@ -98,12 +102,14 @@ public class PlayCommand extends ICommand {
                         }
                         stringBuilder = new StringBuilder(stringBuilder.substring(0, stringBuilder.toString().length() - 2));
                         stringBuilder.append(" - ").append(spotifyTrack.getName());
-                        Bot.getInstance().getMusicController().loadPlaylist("ytsearch: " + stringBuilder.toString(), commandSender, message, null);
-                    }
-                    return;
-                }
 
-                Bot.getInstance().getMusicController().loadTrack(input, commandSender, message, null);
+                        input = "ytsearch: " + stringBuilder.toString();
+
+                        Bot.getInstance().getMusicController().loadTrack(input, commandSender, message);
+                    }
+                }
+                Bot.getInstance().getMusicController().loadTrack(input, commandSender, message);
+
             }
 
         } else {

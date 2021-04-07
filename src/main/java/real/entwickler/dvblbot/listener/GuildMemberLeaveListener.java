@@ -11,6 +11,7 @@
 package real.entwickler.dvblbot.listener;
 
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -19,10 +20,9 @@ import real.entwickler.dvblbot.enums.EChannel;
 
 public class GuildMemberLeaveListener extends ListenerAdapter {
 
-    @Override
-    public void onGuildMemberRemove(@NotNull GuildMemberRemoveEvent event) {
+    @Deprecated
+    public void onGuildMemberLeaveEvent(@NotNull GuildMemberLeaveEvent event) {
         Member member = event.getMember();
-        assert member != null;
-        Bot.getInstance().getMessageManager().printLeaveMessage(EChannel.WELCOME.getChannelID(), event.getUser());
+        Bot.getInstance().getMessageManager().printLeaveMessage(member);
     }
 }

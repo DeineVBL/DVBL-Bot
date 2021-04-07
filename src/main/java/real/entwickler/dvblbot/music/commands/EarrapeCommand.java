@@ -30,19 +30,17 @@ public class EarrapeCommand extends ICommand {
         Guild g = Bot.getInstance().getDVBL();
         AudioPlayer player = Bot.getInstance().getMusicController().getPlayer(g);
         TrackManager manager = Bot.getInstance().getMusicController().getManager(g);
-        Bot.getInstance().getMusicController().setEarrapeMode(!Bot.getInstance().getMusicController().isEarrapeMode());
 
-        if (!commandSender.isOwner()) {
-            return;
+        if (commandSender.isOwner()) {
+            Bot.getInstance().getMusicController().setEarrapeMode(!Bot.getInstance().getMusicController().isEarrapeMode());
+
+            if (Bot.getInstance().getMusicController().isEarrapeMode()) {
+                message.addReaction("U+2714").queue();
+            }
+
+            if (!Bot.getInstance().getMusicController().isEarrapeMode()) {
+                message.addReaction("U+274C").queue();
+            }
         }
-
-        if (Bot.getInstance().getMusicController().isEarrapeMode()) {
-            message.addReaction("U+2714").queue();
-        }
-
-        if (!Bot.getInstance().getMusicController().isEarrapeMode()) {
-            message.addReaction("U+274C").queue();
-        }
-
     }
 }

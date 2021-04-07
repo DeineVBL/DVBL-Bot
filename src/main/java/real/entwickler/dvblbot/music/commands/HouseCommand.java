@@ -28,11 +28,9 @@ public class HouseCommand extends ICommand {
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
         Guild g = Bot.getInstance().getDVBL();
         if (args.length == 1) {
-            Bot.getInstance().getMusicController().loadPlaylist("https://www.youtube.com/watch?v=e7HBypw4lhY&list=PLKUyTzkvY6Gce2THzOyV6eD56gy6yJgSn", commandSender, message, playlist -> {
-                Bot.getInstance().getMusicController().getManager(g).shuffleQueue();
-                Bot.getInstance().getMessageManager().printPlaylistAddedMessage(commandSender, textChannel, playlist);
-            });
-
+            Bot.getInstance().getMusicController().loadTrack("https://www.youtube.com/watch?v=e7HBypw4lhY&list=PLKUyTzkvY6Gce2THzOyV6eD56gy6yJgSn", commandSender, message);//playlist -> {
+               // Bot.getInstance().getMusicController().getManager(g).shuffleQueue();
+                //Bot.getInstance().getMessageManager().printPlaylistAddedMessage(commandSender, textChannel);
         }
     }
 }

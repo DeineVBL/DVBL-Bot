@@ -10,6 +10,7 @@
 
 package real.entwickler.dvblbot.music.commands;
 
+import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -27,12 +28,14 @@ public class TimCommand extends ICommand {
     @Override
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
         Guild g = Bot.getInstance().getDVBL();
+        AudioPlaylist playlist;
         if (args.length == 1) {
-            Bot.getInstance().getMusicController().loadPlaylist("https://www.youtube.com/watch?v=23MVFqQuEAg&list=PL2kkyPD7bvolkPi8ByRcy53hfTLCkcT9h", commandSender, message, playlist -> {
+            Bot.getInstance().getMusicController().loadTrack("https://www.youtube.com/watch?v=23MVFqQuEAg&list=PL2kkyPD7bvolkPi8ByRcy53hfTLCkcT9h", commandSender, message);
+            {
                 Bot.getInstance().getMusicController().getManager(g).shuffleQueue();
-                Bot.getInstance().getMessageManager().printPlaylistAddedMessage(commandSender, textChannel, playlist);
-            });
-
+                Bot.getInstance().getMessageManager().printPlaylistAddedMessage(commandSender, textChannel);
+                //});
+            }
         }
     }
 }

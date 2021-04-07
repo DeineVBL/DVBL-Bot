@@ -31,6 +31,6 @@ public class MusicSchoolCommand extends ICommand {
         Guild g = Bot.getInstance().getDVBL();
         AudioPlayer player = Bot.getInstance().getMusicController().getPlayer(g);
 
-        Bot.getInstance().getMusicController().loadTrack("https://www.youtube.com/watch?v=TRGIQAUHqhM", commandSender, message, null);
+        Bot.getInstance().getMusicController().loadTrack("https://www.youtube.com/watch?v=_IIeBVv_0VM&list=PL2kkyPD7bvokt8rxmcSXmH58RrrxNnRud", commandSender, message);
     }
 }

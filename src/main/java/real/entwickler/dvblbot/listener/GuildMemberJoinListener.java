@@ -23,6 +23,6 @@ public class GuildMemberJoinListener extends ListenerAdapter {
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
         Member member = event.getMember();
 
-        Bot.getInstance().getMessageManager().printJoinMessage(EChannel.WELCOME.getChannelID(), member);
+        Bot.getInstance().getMessageManager().printJoinMessage(member);
     }
 }

@@ -33,7 +33,7 @@ public class CopilotCommand extends ICommand {
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
         Guild g = Bot.getInstance().getDVBL();
         if (args.length == 1) {
-            Bot.getInstance().getMusicController().loadTrack("https://www.youtube.com/watch?v=gr9J3BLxgeo", commandSender, message, null);
+            Bot.getInstance().getMusicController().loadTrack("https://www.youtube.com/watch?v=gr9J3BLxgeo", commandSender, message);
             Bot.getInstance().getMessageManager().printCoPilotSong(commandSender, textChannel);
         }
     }

@@ -27,6 +27,7 @@ public class GuildMessageReactionAddListener extends ListenerAdapter {
         Member member = event.getMember();
 
         if (EChannel.ROLES.getChannel().getIdLong() == textChannel.getIdLong()) {
+            event.getMember().getUser().getName();
         }
     }
 }

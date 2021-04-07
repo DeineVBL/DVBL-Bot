@@ -74,7 +74,7 @@ public class RemoveCommand extends ICommand {
                 public void run() {
                     exitMessage.delete().queue();
                 }
-            }, TimeUnit.SECONDS.toMillis(8));
+            }, TimeUnit.SECONDS.toMillis(5));
         });
     }
 }

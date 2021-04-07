@@ -28,11 +28,10 @@ public class RuskyCommand extends ICommand {
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
         Guild g = Bot.getInstance().getDVBL();
         if (args.length == 1) {
-            Bot.getInstance().getMusicController().loadPlaylist("https://www.youtube.com/watch?v=-nqdy3Pesao&list=PL2kkyPD7bvomTWxolwgllu5jeH3FOd-qx", commandSender, message, playlist -> {
-                Bot.getInstance().getMusicController().getManager(g).shuffleQueue();
-                Bot.getInstance().getMessageManager().printPlaylistAddedMessage (commandSender, textChannel, playlist);
-            });
-
+            Bot.getInstance().getMusicController().loadTrack("https://www.youtube.com/watch?v=-nqdy3Pesao&list=PL2kkyPD7bvomTWxolwgllu5jeH3FOd-qx", commandSender, message);//playlist -> {
+            Bot.getInstance().getMusicController().getManager(g).shuffleQueue();
+            Bot.getInstance().getMessageManager().printPlaylistAddedMessage(commandSender, textChannel);
+            // });
         }
     }
 }

@@ -28,7 +28,7 @@ public class BirthdayCommand extends ICommand {
     @Override
     public void onCommand(Member commandSender, TextChannel textChannel, Message message, String[] args) {
         Guild g = Bot.getInstance().getDVBL();
-            Bot.getInstance().getMusicController().loadTrack("https://www.youtube.com/watch?v=UWLIgjB9gGw", commandSender, message, null);
+            Bot.getInstance().getMusicController().loadTrack("https://www.youtube.com/watch?v=UWLIgjB9gGw", commandSender, message);
         message.addReaction("U+1F389").queue();
         Bot.getInstance().getMessageManager().printBirthdayMessage(commandSender, textChannel, message, args);
     }

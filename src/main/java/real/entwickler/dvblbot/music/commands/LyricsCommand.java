@@ -88,39 +88,46 @@ public class LyricsCommand extends ICommand {
                             if (firstTrack != null) {
 
                                 LyricsClient lyricsClient = new LyricsClient();
-                                Lyrics lyrics = null;
+                                Lyrics lyrics;
                                 try {
                                     lyrics = lyricsClient.getLyrics(firstTrack.getName() + Arrays.stream(firstTrack.getArtists()).findFirst().get().getName()).get();
                                     EmbedBuilder builder = new EmbedBuilder();
 
-                                    if (args.length == 1) {
+                                    if (lyrics.getContent() != null) {
 
-                                        String description = (lyrics.getContent().length() > 2048 ? lyrics.getContent().substring(0, 2048) : lyrics.getContent());
+                                        if (args.length == 1) {
 
-                                        String trackuri = Bot.getInstance().getMusicController().getPlayer(Bot.getInstance().getDVBL()).getPlayingTrack().getInfo().uri;
+                                            if (lyrics.getContent().length() > 2048) {
 
-                                        builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
-                                        builder.setTitle("Lyrics [" + filteredTrackTitle + "]", trackuri);
-                                        builder.setColor(Color.CYAN);
+                                                String description = lyrics.getContent().substring(0, 2048);
 
-                                        String query = URI.create(Bot.getInstance().getMusicController().getPlayer(Bot.getInstance().getDVBL()).getPlayingTrack().getInfo().uri).getQuery();
-                                        String[] split = query.split("&");
+                                                String trackuri = Bot.getInstance().getMusicController().getPlayer(Bot.getInstance().getDVBL()).getPlayingTrack().getInfo().uri;
 
-                                        builder.setThumbnail("https://img.youtube.com/vi/" + split[0].substring(2) + "/hqdefault.jpg");
+                                                builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
+                                                builder.setTitle("Lyrics [" + filteredTrackTitle + "]", trackuri);
+                                                builder.setColor(Color.CYAN);
 
-                                        builder.setDescription(description);
-                                        builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021", commandSender.getUser().getEffectiveAvatarUrl());
-                                        textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F3B6").queue());
+                                                String query = URI.create(Bot.getInstance().getMusicController().getPlayer(Bot.getInstance().getDVBL()).getPlayingTrack().getInfo().uri).getQuery();
+                                                String[] split = query.split("&");
 
-                                    } else if (args.length == 2) {
-                                        String substring2 = lyrics.getContent().substring(2048);
-                                        builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
-                                        builder.setTitle("Lyrics");
-                                        builder.setColor(Color.CYAN);
-                                        builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
-                                        builder.setDescription(substring2);
-                                        builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021", commandSender.getUser().getEffectiveAvatarUrl());
-                                        textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F3B6").queue());
+                                                builder.setThumbnail("https://img.youtube.com/vi/" + split[0].substring(2) + "/hqdefault.jpg");
+
+                                                builder.setDescription(description);
+                                                builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021", commandSender.getUser().getEffectiveAvatarUrl());
+                                                textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F3B6").queue());
+                                            }
+                                        } else if (args.length == 2) {
+                                            String substring2 = lyrics.getContent().substring(2048);
+                                            builder.setAuthor("DVBL-Bot - " + commandSender.getEffectiveName());
+                                            builder.setTitle("Lyrics");
+                                            builder.setColor(Color.CYAN);
+                                            builder.setThumbnail("https://raw.githubusercontent.com/DeineVBL/DVBL-Bot/dev/images/dvbl.png");
+                                            builder.setDescription(substring2);
+                                            builder.setFooter("DVBL-Bot - Copyright © swausb ||  Nils K.-E. 2021", commandSender.getUser().getEffectiveAvatarUrl());
+                                            textChannel.sendMessage(builder.build()).queue(exitMessage -> exitMessage.addReaction("U+1F3B6").queue());
+                                        }
+                                    } else {
+                                        Bot.getInstance().getMessageManager().printNoLyricsFound(commandSender, textChannel);
                                     }
 
                                 } catch (InterruptedException | ExecutionException e) {
